@@ -1,22 +1,22 @@
 let balance = 1000;
-let currentBet = 10;
+let bet = 10;
 
 let deck = [];
-
 let player = [];
 let dealer = [];
 
-const suits = ["♠","♥","♦","♣"];
+let gameActive = false;
 
-const values = [
-"A","2","3","4","5",
-"6","7","8","9","10",
-"J","Q","K"
-];
+const suits = ["♠","♥","♦","♣"];
+const values = ["A","2","3","4","5","6","7","8","9","10","J","Q","K"];
+
+function updateBalance(){
+document.getElementById("balance").textContent = balance;
+}
 
 function createDeck(){
 
-deck=[];
+deck = [];
 
 for(const suit of suits){
 
@@ -31,267 +31,277 @@ suit
 
 }
 
-}
-
-function shuffle(){
-
 for(let i=deck.length-1;i>0;i--){
 
-const j=
+const j =
 Math.floor(Math.random()*(i+1));
 
-[deck[i],deck[j]]=
+[deck[i],deck[j]] =
 [deck[j],deck[i]];
 
 }
 
 }
 
-function draw(){
-
+function drawCard(){
 return deck.pop();
-
 }
 
-function cardValue(card){
+function getValue(card){
 
-if(
-card.value==="J"||
-card.value==="Q"||
-card.value==="K"
-){
+if(["J","Q","K"].includes(card.value))
 return 10;
-}
 
-if(card.value==="A"){
+if(card.value === "A")
 return 11;
-}
 
 return Number(card.value);
-
 }
 
 function handValue(hand){
 
-let total=0;
-let aces=0;
+let total = 0;
+let aces = 0;
 
-for(const card of hand){
+hand.forEach(card=>{
 
-total+=cardValue(card);
+total += getValue(card);
 
-if(card.value==="A"){
+if(card.value==="A")
 aces++;
-}
 
-}
+});
 
 while(total>21 && aces>0){
 
-total-=10;
+total -= 10;
 aces--;
 
 }
 
 return total;
-
 }
 
 function renderCards(){
 
-const playerArea=
-document.getElementById("player-cards");
+const playerArea =
+document.getElementById("playerCards");
 
-const dealerArea=
-document.getElementById("dealer-cards");
+const dealerArea =
+document.getElementById("dealerCards");
 
 playerArea.innerHTML="";
 dealerArea.innerHTML="";
 
 player.forEach(card=>{
 
-const div=
+const div =
 document.createElement("div");
 
 div.className="card";
 
-div.innerHTML=
-card.value+card.suit;
+div.textContent =
+card.value + card.suit;
 
 playerArea.appendChild(div);
 
 });
 
-dealer.forEach(card=>{
+dealer.forEach((card,index)=>{
 
-const div=
+const div =
 document.createElement("div");
+
+if(index===1 && gameActive){
+
+div.className =
+"card hidden";
+
+div.textContent="??";
+
+}else{
 
 div.className="card";
 
-div.innerHTML=
+div.textContent=
 card.value+card.suit;
+
+}
 
 dealerArea.appendChild(div);
 
 });
 
 document.getElementById(
-"player-score"
-).innerHTML=
-"Pont: "+handValue(player);
+"playerScore"
+).textContent =
+"Pont: " + handValue(player);
+
+if(gameActive){
 
 document.getElementById(
-"dealer-score"
-).innerHTML=
-"Pont: "+handValue(dealer);
+"dealerScore"
+).textContent =
+"Pont: ?";
+
+}else{
+
+document.getElementById(
+"dealerScore"
+).textContent =
+"Pont: " + handValue(dealer);
 
 }
-
-function updateBalance(){
-
-document.getElementById(
-"balance"
-).innerText=
-balance;
 
 }
 
 function deal(){
 
-if(balance<currentBet){
+if(gameActive) return;
+
+if(balance < bet){
 
 alert("Nincs elég zseton!");
 
 return;
 }
 
-balance-=currentBet;
+balance -= bet;
 
 updateBalance();
 
 createDeck();
-shuffle();
 
-player=[
-draw(),
-draw()
+player = [
+drawCard(),
+drawCard()
 ];
 
-dealer=[
-draw(),
-draw()
+dealer = [
+drawCard(),
+drawCard()
 ];
+
+gameActive = true;
 
 renderCards();
 
 document.getElementById(
-"result"
-).innerHTML=
-"➕ Kérsz még lapot?";
-
+"message"
+).textContent =
+"Lapot kérsz vagy megállsz?";
 }
 
 function hit(){
 
-player.push(draw());
+if(!gameActive) return;
+
+player.push(drawCard());
 
 renderCards();
 
 if(handValue(player)>21){
 
-document.getElementById(
-"result"
-).innerHTML=
-"💥 VESZTETTÉL!";
+gameActive=false;
 
+renderCards();
+
+document.getElementById(
+"message"
+).textContent =
+"💥 BUST! Vesztettél.";
 }
 
 }
 
 function stand(){
 
+if(!gameActive) return;
+
+gameActive=false;
+
 while(
 handValue(dealer)<17
 ){
 
-dealer.push(draw());
+dealer.push(drawCard());
 
 }
 
 renderCards();
 
-const p=
+const playerScore =
 handValue(player);
 
-const d=
+const dealerScore =
 handValue(dealer);
 
-let result="";
+let msg="";
 
-if(d>21){
+if(dealerScore>21){
 
-result="🎉 NYERTÉL!";
-balance+=currentBet*2;
-
-}
-else if(p>d){
-
-result="🏆 NYERTÉL!";
-balance+=currentBet*2;
+msg="🎉 Dealer bust! Nyertél!";
+balance += bet*2;
 
 }
-else if(p===d){
+else if(playerScore>dealerScore){
 
-result="🤝 DÖNTETLEN";
-balance+=currentBet;
+msg="🏆 Nyertél!";
+balance += bet*2;
+
+}
+else if(playerScore===dealerScore){
+
+msg="🤝 Döntetlen";
+balance += bet;
 
 }
 else{
 
-result="😢 VESZTETTÉL";
+msg="😢 Vesztettél";
 
 }
 
 updateBalance();
 
 document.getElementById(
-"result"
-).innerHTML=
-result;
-
+"message"
+).textContent =
+msg;
 }
 
 document
 .querySelectorAll(".bet-btn")
 .forEach(btn=>{
 
-btn.onclick=()=>{
+btn.addEventListener(
+"click",
+()=>{
 
-currentBet=
-Number(
-btn.dataset.bet
-);
+if(gameActive) return;
+
+bet =
+Number(btn.dataset.bet);
 
 document.getElementById(
-"bet"
-).innerText=
-currentBet;
+"betValue"
+).textContent =
+bet;
 
-};
+});
 
 });
 
 document
 .getElementById("dealBtn")
-.onclick=deal;
+.addEventListener("click",deal);
 
 document
 .getElementById("hitBtn")
-.onclick=hit;
+.addEventListener("click",hit);
 
 document
 .getElementById("standBtn")
-.onclick=stand;
+.addEventListener("click",stand);
 
 updateBalance();

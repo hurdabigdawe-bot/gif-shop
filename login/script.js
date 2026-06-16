@@ -48,15 +48,24 @@ document.getElementById("message");
 
 document
 .getElementById("registerBtn")
-.addEventListener("click", async ()=>{
+.addEventListener("click", async () => {
 
-try{
+try {
 
 const userCredential =
 await createUserWithEmailAndPassword(
 auth,
 email.value,
 password.value
+);
+
+console.log(
+"Felhasználó létrehozva:",
+userCredential.user.uid
+);
+
+console.log(
+"Firestore mentés indul..."
 );
 
 await setDoc(
@@ -74,12 +83,24 @@ createdAt: Date.now()
 }
 );
 
+console.log(
+"Firestore mentés sikeres!"
+);
+
 message.innerText =
 "✅ Sikeres regisztráció!";
 
-}catch(error){
+} catch(error) {
 
-console.log(error);
+console.error(
+"REGISZTRÁCIÓ HIBA:",
+error
+);
+
+alert(
+error.code + "\n" +
+error.message
+);
 
 message.innerText =
 error.code;
@@ -90,9 +111,9 @@ error.code;
 
 document
 .getElementById("loginBtn")
-.addEventListener("click", async ()=>{
+.addEventListener("click", async () => {
 
-try{
+try {
 
 await signInWithEmailAndPassword(
 auth,
@@ -103,16 +124,24 @@ password.value
 message.innerText =
 "✅ Sikeres bejelentkezés!";
 
-setTimeout(()=>{
+setTimeout(() => {
 
 window.location.href =
 "https://gifzshop.netlify.app/";
 
-},1000);
+}, 1000);
 
-}catch(error){
+} catch(error) {
 
-console.log(error);
+console.error(
+"BELÉPÉS HIBA:",
+error
+);
+
+alert(
+error.code + "\n" +
+error.message
+);
 
 message.innerText =
 error.code;

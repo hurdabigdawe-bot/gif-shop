@@ -2,290 +2,296 @@ let balance = 1000;
 let currentBet = 10;
 
 let deck = [];
-let hand = [];
 
-let holds = [false,false,false,false,false];
-
-let firstDeal = true;
+let player = [];
+let dealer = [];
 
 const suits = ["♠","♥","♦","♣"];
+
 const values = [
-    "A","K","Q","J",
-    "10","9","8","7",
-    "6","5","4","3","2"
+"A","2","3","4","5",
+"6","7","8","9","10",
+"J","Q","K"
 ];
 
 function createDeck(){
 
-    deck = [];
+deck=[];
 
-    for(const suit of suits){
+for(const suit of suits){
 
-        for(const value of values){
+for(const value of values){
 
-            deck.push({
-                suit,
-                value
-            });
-
-        }
-    }
+deck.push({
+value,
+suit
+});
 
 }
 
-function shuffleDeck(){
-
-    for(let i=deck.length-1;i>0;i--){
-
-        const j =
-            Math.floor(
-                Math.random()*(i+1)
-            );
-
-        [deck[i],deck[j]] =
-        [deck[j],deck[i]];
-    }
+}
 
 }
 
-function drawCard(){
+function shuffle(){
 
-    return deck.pop();
+for(let i=deck.length-1;i>0;i--){
 
-}
+const j=
+Math.floor(Math.random()*(i+1));
 
-function renderHand(){
-
-    hand.forEach((card,index)=>{
-
-        const el =
-            document.getElementById(
-                `card${index}`
-            );
-
-        el.innerHTML =
-            `${card.value}${card.suit}`;
-
-        if(
-            card.suit === "♥" ||
-            card.suit === "♦"
-        ){
-            el.style.color = "red";
-        }else{
-            el.style.color = "black";
-        }
-
-    });
+[deck[i],deck[j]]=
+[deck[j],deck[i]];
 
 }
-
-function updateBalance(){
-
-    document.getElementById(
-        "balance"
-    ).innerText = balance;
-
-}
-
-function updateBet(){
-
-    document.getElementById(
-        "bet"
-    ).innerText = currentBet;
-
-}
-
-function deal(){
-
-    if(balance < currentBet){
-
-        alert(
-            "Nincs elég zseton!"
-        );
-
-        return;
-    }
-
-    balance -= currentBet;
-
-    updateBalance();
-
-    createDeck();
-
-    shuffleDeck();
-
-    hand = [];
-
-    for(let i=0;i<5;i++){
-
-        hand.push(
-            drawCard()
-        );
-
-    }
-
-    holds =
-    [false,false,false,false,false];
-
-    document
-    .querySelectorAll(".hold-btn")
-    .forEach(btn=>{
-
-        btn.style.background =
-        "";
-
-    });
-
-    renderHand();
-
-    firstDeal = false;
-
-    document
-    .getElementById("result")
-    .innerText =
-    "Válassz HOLD lapokat vagy húzz!";
 
 }
 
 function draw(){
 
-    if(firstDeal) return;
-
-    for(let i=0;i<5;i++){
-
-        if(!holds[i]){
-
-            hand[i] =
-                drawCard();
-
-        }
-
-    }
-
-    renderHand();
-
-    checkHand();
-
-    firstDeal = true;
+return deck.pop();
 
 }
 
-function checkHand(){
+function cardValue(card){
 
-    const counts = {};
+if(
+card.value==="J"||
+card.value==="Q"||
+card.value==="K"
+){
+return 10;
+}
 
-    hand.forEach(card=>{
+if(card.value==="A"){
+return 11;
+}
 
-        counts[card.value] =
-            (counts[card.value] || 0) + 1;
-
-    });
-
-    const valuesCount =
-        Object.values(counts);
-
-    let result =
-        "Nincs nyeremény";
-
-    let win = 0;
-
-    if(valuesCount.includes(4)){
-
-        result = "🃏 PÓKER!";
-        win = currentBet * 25;
-
-    }
-    else if(valuesCount.includes(3)){
-
-        result = "🎉 DRILL!";
-        win = currentBet * 8;
-
-    }
-    else if(
-        valuesCount.filter(
-            x=>x===2
-        ).length >= 2
-    ){
-
-        result = "🎉 KÉT PÁR!";
-        win = currentBet * 4;
-
-    }
-    else if(valuesCount.includes(2)){
-
-        result = "🎉 PÁR!";
-        win = currentBet * 2;
-
-    }
-
-    balance += win;
-
-    updateBalance();
-
-    document
-    .getElementById("result")
-    .innerHTML =
-    `${result}<br>💰 +${win}`;
+return Number(card.value);
 
 }
 
-document
-.getElementById("dealBtn")
-.addEventListener(
-"click",
-deal
-);
+function handValue(hand){
 
-document
-.getElementById("drawBtn")
-.addEventListener(
-"click",
-draw
-);
+let total=0;
+let aces=0;
 
-document
-.querySelectorAll(".hold-btn")
-.forEach(btn=>{
+for(const card of hand){
 
-    btn.addEventListener(
-    "click",
-    ()=>{
+total+=cardValue(card);
 
-        const index =
-            Number(
-                btn.dataset.index
-            );
+if(card.value==="A"){
+aces++;
+}
 
-        holds[index] =
-            !holds[index];
+}
 
-        btn.style.background =
-            holds[index]
-            ? "#00ff88"
-            : "";
+while(total>21 && aces>0){
 
-    });
+total-=10;
+aces--;
+
+}
+
+return total;
+
+}
+
+function renderCards(){
+
+const playerArea=
+document.getElementById("player-cards");
+
+const dealerArea=
+document.getElementById("dealer-cards");
+
+playerArea.innerHTML="";
+dealerArea.innerHTML="";
+
+player.forEach(card=>{
+
+const div=
+document.createElement("div");
+
+div.className="card";
+
+div.innerHTML=
+card.value+card.suit;
+
+playerArea.appendChild(div);
 
 });
+
+dealer.forEach(card=>{
+
+const div=
+document.createElement("div");
+
+div.className="card";
+
+div.innerHTML=
+card.value+card.suit;
+
+dealerArea.appendChild(div);
+
+});
+
+document.getElementById(
+"player-score"
+).innerHTML=
+"Pont: "+handValue(player);
+
+document.getElementById(
+"dealer-score"
+).innerHTML=
+"Pont: "+handValue(dealer);
+
+}
+
+function updateBalance(){
+
+document.getElementById(
+"balance"
+).innerText=
+balance;
+
+}
+
+function deal(){
+
+if(balance<currentBet){
+
+alert("Nincs elég zseton!");
+
+return;
+}
+
+balance-=currentBet;
+
+updateBalance();
+
+createDeck();
+shuffle();
+
+player=[
+draw(),
+draw()
+];
+
+dealer=[
+draw(),
+draw()
+];
+
+renderCards();
+
+document.getElementById(
+"result"
+).innerHTML=
+"➕ Kérsz még lapot?";
+
+}
+
+function hit(){
+
+player.push(draw());
+
+renderCards();
+
+if(handValue(player)>21){
+
+document.getElementById(
+"result"
+).innerHTML=
+"💥 VESZTETTÉL!";
+
+}
+
+}
+
+function stand(){
+
+while(
+handValue(dealer)<17
+){
+
+dealer.push(draw());
+
+}
+
+renderCards();
+
+const p=
+handValue(player);
+
+const d=
+handValue(dealer);
+
+let result="";
+
+if(d>21){
+
+result="🎉 NYERTÉL!";
+balance+=currentBet*2;
+
+}
+else if(p>d){
+
+result="🏆 NYERTÉL!";
+balance+=currentBet*2;
+
+}
+else if(p===d){
+
+result="🤝 DÖNTETLEN";
+balance+=currentBet;
+
+}
+else{
+
+result="😢 VESZTETTÉL";
+
+}
+
+updateBalance();
+
+document.getElementById(
+"result"
+).innerHTML=
+result;
+
+}
 
 document
 .querySelectorAll(".bet-btn")
 .forEach(btn=>{
 
-    btn.addEventListener(
-    "click",
-    ()=>{
+btn.onclick=()=>{
 
-        currentBet =
-            Number(
-                btn.dataset.bet
-            );
+currentBet=
+Number(
+btn.dataset.bet
+);
 
-        updateBet();
+document.getElementById(
+"bet"
+).innerText=
+currentBet;
 
-    });
+};
 
 });
 
+document
+.getElementById("dealBtn")
+.onclick=deal;
+
+document
+.getElementById("hitBtn")
+.onclick=hit;
+
+document
+.getElementById("standBtn")
+.onclick=stand;
+
 updateBalance();
-updateBet();

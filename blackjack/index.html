@@ -5,7 +5,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>🃏 Blackjack</title>
+
 <link rel="stylesheet" href="style.css">
+
 </head>
 <body>
 
@@ -41,14 +43,31 @@
 
 <div class="bank">
 💰 Egyenleg:
-<span id="balance">1000</span>
+<span id="balance">0</span>
 </div>
 
 <div class="bet-area">
 
-<p>Tét: <span id="betValue">10</span></p>
+<p>
+Tét:
+<span id="betValue">10</span>
+</p>
 
-<button class="bet-btn" data-bet="10">10</button> <button class="bet-btn" data-bet="50">50</button> <button class="bet-btn" data-bet="100">100</button> <button class="bet-btn" data-bet="500">500</button>
+<button class="bet-btn" data-bet="10">
+10
+</button>
+
+<button class="bet-btn" data-bet="50">
+50
+</button>
+
+<button class="bet-btn" data-bet="100">
+100
+</button>
+
+<button class="bet-btn" data-bet="500">
+500
+</button>
 
 </div>
 
@@ -58,7 +77,9 @@
 
 <div id="dealerCards" class="cards"></div>
 
-<div id="dealerScore">Pont: ?</div>
+<div id="dealerScore">
+Pont: ?
+</div>
 
 </div>
 
@@ -68,7 +89,9 @@
 
 <div id="playerCards" class="cards"></div>
 
-<div id="playerScore">Pont: 0</div>
+<div id="playerScore">
+Pont: 0
+</div>
 
 </div>
 
@@ -93,122 +116,12 @@ Válassz tétet és nyomj OSZTÁST.
 </div>
 
 <a href="/" class="back-btn">
-🎁 Vissza
+🎁 Vissza a főoldalra
 </a>
 
 </div>
 
-<script src="script.js"></script>
-
-<script type="module">
-
-import { initializeApp }
-from "https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js";
-
-import {
-getAuth,
-onAuthStateChanged,
-signOut
-}
-from "https://www.gstatic.com/firebasejs/12.15.0/firebase-auth.js";
-
-import {
-getFirestore,
-doc,
-getDoc
-}
-from "https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
-
-const firebaseConfig = {
-
-apiKey: "AIzaSyBoIILW2sbfyuSSvK108YAxnLPB_GlZZP0",
-authDomain: "game-6df94.firebaseapp.com",
-projectId: "game-6df94",
-storageBucket: "game-6df94.firebasestorage.app",
-messagingSenderId: "443187158566",
-appId: "1:443187158566:web:2e055a515f29b5021110e7"
-
-};
-
-const app = initializeApp(firebaseConfig);
-
-const auth = getAuth(app);
-
-const db = getFirestore(app);
-
-const loginLink =
-document.getElementById("loginLink");
-
-const userInfo =
-document.getElementById("userInfo");
-
-const userEmail =
-document.getElementById("userEmail");
-
-const userCredits =
-document.getElementById("userCredits");
-
-const logoutBtn =
-document.getElementById("logoutBtn");
-
-onAuthStateChanged(auth, async (user)=>{
-
-if(user){
-
-loginLink.style.display = "none";
-
-userInfo.style.display = "flex";
-
-userEmail.innerHTML =
-"👤 " + user.email;
-
-try{
-
-const userDoc =
-await getDoc(
-doc(
-db,
-"users",
-user.uid
-)
-);
-
-if(userDoc.exists()){
-
-userCredits.innerHTML =
-"💰 " +
-userDoc.data().credits +
-" kredit";
-
-}
-
-}catch(error){
-
-console.error(error);
-
-}
-
-}else{
-
-loginLink.style.display = "block";
-
-userInfo.style.display = "none";
-
-}
-
-});
-
-logoutBtn.addEventListener(
-"click",
-async()=>{
-
-await signOut(auth);
-
-window.location.href="/";
-
-});
-
-</script>
+<script type="module" src="script.js"></script>
 
 </body>
 </html>

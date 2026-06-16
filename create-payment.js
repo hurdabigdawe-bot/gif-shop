@@ -1,68 +1,46 @@
+const Stripe = require("stripe");
+
+const stripe = Stripe(process.env.STRIPE_SECRET_KEY);
+
 exports.handler = async () => {
+  try {
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ["card"],
 
-    const BARION_POS_KEY =
-        process.env.BARION_POS_KEY;
-
-    const response = await fetch(
-        "https://api.barion.com/v2/Payment/Start",
+      line_items: [
         {
-            method:"POST",
-            headers:{
-                "Content-Type":"application/json"
+          price_data: {
+            currency: "huf",
+            product_data: {
+              name: "Vicces GIF + Hang Csomag"
             },
-            body:JSON.stringify({
-
-                POSKey: BARION_POS_KEY,
-
-                PaymentType:"Immediate",
-
-                GuestCheckOut:true,
-
-                FundingSources:["All"],
-
-                PaymentRequestId:
-                    crypto.randomUUID(),
-
-                Locale:"hu-HU",
-
-                Currency:"HUF",
-
-                RedirectUrl:
-                    "https://gifzshop.netlify.app/?success=true",
-
-                CallbackUrl:
-                    "https://gifzshop.netlify.app/api/payment-success",
-
-                Transactions:[
-                    {
-                        POSTransactionId:
-                            crypto.randomUUID(),
-
-                        Payee:"shop@example.com",
-
-                        Total:1000,
-
-                        Items:[
-                            {
-                                Name:"Vicces GIF Csomag",
-                                Quantity:1,
-                                Unit:"db",
-                                UnitPrice:1000,
-                                ItemTotal:1000
-                            }
-                        ]
-                    }
-                ]
-            })
+            unit_amount: 1000 * 100 // 1000 Ft
+          },
+          quantity: 1
         }
-    );
+      ],
 
-    const data = await response.json();
+      mode: "payment",
+
+      success_url:
+        "https://SAJATOLDALAD.netlify.app/?success=true",
+
+      cancel_url:
+        "https://SAJATOLDALAD.netlify.app/?cancel=true"
+    });
 
     return {
-        statusCode:200,
-        body:JSON.stringify({
-            paymentUrl:data.GatewayUrl
-        })
+      statusCode: 200,
+      body: JSON.stringify({
+        paymentUrl: session.url
+      })
     };
+  } catch (err) {
+    return {
+      statusCode: 500,
+      body: JSON.stringify({
+        error: err.message
+      })
+    };
+  }
 };

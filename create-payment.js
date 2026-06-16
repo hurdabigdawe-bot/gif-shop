@@ -28,10 +28,10 @@ exports.handler = async () => {
                 Currency:"HUF",
 
                 RedirectUrl:
-                    "https://sajatoldalad.netlify.app/?success=true",
+                    "https://gifzshop.netlify.app/?success=true",
 
                 CallbackUrl:
-                    "https://sajatoldalad.netlify.app/api/payment-success",
+                    "https://gifzshop.netlify.app/api/payment-success",
 
                 Transactions:[
                     {

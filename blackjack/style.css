@@ -6,7 +6,7 @@ box-sizing:border-box;
 
 body{
 font-family:Arial,Helvetica,sans-serif;
-background:#071b0d;
+background:#07130a;
 color:white;
 overflow-x:hidden;
 }
@@ -15,40 +15,36 @@ body::before{
 content:"";
 position:fixed;
 inset:0;
+z-index:-1;
 
 background:
 radial-gradient(circle at 20% 20%,
-rgba(0,255,136,.12),
+rgba(0,255,136,.10),
 transparent 35%),
 
 radial-gradient(circle at 80% 80%,
-rgba(255,215,0,.12),
+rgba(255,215,0,.10),
 transparent 35%);
-
-z-index:-1;
 }
 
 .user-panel{
 position:fixed;
-top:20px;
-right:20px;
+top:15px;
+right:15px;
 
 background:#111;
 
-padding:12px 18px;
+padding:10px 15px;
 
 border-radius:12px;
 
 display:flex;
 align-items:center;
-gap:12px;
+gap:10px;
 
 z-index:9999;
 
-border:1px solid #333;
-
-box-shadow:
-0 0 20px rgba(0,0,0,.4);
+border:1px solid #222;
 }
 
 .user-panel a{
@@ -60,24 +56,23 @@ font-weight:bold;
 #userInfo{
 display:flex;
 align-items:center;
-gap:12px;
+gap:10px;
 }
 
 .user-data{
 display:flex;
 flex-direction:column;
-gap:4px;
+gap:3px;
 }
 
 #userEmail{
-font-size:14px;
-color:white;
+font-size:13px;
 }
 
 #userCredits{
-font-size:14px;
-font-weight:bold;
+font-size:13px;
 color:gold;
+font-weight:bold;
 }
 
 #logoutBtn{
@@ -90,143 +85,89 @@ cursor:pointer;
 }
 
 .table{
-
-max-width:1200px;
-
+max-width:1000px;
 margin:auto;
-
-min-height:100vh;
-
-padding:120px 20px 40px;
-
+padding:90px 20px 40px;
 text-align:center;
 }
 
 h1{
-
-font-size:70px;
-
+font-size:46px;
 color:#ffd700;
-
 margin-bottom:20px;
-
-text-shadow:
-0 0 20px rgba(255,215,0,.5);
-
+text-shadow:0 0 15px rgba(255,215,0,.4);
 }
 
 .bank{
-
-font-size:30px;
-
-margin-bottom:30px;
-
+font-size:22px;
 font-weight:bold;
-
 color:#ffd700;
-
+margin-bottom:25px;
 }
 
-.bet-area{
-
-background:#0f2916;
-
+.bet-area,
+.dealer-section,
+.player-section{
+background:#102116;
+border:1px solid #1f4d2d;
+border-radius:18px;
 padding:20px;
-
-border-radius:20px;
-
-margin-bottom:30px;
-
-border:1px solid #214d2d;
+margin-bottom:20px;
 }
 
 .bet-area p{
-margin-bottom:15px;
-font-size:20px;
+margin-bottom:12px;
+font-size:18px;
 }
 
 .bet-btn{
-
-padding:12px 22px;
-
+padding:10px 15px;
 margin:5px;
-
 border:none;
-
 border-radius:10px;
-
 cursor:pointer;
-
 font-weight:bold;
-
 background:#ffd700;
-
 color:black;
-
-transition:.3s;
+transition:.25s;
 }
 
 .bet-btn:hover{
-transform:scale(1.08);
-}
-
-.dealer-section,
-.player-section{
-
-background:#0f2916;
-
-padding:25px;
-
-border-radius:20px;
-
-margin-bottom:20px;
-
-border:1px solid #214d2d;
+transform:scale(1.05);
 }
 
 .dealer-section h2,
 .player-section h2{
-
 margin-bottom:15px;
-
 color:#00ff88;
+font-size:22px;
 }
 
 .cards{
-
 display:flex;
-
 justify-content:center;
-
-gap:12px;
-
+gap:10px;
 flex-wrap:wrap;
-
-margin:20px 0;
+margin:15px 0;
 }
 
 .card{
-
-width:100px;
-height:145px;
+width:75px;
+height:110px;
 
 background:white;
-
 color:black;
 
-border-radius:14px;
+border-radius:12px;
 
 display:flex;
-
 justify-content:center;
 align-items:center;
 
-font-size:34px;
-
+font-size:24px;
 font-weight:bold;
 
-box-shadow:
-0 5px 15px rgba(0,0,0,.3);
+box-shadow:0 4px 10px rgba(0,0,0,.3);
 }
 
 .hidden{
@@ -236,31 +177,23 @@ color:#222;
 
 #dealerScore,
 #playerScore{
-font-size:22px;
+font-size:18px;
 font-weight:bold;
 }
 
 .controls{
-margin-top:25px;
+margin-top:20px;
 }
 
 .controls button{
-
-padding:16px 26px;
-
-margin:10px;
-
+padding:12px 18px;
+margin:6px;
 border:none;
-
-border-radius:12px;
-
-font-size:18px;
-
-font-weight:bold;
-
+border-radius:10px;
 cursor:pointer;
-
-transition:.3s;
+font-size:15px;
+font-weight:bold;
+transition:.25s;
 }
 
 .controls button:hover{
@@ -283,34 +216,21 @@ color:white;
 }
 
 #message{
-
-margin-top:25px;
-
-font-size:28px;
-
+margin-top:20px;
+font-size:20px;
 font-weight:bold;
-
-min-height:50px;
-
+min-height:40px;
 color:#ffd700;
 }
 
 .back-btn{
-
 display:inline-block;
-
-margin-top:30px;
-
-padding:16px 26px;
-
+margin-top:25px;
+padding:12px 20px;
 background:#ffd700;
-
 color:black;
-
 text-decoration:none;
-
-border-radius:12px;
-
+border-radius:10px;
 font-weight:bold;
 }
 
@@ -320,27 +240,27 @@ font-weight:bold;
 position:relative;
 top:auto;
 right:auto;
-margin:20px auto;
+margin:15px auto;
 width:max-content;
 }
 
 h1{
-font-size:42px;
+font-size:34px;
 }
 
 .bank{
-font-size:22px;
+font-size:18px;
 }
 
 .card{
-width:75px;
-height:110px;
-font-size:24px;
+width:60px;
+height:90px;
+font-size:18px;
 }
 
 .controls button{
 width:100%;
-max-width:300px;
+max-width:260px;
 }
 
 }

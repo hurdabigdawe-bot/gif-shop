@@ -6,7 +6,6 @@
 <title>🎉 Gratulálunk!</title>
 
 <style>
-
 body{
     background:#111;
     color:white;
@@ -15,10 +14,15 @@ body{
     padding:30px;
 }
 
+h1{
+    margin-bottom:20px;
+}
+
 img{
     max-width:700px;
     width:100%;
     border-radius:20px;
+    box-shadow:0 0 20px rgba(0,255,136,.4);
 }
 
 audio{
@@ -26,39 +30,22 @@ audio{
     width:100%;
     max-width:700px;
 }
-
 </style>
+
 </head>
 <body>
 
-<h1>🎉 Gratulálunk! 🎉</h1>
+<h1>🎉 Köszönjük a vásárlást! 🎉</h1>
 
-<h2>Itt a random jutalmad:</h2>
+<h2>Itt a jutalmad:</h2>
 
-<img id="gif">
+<img src="gifs/giphy.webp" alt="Vicces GIF">
 
 <br><br>
 
-<audio id="audio" controls autoplay></audio>
-
-<script>
-
-const gifCount = 1000;
-const soundCount = 1000;
-
-const randomGif =
-    Math.floor(Math.random()*gifCount)+1;
-
-const randomSound =
-    Math.floor(Math.random()*soundCount)+1;
-
-document.getElementById("gif").src =
-    `gifs/gif${randomGif}.gif.webp`;
-
-document.getElementById("audio").src =
-    `sounds/sound${randomSound}.mp3`;
-
-</script>
+<audio controls>
+    <source src="sounds/sound1.mp3" type="audio/mpeg">
+</audio>
 
 </body>
 </html>

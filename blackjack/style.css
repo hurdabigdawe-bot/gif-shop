@@ -173,6 +173,17 @@ font-size:38px;
 .card{
 width:70px;
 height:100px;
+  .user-data{
+display:flex;
+flex-direction:column;
+gap:4px;
+}
+
+#userCredits{
+color:gold;
+font-weight:bold;
+font-size:14px;
+}
 font-size:22px;
 }
 

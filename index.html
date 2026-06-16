@@ -1,176 +1,18 @@
 <!DOCTYPE html>
 <html lang="hu">
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🎁 Mystery GIF Box</title>
 
-<style>
+<title>🎁 Mystery Box</title>
 
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-}
-
-body{
-background:#0b0b0b;
-font-family:Arial,Helvetica,sans-serif;
-color:white;
-overflow-x:hidden;
-}
-
-.hero{
-min-height:100vh;
-display:flex;
-justify-content:center;
-align-items:center;
-padding:40px 20px;
-}
-
-.container{
-max-width:1000px;
-width:100%;
-text-align:center;
-}
-
-.badge{
-display:inline-block;
-padding:12px 20px;
-background:#181818;
-border-radius:999px;
-color:#00ff88;
-margin-bottom:25px;
-}
-
-h1{
-font-size:70px;
-line-height:1.1;
-margin-bottom:20px;
-}
-
-h1 span{
-color:#00ff88;
-}
-
-.subtitle{
-max-width:700px;
-margin:auto;
-font-size:22px;
-line-height:1.7;
-color:#bbb;
-}
-
-.price{
-font-size:80px;
-font-weight:bold;
-color:gold;
-margin-top:30px;
-}
-
-.wheel-container{
-position:relative;
-width:400px;
-margin:40px auto;
-}
-
-.pointer{
-position:absolute;
-left:50%;
-transform:translateX(-50%);
-top:-15px;
-width:0;
-height:0;
-border-left:20px solid transparent;
-border-right:20px solid transparent;
-border-top:40px solid white;
-z-index:10;
-}
-
-#wheel{
-border-radius:50%;
-box-shadow:0 0 40px rgba(255,255,255,.15);
-}
-
-#spinBtn{
-padding:18px 35px;
-border:none;
-background:#00ff88;
-color:black;
-font-size:20px;
-font-weight:bold;
-border-radius:15px;
-cursor:pointer;
-}
-
-#spinBtn:hover{
-transform:scale(1.05);
-}
-
-#result{
-margin-top:25px;
-font-size:28px;
-font-weight:bold;
-}
-
-.buy-btn{
-display:none;
-margin-top:40px;
-padding:25px 50px;
-background:white;
-color:black;
-text-decoration:none;
-font-size:26px;
-font-weight:bold;
-border-radius:20px;
-}
-
-.buy-btn:hover{
-transform:scale(1.05);
-}
-
-.rarity-grid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
-gap:15px;
-margin-top:50px;
-}
-
-.rarity{
-background:#181818;
-padding:25px;
-border-radius:15px;
-}
-
-@media(max-width:768px){
-
-h1{
-font-size:42px;
-}
-
-.price{
-font-size:55px;
-}
-
-.wheel-container{
-width:300px;
-}
-
-#wheel{
-width:300px;
-height:300px;
-}
-
-.buy-btn{
-width:100%;
-}
-
-}
-
-</style>
+<link rel="stylesheet" href="style.css">
 
 </head>
 <body>
+
+<div class="background"></div>
 
 <section class="hero">
 
@@ -187,45 +29,51 @@ Nyisd ki a<br>
 
 <p class="subtitle">
 1000 Ft-ért egy teljesen véletlenszerű jutalom vár rád.
-Pörgesd meg a kereket és nézd meg a szerencséd!
+Minden nyitás egy új meglepetés.
 </p>
 
 <div class="price">
 1000 Ft
 </div>
 
-<div class="wheel-container">
+<div class="cards">
 
-<div class="pointer"></div>
+<div class="card">
+🎁
+<h3>Meglepetés</h3>
+<p>Soha nem tudhatod mit kapsz.</p>
+</div>
 
-<canvas id="wheel" width="400" height="400"></canvas>
+<div class="card">
+🎲
+<h3>Véletlen</h3>
+<p>Minden nyitás más.</p>
+</div>
+
+<div class="card">
+🏆
+<h3>Ritkaságok</h3>
+<p>Gyakori, Ritka, Epikus, Legendás.</p>
+</div>
 
 </div>
 
-<button id="spinBtn">
-🎲 PÖRGETÉS
-</button>
+<div class="rarities">
 
-<div id="result">
-Pörgesd meg a kereket!
+<div class="rarity common">
+🟢 Gyakori
 </div>
 
-<div class="rarity-grid">
-
-<div class="rarity">
-🟢<br>Gyakori
+<div class="rarity rare">
+🔵 Ritka
 </div>
 
-<div class="rarity">
-🔵<br>Ritka
+<div class="rarity epic">
+🟣 Epikus
 </div>
 
-<div class="rarity">
-🟣<br>Epikus
-</div>
-
-<div class="rarity">
-🟡<br>Legendás
+<div class="rarity legendary">
+🟡 Legendás
 </div>
 
 </div>
@@ -234,175 +82,26 @@ Pörgesd meg a kereket!
 class="buy-btn"
 href="https://hurdabigdawe.gumroad.com/l/pwjesa"
 target="_blank">
+
 🎁 KINYITOM A MYSTERY BOXOT
-  <a href="/poker/" class="poker-btn">
+
+</a>
+
+<a
+class="poker-btn"
+href="/poker/">
+
 🃏 INGYENES POKER
+
 </a>
-</a>
+
+<p class="footer-text">
+🎲 Minden nyitás teljesen véletlenszerű.
+</p>
 
 </div>
 
 </section>
-
-<script>
-
-const wheel = document.getElementById("wheel");
-const ctx = wheel.getContext("2d");
-
-const prizes = [
-"🟢 Gyakori",
-"🔵 Ritka",
-"🟢 Gyakori",
-"🟣 Epikus",
-"🟢 Gyakori",
-"🔵 Ritka",
-"😂 Meme",
-"🟡 Legendás"
-];
-
-const colors = [
-"#00ff88",
-"#2da8ff",
-"#00ff88",
-"#c13cff",
-"#00ff88",
-"#2da8ff",
-"#ff7b00",
-"#ffd700"
-];
-
-let spinning = false;
-let rotation = 0;
-
-function drawWheel(){
-
-const arc = (Math.PI*2)/prizes.length;
-
-for(let i=0;i<prizes.length;i++){
-
-ctx.beginPath();
-ctx.moveTo(200,200);
-
-ctx.arc(
-200,
-200,
-200,
-arc*i,
-arc*(i+1)
-);
-
-ctx.fillStyle = colors[i];
-ctx.fill();
-
-ctx.save();
-
-ctx.translate(200,200);
-ctx.rotate(arc*i+arc/2);
-
-ctx.fillStyle="#000";
-ctx.font="bold 16px Arial";
-ctx.textAlign="center";
-
-ctx.fillText(
-prizes[i],
-120,
-5
-);
-
-ctx.restore();
-
-}
-
-}
-
-drawWheel();
-
-function confetti(){
-
-for(let i=0;i<80;i++){
-
-const c=document.createElement("div");
-
-c.style.position="fixed";
-c.style.left=Math.random()*100+"vw";
-c.style.top="-20px";
-c.style.width="10px";
-c.style.height="10px";
-c.style.background=
-`hsl(${Math.random()*360},100%,50%)`;
-
-document.body.appendChild(c);
-
-c.animate(
-[
-{transform:"translateY(0px)"},
-{transform:"translateY(120vh) rotate(720deg)"}
-],
-{
-duration:3000+Math.random()*2000,
-easing:"linear"
-}
-);
-
-setTimeout(()=>{
-c.remove();
-},5000);
-
-}
-
-}
-
-document
-.getElementById("spinBtn")
-.addEventListener("click",()=>{
-
-if(spinning) return;
-
-spinning=true;
-
-const selected=
-Math.floor(
-Math.random()*prizes.length
-);
-
-const segment=
-360/prizes.length;
-
-const target=
-selected*segment;
-
-rotation=
-rotation+
-360*8+
-(360-target);
-
-wheel.style.transition=
-"transform 5s cubic-bezier(.17,.67,.15,1)";
-
-wheel.style.transform=
-`rotate(${rotation}deg)`;
-
-setTimeout(()=>{
-
-document
-.getElementById("result")
-.innerHTML=
-`🎉 Eredmény:<br><br>${prizes[selected]}`;
-
-document
-.querySelector(".buy-btn")
-.style.display=
-"inline-block";
-
-confetti();
-
-spinning=false;
-
-},5000);
-
-});
-
-</script>
 
 </body>
 </html>

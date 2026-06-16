@@ -3,234 +3,77 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🎉 Jutalmad 🎉</title>
+<title>😂 Vicces GIF Shop 😂</title>
 
-<style>
+<link rel="stylesheet" href="style.css">
 
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-}
-
-body{
-    background:#0a0a0a;
-    color:white;
-    font-family:Arial, sans-serif;
-    text-align:center;
-    min-height:100vh;
-    overflow-x:hidden;
-}
-
-.container{
-    max-width:900px;
-    margin:auto;
-    padding:40px 20px;
-}
-
-h1{
-    font-size:50px;
-    margin-bottom:20px;
-}
-
-#spinner{
-    font-size:35px;
-    color:#00ff88;
-    margin-top:50px;
-    animation:pulse .7s infinite;
-}
-
-#result{
-    display:none;
-}
-
-#rarity{
-    font-size:45px;
-    font-weight:bold;
-    margin:25px 0;
-}
-
-#gif{
-    width:100%;
-    max-width:700px;
-    border-radius:25px;
-    box-shadow:0 0 30px rgba(255,255,255,.2);
-}
-
-.legendary{
-    color:gold;
-    text-shadow:0 0 20px gold;
-}
-
-.epic{
-    color:#c13cff;
-    text-shadow:0 0 20px #c13cff;
-}
-
-.rare{
-    color:#2da8ff;
-    text-shadow:0 0 20px #2da8ff;
-}
-
-.common{
-    color:#00ff88;
-    text-shadow:0 0 20px #00ff88;
-}
-
-@keyframes pulse{
-    0%{transform:scale(1);}
-    50%{transform:scale(1.1);}
-    100%{transform:scale(1);}
-}
-
-.confetti{
-    position:fixed;
-    width:10px;
-    height:10px;
-    top:-20px;
-    animation:fall linear forwards;
-}
-
-@keyframes fall{
-    to{
-        transform:translateY(120vh) rotate(720deg);
-    }
-}
-
-</style>
 </head>
 <body>
 
-<div class="container">
+<div class="promo">
 
-<h1>🎁 Jutalmad sorsolása...</h1>
+    <h1>🎰 A LEGVÉLETLENSZERŰBB 1000 FT, AMIT VALAHA ELKÖLTESZ! 😂</h1>
 
-<div id="spinner">
-🎰 SORSOLÁS FOLYAMATBAN...
+    <p>
+        Üdv a Vicces GIF Shopban!
+    </p>
+
+    <p>
+        Itt nincs választás. Nincs katalógus. Nincs unalom.
+    </p>
+
+    <p>
+        Csak egyetlen gomb és egy teljesen véletlenszerű jutalom.
+    </p>
+
+    <div class="features">
+
+        <div class="feature">
+            🎬<br>
+            Random Vicces GIF
+        </div>
+
+        <div class="feature">
+            🎲<br>
+            Véletlenszerű Sorsolás
+        </div>
+
+        <div class="feature">
+            🎁<br>
+            Meglepetés Jutalom
+        </div>
+
+    </div>
+
+    <h2>🏆 Ritkasági Rendszer</h2>
+
+    <div class="rarity">
+
+        <div>🟢 Gyakori</div>
+        <div>🔵 Ritka</div>
+        <div>🟣 Epikus</div>
+        <div>🟡 Legendás</div>
+
+    </div>
+
+    <p>
+        Minden vásárlás egy új esély egy különleges jutalomra.
+    </p>
+
+    <a
+        class="buy-btn"
+        href="https://hurdabigdawe.gumroad.com/l/pwjesa"
+        target="_blank">
+
+        💳 KÉREM A RANDOM JUTALMAMAT!
+
+    </a>
+
+    <p class="footer-text">
+        🎁 Egy kattintás. Egy sorsolás. Egy meglepetés.
+    </p>
+
 </div>
-
-<div id="result">
-
-<div id="rarity"></div>
-
-<img id="gif">
-
-<h2 style="margin-top:20px;">
-🎉 Gratulálunk!
-</h2>
-
-<p>
-A rendszer kisorsolta a jutalmadat.
-</p>
-
-</div>
-
-</div>
-
-<script>
-
-const API_KEY = "IDE_A_GIPHY_API_KULCSOD";
-
-const tags = [
-    "funny",
-    "meme",
-    "reaction",
-    "cat",
-    "fail",
-    "laugh",
-    "crazy"
-];
-
-function getRarity(){
-
-    const roll = Math.random()*100;
-
-    if(roll < 1){
-        return {
-            text:"🟡 LEGENDÁS",
-            className:"legendary"
-        };
-    }
-
-    if(roll < 10){
-        return {
-            text:"🟣 EPIKUS",
-            className:"epic"
-        };
-    }
-
-    if(roll < 30){
-        return {
-            text:"🔵 RITKA",
-            className:"rare"
-        };
-    }
-
-    return {
-        text:"🟢 GYAKORI",
-        className:"common"
-    };
-}
-
-function launchConfetti(){
-
-    for(let i=0;i<120;i++){
-
-        const c = document.createElement("div");
-
-        c.className = "confetti";
-
-        c.style.left =
-            Math.random()*100 + "vw";
-
-        c.style.background =
-            `hsl(${Math.random()*360},100%,50%)`;
-
-        c.style.animationDuration =
-            (Math.random()*3+2)+"s";
-
-        document.body.appendChild(c);
-
-        setTimeout(()=>{
-            c.remove();
-        },5000);
-    }
-}
-
-async function loadReward(){
-
-    const rarity = getRarity();
-
-    document.getElementById("rarity")
-        .innerText = rarity.text;
-
-    document.getElementById("rarity")
-        .className = rarity.className;
-
-    const tag =
-        tags[Math.floor(Math.random()*tags.length)];
-
-    const response = await fetch(
-        `https://api.giphy.com/v1/gifs/random?api_key=${API_KEY}&tag=${encodeURIComponent(tag)}`
-    );
-
-    const data = await response.json();
-
-    document.getElementById("gif").src =
-        data.data.images.original.url;
-
-    document.getElementById("spinner").style.display =
-        "none";
-
-    document.getElementById("result").style.display =
-        "block";
-
-    launchConfetti();
-}
-
-setTimeout(loadReward,3000);
-
-</script>
 
 </body>
 </html>

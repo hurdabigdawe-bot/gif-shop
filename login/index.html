@@ -1,42 +1,25 @@
-<!DOCTYPE html>
-<html lang="hu">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🔐 Bejelentkezés</title>
+<div id="userPanel" class="user-panel">
 
-<link rel="stylesheet" href="style.css">
-
-</head>
-<body>
-
-<div class="container">
-
-<h1>🎁 Mystery Box</h1>
-
-<input
-type="email"
-id="email"
-placeholder="Email">
-
-<input
-type="password"
-id="password"
-placeholder="Jelszó">
-
-<button id="registerBtn">
-📝 Regisztráció
-</button>
-
-<button id="loginBtn">
+<a href="/login/" id="loginLink">
 🔐 Bejelentkezés
-</button>
+</a>
 
-<p id="message"></p>
+<div id="userInfo" style="display:none">
+
+<div class="user-data">
+
+<div id="userEmail"></div>
+
+<div id="userCredits">
+💰 0 kredit
+</div>
 
 </div>
 
-<script type="module" src="script.js"></script>
+<button id="logoutBtn">
+🚪 Kilépés
+</button>
 
-</body>
-</html>
+</div>
+
+</div>

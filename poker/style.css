@@ -1,271 +1,163 @@
-let balance = 1000;
-let currentBet = 10;
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
 
-let deck = [];
-let hand = [];
+body{
+    background:#071a0c;
+    color:white;
+    font-family:Arial, Helvetica, sans-serif;
+}
 
-let holds = [false, false, false, false, false];
-let firstDeal = true;
+.table{
+    min-height:100vh;
+    padding:30px;
+    text-align:center;
 
-const suits = ["♠", "♥", "♦", "♣"];
-const values = ["A", "K", "Q", "J", "10", "9", "8", "7", "6", "5", "4", "3", "2"];
+    background:
+    radial-gradient(circle at center,
+    #0f5d1f,
+    #041508);
+}
 
-function createDeck() {
+h1{
+    font-size:60px;
+    color:#ffd700;
+    margin-bottom:25px;
+    text-shadow:0 0 20px #ffd700;
+}
 
-    deck = [];
+.balance{
+    font-size:28px;
+    margin-bottom:20px;
+}
 
-    for (const suit of suits) {
+.current-bet{
+    font-size:24px;
+    margin-bottom:25px;
+}
 
-        for (const value of values) {
+.bet-section{
+    margin-bottom:20px;
+}
 
-            deck.push({
-                suit,
-                value
-            });
+.bet-btn{
+    padding:12px 20px;
+    margin:5px;
+    border:none;
+    border-radius:10px;
+    background:#ffd700;
+    font-weight:bold;
+    cursor:pointer;
+}
 
-        }
+.cards{
+    display:flex;
+    justify-content:center;
+    gap:15px;
+    flex-wrap:wrap;
+    margin-top:30px;
+}
 
+.card-slot{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+}
+
+.card{
+    width:100px;
+    height:140px;
+
+    background:white;
+    color:black;
+
+    border-radius:15px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:32px;
+    font-weight:bold;
+
+    box-shadow:
+    0 0 15px rgba(0,0,0,.4);
+}
+
+.hold-btn{
+    margin-top:10px;
+    padding:8px 15px;
+    border:none;
+    border-radius:8px;
+    background:#333;
+    color:white;
+    cursor:pointer;
+}
+
+.controls{
+    margin-top:30px;
+}
+
+#dealBtn,
+#drawBtn{
+    padding:15px 30px;
+    border:none;
+    border-radius:12px;
+    margin:10px;
+    font-size:20px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+#dealBtn{
+    background:#00ff88;
+    color:black;
+}
+
+#drawBtn{
+    background:#2196f3;
+    color:white;
+}
+
+#result{
+    margin-top:30px;
+    font-size:28px;
+    font-weight:bold;
+    min-height:60px;
+}
+
+.back-btn{
+    display:inline-block;
+    margin-top:40px;
+    padding:15px 25px;
+    background:#ffd700;
+    color:black;
+    text-decoration:none;
+    border-radius:12px;
+    font-weight:bold;
+}
+
+.back-btn:hover{
+    transform:scale(1.05);
+}
+
+@media(max-width:768px){
+
+    h1{
+        font-size:40px;
     }
 
-}
-
-function shuffleDeck() {
-
-    for (let i = deck.length - 1; i > 0; i--) {
-
-        const j = Math.floor(Math.random() * (i + 1));
-
-        [deck[i], deck[j]] =
-        [deck[j], deck[i]];
-
+    .card{
+        width:80px;
+        height:120px;
+        font-size:24px;
     }
 
-}
-
-function drawCard() {
-
-    return deck.pop();
-
-}
-
-function renderHand() {
-
-    hand.forEach((card, index) => {
-
-        const cardEl =
-            document.getElementById(`card${index}`);
-
-        cardEl.innerHTML =
-            `${card.value}${card.suit}`;
-
-        if (
-            card.suit === "♥" ||
-            card.suit === "♦"
-        ) {
-            cardEl.style.color = "red";
-        } else {
-            cardEl.style.color = "black";
-        }
-
-    });
-
-}
-
-function updateBalance() {
-
-    document.getElementById("balance")
-        .innerText = balance;
-
-}
-
-function updateBet() {
-
-    document.getElementById("bet")
-        .innerText = currentBet;
-
-}
-
-function resetHoldButtons() {
-
-    document
-        .querySelectorAll(".hold-btn")
-        .forEach(btn => {
-
-            btn.style.background = "#333";
-
-        });
-
-}
-
-function dealCards() {
-
-    if (balance < currentBet) {
-
-        alert("Nincs elég zseton!");
-
-        return;
+    #dealBtn,
+    #drawBtn{
+        width:90%;
+        max-width:300px;
     }
-
-    balance -= currentBet;
-
-    updateBalance();
-
-    createDeck();
-    shuffleDeck();
-
-    hand = [];
-
-    for (let i = 0; i < 5; i++) {
-
-        hand.push(drawCard());
-
-    }
-
-    holds = [false, false, false, false, false];
-
-    resetHoldButtons();
-
-    renderHand();
-
-    document.getElementById("result")
-        .innerText =
-        "Válassz HOLD lapokat, majd nyomd meg a HÚZÁS gombot!";
-
-    firstDeal = false;
-
 }
-
-function drawNewCards() {
-
-    if (firstDeal) return;
-
-    for (let i = 0; i < 5; i++) {
-
-        if (!holds[i]) {
-
-            hand[i] = drawCard();
-
-        }
-
-    }
-
-    renderHand();
-
-    evaluateHand();
-
-    firstDeal = true;
-
-}
-
-function evaluateHand() {
-
-    const counts = {};
-
-    hand.forEach(card => {
-
-        counts[card.value] =
-            (counts[card.value] || 0) + 1;
-
-    });
-
-    const valuesCount =
-        Object.values(counts);
-
-    let result = "😢 Nincs nyeremény";
-    let win = 0;
-
-    if (valuesCount.includes(4)) {
-
-        result = "🃏 PÓKER!";
-        win = currentBet * 25;
-
-    }
-    else if (valuesCount.includes(3)) {
-
-        result = "🎉 DRILL!";
-        win = currentBet * 8;
-
-    }
-    else if (
-        valuesCount.filter(v => v === 2).length >= 2
-    ) {
-
-        result = "🎰 KÉT PÁR!";
-        win = currentBet * 4;
-
-    }
-    else if (valuesCount.includes(2)) {
-
-        result = "🎲 PÁR!";
-        win = currentBet * 2;
-
-    }
-
-    balance += win;
-
-    updateBalance();
-
-    document.getElementById("result")
-        .innerHTML =
-        `${result}<br>💰 Nyeremény: ${win}`;
-
-}
-
-document
-    .getElementById("dealBtn")
-    .addEventListener(
-        "click",
-        dealCards
-    );
-
-document
-    .getElementById("drawBtn")
-    .addEventListener(
-        "click",
-        drawNewCards
-    );
-
-document
-    .querySelectorAll(".hold-btn")
-    .forEach(btn => {
-
-        btn.addEventListener(
-            "click",
-            () => {
-
-                const index =
-                    Number(btn.dataset.index);
-
-                holds[index] =
-                    !holds[index];
-
-                btn.style.background =
-                    holds[index]
-                    ? "#00ff88"
-                    : "#333";
-
-            }
-        );
-
-    });
-
-document
-    .querySelectorAll(".bet-btn")
-    .forEach(btn => {
-
-        btn.addEventListener(
-            "click",
-            () => {
-
-                currentBet =
-                    Number(btn.dataset.bet);
-
-                updateBet();
-
-            }
-        );
-
-    });
-
-updateBalance();
-updateBet();

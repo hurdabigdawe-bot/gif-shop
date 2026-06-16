@@ -1,4 +1,5 @@
-import { initializeApp } from "https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js";
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js";
 
 import {
 getAuth,
@@ -6,6 +7,13 @@ createUserWithEmailAndPassword,
 signInWithEmailAndPassword
 }
 from "https://www.gstatic.com/firebasejs/12.15.0/firebase-auth.js";
+
+import {
+getFirestore,
+doc,
+setDoc
+}
+from "https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
 
 const firebaseConfig = {
 
@@ -23,11 +31,11 @@ appId: "1:443187158566:web:2e055a515f29b5021110e7"
 
 };
 
-const app =
-initializeApp(firebaseConfig);
+const app = initializeApp(firebaseConfig);
 
-const auth =
-getAuth(app);
+const auth = getAuth(app);
+
+const db = getFirestore(app);
 
 const email =
 document.getElementById("email");
@@ -44,10 +52,26 @@ document
 
 try{
 
+const userCredential =
 await createUserWithEmailAndPassword(
 auth,
 email.value,
 password.value
+);
+
+await setDoc(
+doc(
+db,
+"users",
+userCredential.user.uid
+),
+{
+email: email.value,
+credits: 5000,
+wins: 0,
+losses: 0,
+createdAt: Date.now()
+}
 );
 
 message.innerText =
@@ -55,8 +79,10 @@ message.innerText =
 
 }catch(error){
 
+console.log(error);
+
 message.innerText =
-error.message;
+error.code;
 
 }
 
@@ -77,13 +103,19 @@ password.value
 message.innerText =
 "✅ Sikeres bejelentkezés!";
 
+setTimeout(()=>{
+
 window.location.href =
-"/";
+"https://gifzshop.netlify.app/";
+
+},1000);
 
 }catch(error){
 
+console.log(error);
+
 message.innerText =
-error.message;
+error.code;
 
 }
 

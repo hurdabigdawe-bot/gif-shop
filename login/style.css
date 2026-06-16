@@ -5,20 +5,26 @@ box-sizing:border-box;
 }
 
 body{
-background:#0b0b0b;
-color:white;
+
+background:#090909;
+
 font-family:Arial,Helvetica,sans-serif;
 
 display:flex;
+
 justify-content:center;
 align-items:center;
 
-height:100vh;
+min-height:100vh;
+
+color:white;
+
 }
 
 .container{
 
-width:400px;
+width:100%;
+max-width:450px;
 
 background:#151515;
 
@@ -28,11 +34,25 @@ border-radius:20px;
 
 text-align:center;
 
+box-shadow:
+0 0 30px rgba(0,0,0,.4);
+
 }
 
 h1{
-margin-bottom:30px;
+
+margin-bottom:15px;
+
 color:#00ff88;
+
+}
+
+.subtitle{
+
+color:#aaa;
+
+margin-bottom:25px;
+
 }
 
 input{
@@ -47,6 +67,8 @@ border:none;
 
 border-radius:10px;
 
+font-size:16px;
+
 }
 
 button{
@@ -54,8 +76,6 @@ button{
 width:100%;
 
 padding:15px;
-
-margin-top:10px;
 
 border:none;
 
@@ -67,17 +87,52 @@ font-size:18px;
 
 font-weight:bold;
 
+margin-top:10px;
+
 }
 
 #registerBtn{
+
 background:#2196f3;
+
 color:white;
+
 }
 
 #loginBtn{
+
 background:#00ff88;
+
+color:black;
+
 }
 
 #message{
+
 margin-top:20px;
+
+min-height:25px;
+
+font-weight:bold;
+
+}
+
+.back-btn{
+
+display:inline-block;
+
+margin-top:25px;
+
+color:#00ff88;
+
+text-decoration:none;
+
+font-weight:bold;
+
+}
+
+.back-btn:hover{
+
+text-decoration:underline;
+
 }

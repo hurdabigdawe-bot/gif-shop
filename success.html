@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Köszönjük a vásárlást!</title>
+
+<style>
+body{
+    background:#111;
+    color:white;
+    text-align:center;
+    font-family:Arial;
+    padding:40px;
+}
+
+img{
+    max-width:700px;
+    width:100%;
+    border-radius:20px;
+}
+</style>
+
+</head>
+<body>
+
+<h1>🎉 Köszönjük a vásárlást! 🎉</h1>
+
+<img id="gif">
+
+<br><br>
+
+<audio id="audio" controls autoplay></audio>
+
+<script>
+
+const gifCount = 1000;
+const soundCount = 1000;
+
+const randomGif =
+    Math.floor(Math.random()*gifCount)+1;
+
+const randomSound =
+    Math.floor(Math.random()*soundCount)+1;
+
+document.getElementById("gif").src =
+    `gifs/gif${randomGif}.gif`;
+
+document.getElementById("audio").src =
+    `sounds/sound${randomSound}.mp3`;
+
+</script>
+
+</body>
+</html>

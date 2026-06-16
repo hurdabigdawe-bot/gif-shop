@@ -1,30 +1,49 @@
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
+body{
+    background:#0f0f0f;
+    color:white;
+    font-family:Arial, Helvetica, sans-serif;
+    min-height:100vh;
+    padding:30px;
+}
+
 .promo{
     max-width:900px;
-    margin:auto;
+    margin:50px auto;
+    padding:50px;
     text-align:center;
-    padding:50px 20px;
+    background:#1a1a1a;
+    border-radius:25px;
+    box-shadow:0 0 40px rgba(0,255,136,0.15);
 }
 
 .promo h1{
-    font-size:48px;
-    margin-bottom:20px;
+    font-size:52px;
     color:#00ff88;
-    text-shadow:0 0 20px #00ff88;
+    margin-bottom:25px;
+    text-shadow:0 0 20px rgba(0,255,136,0.5);
 }
 
 .promo h2{
-    margin-top:30px;
+    font-size:32px;
     margin-bottom:20px;
 }
 
 .promo p{
-    font-size:20px;
+    font-size:22px;
     line-height:1.8;
+    color:#dddddd;
     margin-bottom:20px;
 }
 
 .buy-btn{
     display:inline-block;
+    margin-top:25px;
     padding:22px 45px;
     background:#00c853;
     color:white;
@@ -32,10 +51,47 @@
     border-radius:15px;
     font-size:26px;
     font-weight:bold;
-    transition:.3s;
+    transition:all .3s ease;
+    box-shadow:0 0 25px rgba(0,200,83,.4);
 }
 
 .buy-btn:hover{
-    transform:scale(1.08);
     background:#00e676;
+    transform:scale(1.05);
+    box-shadow:0 0 35px rgba(0,230,118,.7);
+}
+
+.buy-btn:active{
+    transform:scale(.98);
+}
+
+img{
+    max-width:100%;
+    border-radius:20px;
+}
+
+audio{
+    width:100%;
+    max-width:600px;
+    margin-top:20px;
+}
+
+@media (max-width:768px){
+
+    .promo{
+        padding:30px 20px;
+    }
+
+    .promo h1{
+        font-size:34px;
+    }
+
+    .promo p{
+        font-size:18px;
+    }
+
+    .buy-btn{
+        width:100%;
+        font-size:22px;
+    }
 }

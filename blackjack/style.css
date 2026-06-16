@@ -1,24 +1,54 @@
-.user-panel{
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
 
+body{
+font-family:Arial,Helvetica,sans-serif;
+background:#071b0d;
+color:white;
+overflow-x:hidden;
+}
+
+body::before{
+content:"";
 position:fixed;
+inset:0;
 
+background:
+radial-gradient(circle at 20% 20%,
+rgba(0,255,136,.12),
+transparent 35%),
+
+radial-gradient(circle at 80% 80%,
+rgba(255,215,0,.12),
+transparent 35%);
+
+z-index:-1;
+}
+
+.user-panel{
+position:fixed;
 top:20px;
 right:20px;
 
-background:#151515;
+background:#111;
 
 padding:12px 18px;
 
 border-radius:12px;
 
 display:flex;
-
 align-items:center;
-
-gap:10px;
+gap:12px;
 
 z-index:9999;
 
+border:1px solid #333;
+
+box-shadow:
+0 0 20px rgba(0,0,0,.4);
 }
 
 .user-panel a{
@@ -30,7 +60,24 @@ font-weight:bold;
 #userInfo{
 display:flex;
 align-items:center;
-gap:10px;
+gap:12px;
+}
+
+.user-data{
+display:flex;
+flex-direction:column;
+gap:4px;
+}
+
+#userEmail{
+font-size:14px;
+color:white;
+}
+
+#userCredits{
+font-size:14px;
+font-weight:bold;
+color:gold;
 }
 
 #logoutBtn{
@@ -41,77 +88,145 @@ padding:8px 12px;
 border-radius:8px;
 cursor:pointer;
 }
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-}
-
-body{
-font-family:Arial,Helvetica,sans-serif;
-background:#063515;
-color:white;
-}
 
 .table{
-min-height:100vh;
-padding:30px;
-text-align:center;
 
-background:
-radial-gradient(circle,
-#0d6b28,
-#03210d);
+max-width:1200px;
+
+margin:auto;
+
+min-height:100vh;
+
+padding:120px 20px 40px;
+
+text-align:center;
 }
 
 h1{
-font-size:60px;
+
+font-size:70px;
+
 color:#ffd700;
-margin-bottom:25px;
+
+margin-bottom:20px;
+
+text-shadow:
+0 0 20px rgba(255,215,0,.5);
+
 }
 
 .bank{
-font-size:28px;
-margin-bottom:20px;
+
+font-size:30px;
+
+margin-bottom:30px;
+
+font-weight:bold;
+
+color:#ffd700;
+
 }
 
 .bet-area{
-margin-bottom:25px;
+
+background:#0f2916;
+
+padding:20px;
+
+border-radius:20px;
+
+margin-bottom:30px;
+
+border:1px solid #214d2d;
+}
+
+.bet-area p{
+margin-bottom:15px;
+font-size:20px;
 }
 
 .bet-btn{
-padding:12px 20px;
+
+padding:12px 22px;
+
 margin:5px;
+
 border:none;
+
 border-radius:10px;
+
 cursor:pointer;
+
 font-weight:bold;
+
 background:#ffd700;
+
+color:black;
+
+transition:.3s;
+}
+
+.bet-btn:hover{
+transform:scale(1.08);
+}
+
+.dealer-section,
+.player-section{
+
+background:#0f2916;
+
+padding:25px;
+
+border-radius:20px;
+
+margin-bottom:20px;
+
+border:1px solid #214d2d;
+}
+
+.dealer-section h2,
+.player-section h2{
+
+margin-bottom:15px;
+
+color:#00ff88;
 }
 
 .cards{
+
 display:flex;
+
 justify-content:center;
-gap:10px;
+
+gap:12px;
+
 flex-wrap:wrap;
+
 margin:20px 0;
 }
 
 .card{
-width:90px;
-height:130px;
+
+width:100px;
+height:145px;
 
 background:white;
+
 color:black;
 
-border-radius:12px;
+border-radius:14px;
 
 display:flex;
+
 justify-content:center;
 align-items:center;
 
-font-size:30px;
+font-size:34px;
+
 font-weight:bold;
+
+box-shadow:
+0 5px 15px rgba(0,0,0,.3);
 }
 
 .hidden{
@@ -119,21 +234,42 @@ background:#222;
 color:#222;
 }
 
+#dealerScore,
+#playerScore{
+font-size:22px;
+font-weight:bold;
+}
+
 .controls{
-margin-top:20px;
+margin-top:25px;
 }
 
 .controls button{
-padding:15px 25px;
+
+padding:16px 26px;
+
 margin:10px;
+
 border:none;
-border-radius:10px;
+
+border-radius:12px;
+
 font-size:18px;
+
+font-weight:bold;
+
 cursor:pointer;
+
+transition:.3s;
+}
+
+.controls button:hover{
+transform:scale(1.05);
 }
 
 #dealBtn{
 background:#00ff88;
+color:black;
 }
 
 #hitBtn{
@@ -147,44 +283,64 @@ color:white;
 }
 
 #message{
-margin-top:30px;
+
+margin-top:25px;
+
 font-size:28px;
+
 font-weight:bold;
-min-height:60px;
+
+min-height:50px;
+
+color:#ffd700;
 }
 
 .back-btn{
+
 display:inline-block;
+
 margin-top:30px;
-padding:15px 25px;
+
+padding:16px 26px;
+
 background:#ffd700;
+
 color:black;
+
 text-decoration:none;
-border-radius:10px;
+
+border-radius:12px;
+
 font-weight:bold;
 }
 
 @media(max-width:768px){
 
+.user-panel{
+position:relative;
+top:auto;
+right:auto;
+margin:20px auto;
+width:max-content;
+}
+
 h1{
-font-size:38px;
+font-size:42px;
+}
+
+.bank{
+font-size:22px;
 }
 
 .card{
-width:70px;
-height:100px;
-  .user-data{
-display:flex;
-flex-direction:column;
-gap:4px;
+width:75px;
+height:110px;
+font-size:24px;
 }
 
-#userCredits{
-color:gold;
-font-weight:bold;
-font-size:14px;
-}
-font-size:22px;
+.controls button{
+width:100%;
+max-width:300px;
 }
 
 }

@@ -5,7 +5,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>🃏 Video Poker</title>
+<title>🃏 Blackjack</title>
 
 <link rel="stylesheet" href="style.css">
 
@@ -14,11 +14,13 @@
 
 <div class="table">
 
-<h1>🃏 VIDEO POKER</h1>
+<h1>🃏 BLACKJACK</h1>
 
 <div class="balance">
+
 💰 Egyenleg:
 <span id="balance">1000</span>
+
 </div>
 
 <div class="bet-section">
@@ -30,36 +32,29 @@
 </div>
 
 <div class="current-bet">
+
 Tét:
 <span id="bet">10</span>
+
 </div>
 
-<div class="cards">
+<div class="dealer-area">
 
-<div class="card-slot">
-<div class="card" id="card0">?</div>
-<button class="hold-btn" data-index="0">HOLD</button>
+<h2>🤵 Dealer</h2>
+
+<div id="dealer-cards" class="cards"></div>
+
+<div id="dealer-score"></div>
+
 </div>
 
-<div class="card-slot">
-<div class="card" id="card1">?</div>
-<button class="hold-btn" data-index="1">HOLD</button>
-</div>
+<div class="player-area">
 
-<div class="card-slot">
-<div class="card" id="card2">?</div>
-<button class="hold-btn" data-index="2">HOLD</button>
-</div>
+<h2>😎 Te</h2>
 
-<div class="card-slot">
-<div class="card" id="card3">?</div>
-<button class="hold-btn" data-index="3">HOLD</button>
-</div>
+<div id="player-cards" class="cards"></div>
 
-<div class="card-slot">
-<div class="card" id="card4">?</div>
-<button class="hold-btn" data-index="4">HOLD</button>
-</div>
+<div id="player-score"></div>
 
 </div>
 
@@ -69,8 +64,12 @@ Tét:
 🎲 OSZTÁS
 </button>
 
-<button id="drawBtn">
-🔄 HÚZÁS
+<button id="hitBtn">
+➕ LAPOT
+</button>
+
+<button id="standBtn">
+✋ MEGÁLLOK
 </button>
 
 </div>
@@ -78,8 +77,6 @@ Tét:
 <div id="result">
 Nyomj az OSZTÁS gombra!
 </div>
-
-<br><br>
 
 <a href="/" class="back-btn">
 🎁 Vissza a Mystery Boxhoz

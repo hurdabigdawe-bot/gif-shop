@@ -3,97 +3,222 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🎉 Gratulálunk!</title>
+<title>🎁 Jutalmad</title>
 
 <style>
 
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+}
+
 body{
-    background:#111;
+    background:#0a0a0a;
     color:white;
-    font-family:Arial,sans-serif;
+    font-family:Arial, sans-serif;
     text-align:center;
-    padding:30px;
+    min-height:100vh;
+    overflow-x:hidden;
+}
+
+.container{
+    max-width:900px;
+    margin:auto;
+    padding:40px 20px;
 }
 
 h1{
+    font-size:50px;
     margin-bottom:20px;
 }
 
-#gif{
-    max-width:700px;
-    width:100%;
-    border-radius:20px;
-    box-shadow:0 0 25px rgba(0,255,136,.3);
-}
-
-.loading{
+#spinner{
+    font-size:35px;
     color:#00ff88;
-    margin:20px;
-    font-size:20px;
+    margin-top:80px;
+    animation:pulse .7s infinite;
 }
 
-audio{
-    margin-top:20px;
+#result{
+    display:none;
+}
+
+#rarity{
+    font-size:45px;
+    font-weight:bold;
+    margin:30px 0;
+}
+
+#gif{
     width:100%;
-    max-width:600px;
+    max-width:700px;
+    border-radius:20px;
+    box-shadow:0 0 30px rgba(255,255,255,.15);
+}
+
+.common{
+    color:#00ff88;
+    text-shadow:0 0 15px #00ff88;
+}
+
+.rare{
+    color:#3fa9ff;
+    text-shadow:0 0 15px #3fa9ff;
+}
+
+.epic{
+    color:#c13cff;
+    text-shadow:0 0 15px #c13cff;
+}
+
+.legendary{
+    color:gold;
+    text-shadow:0 0 20px gold;
+}
+
+@keyframes pulse{
+    0%{transform:scale(1);}
+    50%{transform:scale(1.08);}
+    100%{transform:scale(1);}
+}
+
+.confetti{
+    position:fixed;
+    width:10px;
+    height:10px;
+    top:-20px;
+    animation:fall linear forwards;
+}
+
+@keyframes fall{
+    to{
+        transform:translateY(120vh) rotate(720deg);
+    }
+}
+
+.reward-box{
+    background:#181818;
+    padding:25px;
+    border-radius:20px;
+    margin-top:20px;
 }
 
 </style>
 </head>
 <body>
 
-<h1>🎉 Köszönjük a vásárlást! 🎉</h1>
+<div class="container">
 
-<div class="loading" id="status">
-GIF betöltése...
+    <h1>🎁 Jutalmad sorsolása...</h1>
+
+    <div id="spinner">
+        🎰 SORSOLÁS FOLYAMATBAN...
+    </div>
+
+    <div id="result">
+
+        <div id="rarity"></div>
+
+        <div class="reward-box">
+
+            <img
+                id="gif"
+                src="gifs/giphy.webp"
+                alt="Jutalom GIF">
+
+            <h2 style="margin-top:20px;">
+                🎉 Gratulálunk!
+            </h2>
+
+            <p style="margin-top:10px;">
+                A rendszer kisorsolta a jutalmadat.
+            </p>
+
+        </div>
+
+    </div>
+
 </div>
-
-<img id="gif">
 
 <script>
 
-const API_KEY = "8tdtdvarTCKxP1rKtecIPy6TH56PZUem";
+function getRarity(){
 
-const tags = [
-    "funny",
-    "meme",
-    "cat",
-    "fail",
-    "reaction",
-    "laugh",
-    "funny animal",
-    "crazy"
-];
+    const roll = Math.random() * 100;
 
-async function loadGif(){
+    if(roll < 1){
+        return {
+            text:"🟡 LEGENDÁS",
+            className:"legendary"
+        };
+    }
 
-    const randomTag =
-        tags[Math.floor(Math.random() * tags.length)];
+    if(roll < 10){
+        return {
+            text:"🟣 EPIKUS",
+            className:"epic"
+        };
+    }
 
-    try{
+    if(roll < 30){
+        return {
+            text:"🔵 RITKA",
+            className:"rare"
+        };
+    }
 
-        const response = await fetch(
-            `https://api.giphy.com/v1/gifs/random?api_key=${API_KEY}&tag=${encodeURIComponent(randomTag)}`
-        );
+    return {
+        text:"🟢 GYAKORI",
+        className:"common"
+    };
+}
 
-        const data = await response.json();
+function launchConfetti(){
 
-        document.getElementById("gif").src =
-            data.data.images.original.url;
+    for(let i = 0; i < 120; i++){
 
-        document.getElementById("status").innerText =
-            "🎉 Jó szórakozást!";
+        const c = document.createElement("div");
 
-    }catch(error){
+        c.className = "confetti";
 
-        document.getElementById("status").innerText =
-            "Nem sikerült GIF-et betölteni.";
+        c.style.left =
+            Math.random() * 100 + "vw";
 
-        console.error(error);
+        c.style.background =
+            `hsl(${Math.random()*360},100%,50%)`;
+
+        c.style.animationDuration =
+            (Math.random()*3+2)+"s";
+
+        document.body.appendChild(c);
+
+        setTimeout(()=>{
+            c.remove();
+        },5000);
     }
 }
 
-loadGif();
+function revealReward(){
+
+    const rarity = getRarity();
+
+    document.getElementById("rarity").innerText =
+        rarity.text;
+
+    document.getElementById("rarity").className =
+        rarity.className;
+
+    document.getElementById("spinner").style.display =
+        "none";
+
+    document.getElementById("result").style.display =
+        "block";
+
+    launchConfetti();
+}
+
+setTimeout(revealReward,3000);
 
 </script>
 

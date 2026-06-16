@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="hu">
 <head>
 
@@ -11,6 +12,7 @@
 
 </head>
 <body>
+
 <div id="userPanel" class="user-panel">
 
 <a href="/login/" id="loginLink">
@@ -85,19 +87,19 @@ Minden nyitás egy új meglepetés.
 
 <div class="rarities">
 
-<div class="rarity common">
+<div class="rarity">
 🟢 Gyakori
 </div>
 
-<div class="rarity rare">
+<div class="rarity">
 🔵 Ritka
 </div>
 
-<div class="rarity epic">
+<div class="rarity">
 🟣 Epikus
 </div>
 
-<div class="rarity legendary">
+<div class="rarity">
 🟡 Legendás
 </div>
 
@@ -114,7 +116,7 @@ target="_blank">
 
 <a
 class="poker-btn"
-href="/poker/">
+href="/blackjack/">
 
 🃏 INGYENES BLACKJACK
 
@@ -127,6 +129,7 @@ href="/poker/">
 </div>
 
 </section>
+
 <script type="module">
 
 import { initializeApp }
@@ -139,27 +142,27 @@ signOut
 }
 from "https://www.gstatic.com/firebasejs/12.15.0/firebase-auth.js";
 
+import {
+getFirestore,
+doc,
+getDoc
+}
+from "https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
+
 const firebaseConfig = {
-
 apiKey: "AIzaSyBoIILW2sbfyuSSvK108YAxnLPB_GlZZP0",
-
 authDomain: "game-6df94.firebaseapp.com",
-
 projectId: "game-6df94",
-
 storageBucket: "game-6df94.firebasestorage.app",
-
 messagingSenderId: "443187158566",
-
 appId: "1:443187158566:web:2e055a515f29b5021110e7"
-
 };
 
-const app =
-initializeApp(firebaseConfig);
+const app = initializeApp(firebaseConfig);
 
-const auth =
-getAuth(app);
+const auth = getAuth(app);
+
+const db = getFirestore(app);
 
 const loginLink =
 document.getElementById("loginLink");
@@ -170,29 +173,62 @@ document.getElementById("userInfo");
 const userEmail =
 document.getElementById("userEmail");
 
+const userCredits =
+document.getElementById("userCredits");
+
 const logoutBtn =
 document.getElementById("logoutBtn");
 
-onAuthStateChanged(auth,(user)=>{
+onAuthStateChanged(auth, async (user)=>{
 
 if(user){
 
-loginLink.style.display =
-"none";
+loginLink.style.display = "none";
 
-userInfo.style.display =
-"flex";
+userInfo.style.display = "flex";
 
 userEmail.innerText =
 "👤 " + user.email;
 
+try{
+
+const userDoc =
+await getDoc(
+doc(
+db,
+"users",
+user.uid
+)
+);
+
+if(userDoc.exists()){
+
+userCredits.innerText =
+"💰 " +
+userDoc.data().credits +
+" kredit";
+
 }else{
 
-loginLink.style.display =
-"block";
+userCredits.innerText =
+"💰 0 kredit";
 
-userInfo.style.display =
-"none";
+}
+
+}catch(error){
+
+console.error(error);
+
+userCredits.innerText =
+"💰 Hiba";
+
+}
+
+}else{
+
+loginLink.style.display = "block";
+
+userInfo.style.display = "none";
 
 }
 
@@ -209,6 +245,6 @@ location.reload();
 });
 
 </script>
+
 </body>
-  
 </html>

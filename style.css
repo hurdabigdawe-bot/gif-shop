@@ -364,6 +364,18 @@ gap:4px;
 color:gold;
 font-weight:bold;
 font-size:14px;
+
+  .user-data{
+display:flex;
+flex-direction:column;
+gap:4px;
+}
+
+#userCredits{
+color:gold;
+font-weight:bold;
+font-size:14px;
+}
 }
 }
 

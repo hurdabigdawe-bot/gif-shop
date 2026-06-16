@@ -1,528 +1,259 @@
-import { saveUserData }
-from "./firebase-save.js";
-
 import { initializeApp }
 from "https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js";
 
 import {
-getAuth,
-onAuthStateChanged,
-signOut
+  getAuth,
+  createUserWithEmailAndPassword,
+  signInWithEmailAndPassword
 }
 from "https://www.gstatic.com/firebasejs/12.15.0/firebase-auth.js";
 
 import {
-getFirestore,
-doc,
-getDoc
+  getFirestore,
+  doc,
+  setDoc,
+  updateDoc,
+  increment,
+  getDoc
 }
 from "https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
 
 const firebaseConfig = {
-
-apiKey: "AIzaSyBoIILW2sbfyuSSvK108YAxnLPB_GlZZP0",
-authDomain: "game-6df94.firebaseapp.com",
-projectId: "game-6df94",
-storageBucket: "game-6df94.firebasestorage.app",
-messagingSenderId: "443187158566",
-appId: "1:443187158566:web:2e055a515f29b5021110e7"
-
+  apiKey: "AIzaSyBoIILW2sbfyuSSvK108YAxnLPB_GlZZP0",
+  authDomain: "game-6df94.firebaseapp.com",
+  projectId: "game-6df94",
+  storageBucket: "game-6df94.firebasestorage.app",
+  messagingSenderId: "443187158566",
+  appId: "1:443187158566:web:2e055a515f29b5021110e7"
 };
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-let balance = 0;
-let bet = 10;
+const email = document.getElementById("email");
+const password = document.getElementById("password");
+const message = document.getElementById("message");
 
-let deck = [];
-let player = [];
-let dealer = [];
-
-let gameActive = false;
-
-const suits = ["♠","♥","♦","♣"];
-const values = ["A","2","3","4","5","6","7","8","9","10","J","Q","K"];
-
-function updateBalance(){
-
-document.getElementById(
-"balance"
-).textContent = balance;
-
-const credits =
-document.getElementById(
-"userCredits"
-);
-
-if(credits){
-
-credits.textContent =
-"💰 " + balance + " kredit";
-
-}
-
-}
-
-onAuthStateChanged(
-auth,
-async(user)=>{
-
-const loginLink =
-document.getElementById(
-"loginLink"
-);
-
-const userInfo =
-document.getElementById(
-"userInfo"
-);
-
-if(!user){
-
-loginLink.style.display =
-"block";
-
-userInfo.style.display =
-"none";
-
-return;
-
-}
-
-loginLink.style.display =
-"none";
-
-userInfo.style.display =
-"flex";
-
-document.getElementById(
-"userEmail"
-).textContent =
-"👤 " + user.email;
-
-try{
-
-const userDoc =
-await getDoc(
-doc(
-db,
-"users",
-user.uid
-)
-);
-
-if(userDoc.exists()){
-
-balance =
-userDoc.data().credits || 0;
-
-updateBalance();
-
-}
-
-}catch(error){
-
-console.error(error);
-
-}
-
-});
+/* =========================
+   REGISZTRÁCIÓ
+========================= */
 
 document
-.getElementById(
-"logoutBtn"
-)
-.addEventListener(
-"click",
-async()=>{
-
-await signOut(auth);
-
-window.location.href="/";
-
-}
-);
-
-function createDeck(){
-
-deck = [];
-
-for(const suit of suits){
-
-for(const value of values){
-
-deck.push({
-value,
-suit
-});
-
-}
-
-}
-
-for(
-let i = deck.length - 1;
-i > 0;
-i--
-){
-
-const j =
-Math.floor(
-Math.random() *
-(i + 1)
-);
-
-[deck[i],deck[j]] =
-[deck[j],deck[i]];
-
-}
-
-}
-
-function drawCard(){
-
-return deck.pop();
-
-}
-
-function getValue(card){
-
-if(
-["J","Q","K"]
-.includes(card.value)
-){
-return 10;
-}
-
-if(card.value==="A"){
-return 11;
-}
-
-return Number(card.value);
-
-}
-
-function handValue(hand){
-
-let total = 0;
-let aces = 0;
-
-hand.forEach(card=>{
-
-total +=
-getValue(card);
-
-if(card.value==="A"){
-aces++;
-}
-
-});
-
-while(
-total > 21 &&
-aces > 0
-){
-
-total -= 10;
-aces--;
-
-}
-
-return total;
-
-}
-
-function renderCards(){
-
-const playerArea =
-document.getElementById(
-"playerCards"
-);
-
-const dealerArea =
-document.getElementById(
-"dealerCards"
-);
-
-playerArea.innerHTML = "";
-dealerArea.innerHTML = "";
-
-player.forEach(card=>{
-
-const div =
-document.createElement(
-"div"
-);
-
-div.className =
-"card";
-
-div.textContent =
-card.value +
-card.suit;
-
-playerArea.appendChild(
-div
-);
-
-});
-
-dealer.forEach(
-(card,index)=>{
-
-const div =
-document.createElement(
-"div"
-);
-
-if(
-index===1 &&
-gameActive
-){
-
-div.className =
-"card hidden";
-
-div.textContent =
-"??";
-
-}else{
-
-div.className =
-"card";
-
-div.textContent =
-card.value +
-card.suit;
-
-}
-
-dealerArea.appendChild(
-div
-);
-
-});
-
-document.getElementById(
-"playerScore"
-).textContent =
-"Pont: " +
-handValue(player);
-
-document.getElementById(
-"dealerScore"
-).textContent =
-gameActive
-? "Pont: ?"
-: "Pont: " +
-handValue(dealer);
-
-}
-
-function deal(){
-
-if(gameActive){
-return;
-}
-
-if(balance < bet){
-
-alert(
-"Nincs elég kredit!"
-);
-
-return;
-
-}
-
-balance -= bet;
-
-updateBalance();
-
-createDeck();
-
-player = [
-drawCard(),
-drawCard()
-];
-
-dealer = [
-drawCard(),
-drawCard()
-];
-
-gameActive = true;
-
-renderCards();
-
-document.getElementById(
-"message"
-).textContent =
-"Lapot kérsz vagy megállsz?";
-
-}
-
-function hit(){
-
-if(!gameActive){
-return;
-}
-
-player.push(
-drawCard()
-);
-
-renderCards();
-
-if(
-handValue(player) > 21
-){
-
-gameActive = false;
-
-renderCards();
-
-document.getElementById(
-"message"
-).textContent =
-"💥 BUST! Vesztettél.";
-
-}
-
-}
-
-function stand(){
-
-if(!gameActive){
-return;
-}
-
-gameActive = false;
-
-while(
-handValue(dealer) < 17
-){
-
-dealer.push(
-drawCard()
-);
-
-}
-
-renderCards();
-
-const playerScore =
-handValue(player);
-
-const dealerScore =
-handValue(dealer);
-
-let msg = "";
-
-if(
-dealerScore > 21
-){
-
-msg =
-"🎉 Dealer bust! Nyertél!";
-
-balance +=
-bet * 2;
-
-}
-else if(
-playerScore >
-dealerScore
-){
-
-msg =
-"🏆 Nyertél!";
-
-balance +=
-bet * 2;
-
-}
-else if(
-playerScore ===
-dealerScore
-){
-
-msg =
-"🤝 Döntetlen";
-
-balance += bet;
-
-}
-else{
-
-msg =
-"😢 Vesztettél";
-
-}
-
-updateBalance();
-
-document.getElementById(
-"message"
-).textContent =
-msg;
-
-}
+  .getElementById("registerBtn")
+  .addEventListener("click", async () => {
+
+    try {
+
+      const userCredential =
+        await createUserWithEmailAndPassword(
+          auth,
+          email.value,
+          password.value
+        );
+
+      await setDoc(
+        doc(
+          db,
+          "users",
+          userCredential.user.uid
+        ),
+        {
+          email: email.value,
+          credits: 5000,
+          wins: 0,
+          losses: 0,
+          createdAt: Date.now()
+        }
+      );
+
+      message.innerText =
+        "✅ Sikeres regisztráció!";
+
+    } catch (error) {
+
+      console.error(error);
+
+      alert(
+        error.code +
+        "\n" +
+        error.message
+      );
+
+      message.innerText =
+        error.code;
+    }
+
+  });
+
+/* =========================
+   BEJELENTKEZÉS
+========================= */
 
 document
-.querySelectorAll(
-".bet-btn"
-)
-.forEach(btn=>{
+  .getElementById("loginBtn")
+  .addEventListener("click", async () => {
 
-btn.addEventListener(
-"click",
-()=>{
+    try {
 
-if(gameActive){
-return;
+      await signInWithEmailAndPassword(
+        auth,
+        email.value,
+        password.value
+      );
+
+      message.innerText =
+        "✅ Sikeres bejelentkezés!";
+
+      setTimeout(() => {
+
+        window.location.href =
+          "https://gifzshop.netlify.app/";
+
+      }, 1000);
+
+    } catch (error) {
+
+      console.error(error);
+
+      alert(
+        error.code +
+        "\n" +
+        error.message
+      );
+
+      message.innerText =
+        error.code;
+    }
+
+  });
+
+/* =========================
+   JÁTÉK STATISZTIKA
+========================= */
+
+export async function addWin() {
+
+  const user = auth.currentUser;
+
+  if (!user) return;
+
+  try {
+
+    await updateDoc(
+      doc(db, "users", user.uid),
+      {
+        wins: increment(1)
+      }
+    );
+
+    console.log("Win mentve");
+
+  } catch (error) {
+
+    console.error(error);
+
+  }
+
 }
 
-bet =
-Number(
-btn.dataset.bet
-);
+export async function addLoss() {
 
-document.getElementById(
-"betValue"
-).textContent =
-bet;
+  const user = auth.currentUser;
+
+  if (!user) return;
+
+  try {
+
+    await updateDoc(
+      doc(db, "users", user.uid),
+      {
+        losses: increment(1)
+      }
+    );
+
+    console.log("Loss mentve");
+
+  } catch (error) {
+
+    console.error(error);
+
+  }
 
 }
-);
 
-});
+export async function addCredits(amount) {
 
-document
-.getElementById(
-"dealBtn"
-)
-.addEventListener(
-"click",
-deal
-);
+  const user = auth.currentUser;
 
-document
-.getElementById(
-"hitBtn"
-)
-.addEventListener(
-"click",
-hit
-);
+  if (!user) return;
 
-document
-.getElementById(
-"standBtn"
-)
-.addEventListener(
-"click",
-stand
-);
+  try {
+
+    await updateDoc(
+      doc(db, "users", user.uid),
+      {
+        credits: increment(amount)
+      }
+    );
+
+  } catch (error) {
+
+    console.error(error);
+
+  }
+
+}
+
+export async function removeCredits(amount) {
+
+  const user = auth.currentUser;
+
+  if (!user) return;
+
+  try {
+
+    await updateDoc(
+      doc(db, "users", user.uid),
+      {
+        credits: increment(-amount)
+      }
+    );
+
+  } catch (error) {
+
+    console.error(error);
+
+  }
+
+}
+
+export async function getUserData() {
+
+  const user = auth.currentUser;
+
+  if (!user) return null;
+
+  try {
+
+    const snap =
+      await getDoc(
+        doc(db, "users", user.uid)
+      );
+
+    if (snap.exists()) {
+      return snap.data();
+    }
+
+    return null;
+
+  } catch (error) {
+
+    console.error(error);
+    return null;
+
+  }
+
+}
+
+export { auth, db };

@@ -11,10 +11,7 @@ from "https://www.gstatic.com/firebasejs/12.15.0/firebase-auth.js";
 import {
   getFirestore,
   doc,
-  setDoc,
-  updateDoc,
-  increment,
-  getDoc
+  setDoc
 }
 from "https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
 
@@ -35,225 +32,80 @@ const email = document.getElementById("email");
 const password = document.getElementById("password");
 const message = document.getElementById("message");
 
-/* =========================
-   REGISZTRÁCIÓ
-========================= */
+document.getElementById("registerBtn").addEventListener("click", async () => {
 
-document
-  .getElementById("registerBtn")
-  .addEventListener("click", async () => {
+  try {
 
-    try {
-
-      const userCredential =
-        await createUserWithEmailAndPassword(
-          auth,
-          email.value,
-          password.value
-        );
-
-      await setDoc(
-        doc(
-          db,
-          "users",
-          userCredential.user.uid
-        ),
-        {
-          email: email.value,
-          credits: 5000,
-          wins: 0,
-          losses: 0,
-          createdAt: Date.now()
-        }
-      );
-
-      message.innerText =
-        "✅ Sikeres regisztráció!";
-
-    } catch (error) {
-
-      console.error(error);
-
-      alert(
-        error.code +
-        "\n" +
-        error.message
-      );
-
-      message.innerText =
-        error.code;
-    }
-
-  });
-
-/* =========================
-   BEJELENTKEZÉS
-========================= */
-
-document
-  .getElementById("loginBtn")
-  .addEventListener("click", async () => {
-
-    try {
-
-      await signInWithEmailAndPassword(
+    const userCredential =
+      await createUserWithEmailAndPassword(
         auth,
         email.value,
         password.value
       );
 
-      message.innerText =
-        "✅ Sikeres bejelentkezés!";
-
-      setTimeout(() => {
-
-        window.location.href =
-          "https://gifzshop.netlify.app/";
-
-      }, 1000);
-
-    } catch (error) {
-
-      console.error(error);
-
-      alert(
-        error.code +
-        "\n" +
-        error.message
-      );
-
-      message.innerText =
-        error.code;
-    }
-
-  });
-
-/* =========================
-   JÁTÉK STATISZTIKA
-========================= */
-
-export async function addWin() {
-
-  const user = auth.currentUser;
-
-  if (!user) return;
-
-  try {
-
-    await updateDoc(
-      doc(db, "users", user.uid),
+    await setDoc(
+      doc(
+        db,
+        "users",
+        userCredential.user.uid
+      ),
       {
-        wins: increment(1)
+        email: email.value,
+        credits: 5000,
+        wins: 0,
+        losses: 0,
+        createdAt: Date.now()
       }
     );
 
-    console.log("Win mentve");
+    message.innerText =
+      "✅ Sikeres regisztráció!";
 
-  } catch (error) {
+  } catch(error) {
 
     console.error(error);
 
-  }
-
-}
-
-export async function addLoss() {
-
-  const user = auth.currentUser;
-
-  if (!user) return;
-
-  try {
-
-    await updateDoc(
-      doc(db, "users", user.uid),
-      {
-        losses: increment(1)
-      }
+    alert(
+      error.code + "\n" +
+      error.message
     );
 
-    console.log("Loss mentve");
-
-  } catch (error) {
-
-    console.error(error);
-
+    message.innerText =
+      error.code;
   }
 
-}
+});
 
-export async function addCredits(amount) {
-
-  const user = auth.currentUser;
-
-  if (!user) return;
+document.getElementById("loginBtn").addEventListener("click", async () => {
 
   try {
 
-    await updateDoc(
-      doc(db, "users", user.uid),
-      {
-        credits: increment(amount)
-      }
+    await signInWithEmailAndPassword(
+      auth,
+      email.value,
+      password.value
     );
 
-  } catch (error) {
+    message.innerText =
+      "✅ Sikeres bejelentkezés!";
+
+    setTimeout(() => {
+
+      window.location.href = "/";
+
+    }, 1000);
+
+  } catch(error) {
 
     console.error(error);
 
-  }
-
-}
-
-export async function removeCredits(amount) {
-
-  const user = auth.currentUser;
-
-  if (!user) return;
-
-  try {
-
-    await updateDoc(
-      doc(db, "users", user.uid),
-      {
-        credits: increment(-amount)
-      }
+    alert(
+      error.code + "\n" +
+      error.message
     );
 
-  } catch (error) {
-
-    console.error(error);
-
+    message.innerText =
+      error.code;
   }
 
-}
-
-export async function getUserData() {
-
-  const user = auth.currentUser;
-
-  if (!user) return null;
-
-  try {
-
-    const snap =
-      await getDoc(
-        doc(db, "users", user.uid)
-      );
-
-    if (snap.exists()) {
-      return snap.data();
-    }
-
-    return null;
-
-  } catch (error) {
-
-    console.error(error);
-    return null;
-
-  }
-
-}
-
-export { auth, db };
+});

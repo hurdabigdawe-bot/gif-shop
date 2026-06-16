@@ -1,29 +1,41 @@
-body{
-    background:#111;
-    color:white;
-    font-family:Arial,sans-serif;
-    text-align:center;
-    padding:40px;
-}
-
-.container{
-    max-width:800px;
+.promo{
+    max-width:900px;
     margin:auto;
+    text-align:center;
+    padding:50px 20px;
 }
 
-.card{
-    background:#222;
-    padding:40px;
-    border-radius:20px;
+.promo h1{
+    font-size:48px;
+    margin-bottom:20px;
+    color:#00ff88;
+    text-shadow:0 0 20px #00ff88;
+}
+
+.promo h2{
+    margin-top:30px;
+    margin-bottom:20px;
+}
+
+.promo p{
+    font-size:20px;
+    line-height:1.8;
+    margin-bottom:20px;
 }
 
 .buy-btn{
     display:inline-block;
-    margin-top:20px;
-    padding:15px 30px;
+    padding:22px 45px;
     background:#00c853;
     color:white;
     text-decoration:none;
-    border-radius:10px;
-    font-size:20px;
+    border-radius:15px;
+    font-size:26px;
+    font-weight:bold;
+    transition:.3s;
+}
+
+.buy-btn:hover{
+    transform:scale(1.08);
+    background:#00e676;
 }

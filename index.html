@@ -4,244 +4,79 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>🎁 Mystery GIF Box 🎁</title>
+<title>🎁 Mystery GIF Box</title>
 
 <link rel="stylesheet" href="style.css">
 
-<style>
-
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
-}
-
-body{
-    background:
-    radial-gradient(circle at top,#222,#0a0a0a 60%);
-    color:white;
-    font-family:Arial,Helvetica,sans-serif;
-    text-align:center;
-    overflow-x:hidden;
-}
-
-.hero{
-    min-height:100vh;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    padding:40px 20px;
-}
-
-.container{
-    max-width:1000px;
-}
-
-.logo{
-    font-size:100px;
-    animation:float 3s infinite ease-in-out;
-}
-
-@keyframes float{
-    0%{transform:translateY(0);}
-    50%{transform:translateY(-10px);}
-    100%{transform:translateY(0);}
-}
-
-h1{
-    font-size:60px;
-    margin-bottom:20px;
-    color:#00ff88;
-    text-shadow:0 0 25px #00ff88;
-}
-
-.subtitle{
-    font-size:24px;
-    color:#ddd;
-    margin-bottom:40px;
-}
-
-.price{
-    font-size:70px;
-    font-weight:bold;
-    color:gold;
-    text-shadow:0 0 20px gold;
-    margin-bottom:20px;
-}
-
-.box{
-    background:#151515;
-    border:2px solid #333;
-    border-radius:25px;
-    padding:40px;
-    margin-top:30px;
-    box-shadow:0 0 30px rgba(0,255,136,.15);
-}
-
-.features{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-    gap:20px;
-    margin-top:30px;
-}
-
-.card{
-    background:#1f1f1f;
-    padding:25px;
-    border-radius:15px;
-}
-
-.card h3{
-    margin-bottom:10px;
-}
-
-.rarity{
-    margin-top:40px;
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
-    gap:15px;
-}
-
-.rarity div{
-    background:#1c1c1c;
-    padding:20px;
-    border-radius:15px;
-}
-
-.buy-btn{
-    display:inline-block;
-    margin-top:40px;
-    padding:25px 50px;
-    font-size:28px;
-    font-weight:bold;
-    text-decoration:none;
-    color:white;
-    background:#00c853;
-    border-radius:20px;
-    transition:.3s;
-    animation:pulse 1.5s infinite;
-}
-
-.buy-btn:hover{
-    transform:scale(1.05);
-    background:#00e676;
-}
-
-@keyframes pulse{
-    0%{
-        box-shadow:0 0 0 0 rgba(0,255,136,.7);
-    }
-
-    70%{
-        box-shadow:0 0 0 20px rgba(0,255,136,0);
-    }
-
-    100%{
-        box-shadow:0 0 0 0 rgba(0,255,136,0);
-    }
-}
-
-.counter{
-    margin-top:25px;
-    color:#aaa;
-    font-size:18px;
-}
-
-.warning{
-    margin-top:25px;
-    color:#ffcc00;
-}
-
-footer{
-    padding:30px;
-    color:#777;
-}
-
-@media(max-width:768px){
-
-    h1{
-        font-size:38px;
-    }
-
-    .price{
-        font-size:50px;
-    }
-
-    .buy-btn{
-        width:100%;
-        font-size:22px;
-    }
-
-}
-
-</style>
-
 </head>
 <body>
+
+<div class="background-glow"></div>
 
 <section class="hero">
 
 <div class="container">
 
-<div class="logo">
-🎁
+<div class="badge">
+🎰 RANDOM MYSTERY BOX
 </div>
 
-<h1>MYSTERY GIF BOX</h1>
+<h1>
+Nem tudod mit kapsz.<br>
+<span>Ez benne a legjobb.</span>
+</h1>
 
 <p class="subtitle">
-Nem tudod mit kapsz. Pont ez benne a jó. 😂
+Fizess 1000 Ft-ot és nyiss ki egy teljesen véletlenszerű Mystery Boxot.
+Lehet vicces. Lehet ritka. Lehet teljesen őrült.
 </p>
 
 <div class="price">
 1000 Ft
 </div>
 
-<div class="box">
+<div class="wheel-section">
 
-<p>
-Nyisd ki a Mystery Boxot és szerezz egy teljesen véletlenszerű jutalmat!
-</p>
+<h2>🎰 Szerencsekerék</h2>
 
-<div class="features">
+<div class="wheel-container">
 
-<div class="card">
-<h3>🎬 Random GIF</h3>
-<p>Vicces, abszurd vagy legendás mém.</p>
+<div class="pointer"></div>
+
+<canvas id="wheel" width="400" height="400"></canvas>
+
 </div>
 
-<div class="card">
-<h3>🎰 Sorsolás</h3>
-<p>Minden vásárlás új esély.</p>
-</div>
+<button id="spinBtn">
+🎲 PÖRGETÉS
+</button>
 
-<div class="card">
-<h3>🎁 Meglepetés</h3>
-<p>Soha nem tudhatod mi vár rád.</p>
+<div id="resultText">
+Pörgesd meg a kereket!
 </div>
 
 </div>
 
-<div class="rarity">
+<div class="rarities">
 
-<div>
+<div class="rarity common">
 🟢<br>
-GYAKORI
+Gyakori
 </div>
 
-<div>
+<div class="rarity rare">
 🔵<br>
-RITKA
+Ritka
 </div>
 
-<div>
+<div class="rarity epic">
 🟣<br>
-EPIKUS
+Epikus
 </div>
 
-<div>
+<div class="rarity legendary">
 🟡<br>
-LEGENDÁS
+Legendás
 </div>
 
 </div>
@@ -255,23 +90,132 @@ target="_blank">
 
 </a>
 
-<div class="counter">
-🔥 Már több száz látogató próbálta ki
-</div>
-
-<div class="warning">
-⚠️ Figyelem! A jutalom teljesen véletlenszerű.
-</div>
-
-</div>
+<p class="small">
+🎲 Minden nyitás teljesen véletlenszerű.
+</p>
 
 </div>
 
 </section>
 
-<footer>
-© Mystery GIF Box
-</footer>
+<script>
+
+const wheel = document.getElementById("wheel");
+const ctx = wheel.getContext("2d");
+
+const prizes = [
+    "🟢 Gyakori",
+    "🔵 Ritka",
+    "🟢 Gyakori",
+    "🟣 Epikus",
+    "🟢 Gyakori",
+    "🔵 Ritka",
+    "😂 Meme",
+    "🟡 Legendás"
+];
+
+const colors = [
+    "#00ff88",
+    "#2da8ff",
+    "#00ff88",
+    "#c13cff",
+    "#00ff88",
+    "#2da8ff",
+    "#ff7b00",
+    "#ffd700"
+];
+
+let rotation = 0;
+let spinning = false;
+
+function drawWheel(){
+
+    const arc =
+        (Math.PI * 2) / prizes.length;
+
+    for(let i=0;i<prizes.length;i++){
+
+        ctx.beginPath();
+
+        ctx.moveTo(200,200);
+
+        ctx.arc(
+            200,
+            200,
+            200,
+            arc*i,
+            arc*(i+1)
+        );
+
+        ctx.fillStyle = colors[i];
+        ctx.fill();
+
+        ctx.save();
+
+        ctx.translate(200,200);
+
+        ctx.rotate(
+            arc*i + arc/2
+        );
+
+        ctx.fillStyle = "#000";
+        ctx.font = "16px Arial";
+
+        ctx.fillText(
+            prizes[i],
+            90,
+            10
+        );
+
+        ctx.restore();
+    }
+
+}
+
+drawWheel();
+
+document
+.getElementById("spinBtn")
+.addEventListener("click",()=>{
+
+    if(spinning) return;
+
+    spinning = true;
+
+    const extra =
+        3600 + Math.random()*1080;
+
+    rotation += extra;
+
+    wheel.style.transition =
+        "transform 5s cubic-bezier(.17,.67,.15,1)";
+
+    wheel.style.transform =
+        `rotate(${rotation}deg)`;
+
+    setTimeout(()=>{
+
+        const normalized =
+            (360 - (rotation % 360)) % 360;
+
+        const segment =
+            Math.floor(
+                normalized /
+                (360 / prizes.length)
+            );
+
+        document
+        .getElementById("resultText")
+        .innerHTML =
+        `🎉 Eredmény:<br><br>${prizes[segment]}`;
+
+        spinning = false;
+
+    },5000);
+
+});
+
+</script>
 
 </body>
 </html>

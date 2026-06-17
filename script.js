@@ -16,29 +16,17 @@ getDoc
 from "https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
 
 const firebaseConfig = {
-
 apiKey: "AIzaSyBoIILW2sbfyuSSvK108YAxnLPB_GlZZP0",
-
 authDomain: "game-6df94.firebaseapp.com",
-
 projectId: "game-6df94",
-
 storageBucket: "game-6df94.firebasestorage.app",
-
 messagingSenderId: "443187158566",
-
 appId: "1:443187158566:web:2e055a515f29b5021110e7"
-
 };
 
-const app =
-initializeApp(firebaseConfig);
-
-const auth =
-getAuth(app);
-
-const db =
-getFirestore(app);
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
+const db = getFirestore(app);
 
 const loginLink =
 document.getElementById("loginLink");
@@ -70,33 +58,39 @@ document.getElementById("dashboardLosses");
 const dashboardFlappy =
 document.getElementById("dashboardFlappy");
 
+const dashboardSlotProfit =
+document.getElementById("dashboardSlotProfit");
+
+const dashboardJackpots =
+document.getElementById("dashboardJackpots");
+
 function getRank(credits){
 
 if(credits >= 1000000){
-
 return "👑 Legend";
-
 }
 
 if(credits >= 250000){
-
 return "💎 Diamond";
-
 }
 
 if(credits >= 50000){
-
 return "🥇 Gold";
-
 }
 
 if(credits >= 10000){
-
 return "🥈 Silver";
-
 }
 
 return "🥉 Bronze";
+
+}
+
+function formatNumber(value){
+
+return Number(
+value || 0
+).toLocaleString("hu-HU");
 
 }
 
@@ -134,9 +128,7 @@ user.uid
 );
 
 if(!snap.exists()){
-
 return;
-
 }
 
 const data =
@@ -144,7 +136,7 @@ snap.data();
 
 const username =
 data.username ||
-user.email;
+user.email.split("@")[0];
 
 const credits =
 data.credits || 0;
@@ -158,32 +150,63 @@ data.losses || 0;
 const flappyBest =
 data.flappyBest || 0;
 
+const slotProfit =
+data.slotProfit || 0;
+
+const slotJackpots =
+data.slotJackpots || 0;
+
 userEmail.textContent =
 "👤 " + username;
 
 userCredits.textContent =
 "💰 " +
-credits.toLocaleString() +
+formatNumber(
+credits
+) +
 " kredit";
 
 userRank.textContent =
-getRank(credits);
+getRank(
+credits
+);
 
 dashboardCredits.textContent =
-credits.toLocaleString();
+formatNumber(
+credits
+);
 
 dashboardWins.textContent =
-wins.toLocaleString();
+formatNumber(
+wins
+);
 
 dashboardLosses.textContent =
-losses.toLocaleString();
+formatNumber(
+losses
+);
 
 dashboardFlappy.textContent =
-flappyBest.toLocaleString();
+formatNumber(
+flappyBest
+);
+
+dashboardSlotProfit.textContent =
+formatNumber(
+slotProfit
+);
+
+dashboardJackpots.textContent =
+formatNumber(
+slotJackpots
+);
 
 }catch(error){
 
-console.error(error);
+console.error(
+"Dashboard hiba:",
+error
+);
 
 }
 
@@ -194,9 +217,21 @@ logoutBtn.addEventListener(
 "click",
 async()=>{
 
-await signOut(auth);
+try{
+
+await signOut(
+auth
+);
 
 window.location.reload();
+
+}catch(error){
+
+console.error(
+error
+);
+
+}
 
 }
 );

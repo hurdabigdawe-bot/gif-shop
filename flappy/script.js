@@ -12,7 +12,8 @@ import {
 getFirestore,
 doc,
 getDoc,
-updateDoc
+updateDoc,
+setDoc
 }
 from "https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
 
@@ -90,18 +91,58 @@ resizeCanvas
 );
 
 const bird = {
+
 x: 140,
+
 y: 300,
-radius: 22,
+
+radius: 24,
+
 velocity: 0,
-gravity: 0.35,
+
+gravity: 0.32,
+
 jump: -8
+
 };
 
 let pipes = [];
+
 let score = 0;
+
 let gameRunning = false;
+
 let animationId = null;
+
+const clouds = [];
+
+for(
+let i = 0;
+i < 6;
+i++
+){
+
+clouds.push({
+
+x:
+Math.random() *
+window.innerWidth,
+
+y:
+Math.random() *
+(window.innerHeight * 0.4),
+
+size:
+60 +
+Math.random() * 80,
+
+speed:
+0.2 +
+Math.random() * 0.5
+
+});
+
+}
 
 function resetGame(){
 
@@ -125,7 +166,7 @@ i++
 
 createPipe(
 canvas.width +
-(i * 500)
+(i * 550)
 );
 
 }
@@ -134,12 +175,12 @@ canvas.width +
 
 function createPipe(x){
 
-const gap = 320;
+const gap = 340;
 
 const topHeight =
 Math.random() *
-(canvas.height - 500)
-+ 100;
+(canvas.height - 550)
++ 120;
 
 pipes.push({
 
@@ -168,7 +209,35 @@ bird.jump;
 
 }
 
+function updateClouds(){
+
+clouds.forEach(cloud=>{
+
+cloud.x -=
+cloud.speed;
+
+if(
+cloud.x <
+-cloud.size
+){
+
+cloud.x =
+canvas.width +
+100;
+
+cloud.y =
+Math.random() *
+(canvas.height * 0.4);
+
+}
+
+});
+
+}
+
 function update(){
+
+updateClouds();
 
 bird.velocity +=
 bird.gravity;
@@ -178,7 +247,8 @@ bird.velocity;
 
 if(
 bird.y < 0 ||
-bird.y > canvas.height
+bird.y >
+canvas.height
 ){
 
 gameOver();
@@ -188,7 +258,7 @@ return;
 
 pipes.forEach(pipe=>{
 
-pipe.x -= 2.5;
+pipe.x -= 2;
 
 if(
 !pipe.passed &&
@@ -207,20 +277,20 @@ score;
 
 if(
 
-bird.x + 10 >
+bird.x + 12 >
 pipe.x &&
 
-bird.x - 10 <
+bird.x - 12 <
 pipe.x + pipe.width
 
 ){
 
 if(
 
-bird.y - bird.radius <
+bird.y - 18 <
 pipe.topHeight ||
 
-bird.y + bird.radius >
+bird.y + 18 >
 pipe.bottomY
 
 ){
@@ -243,7 +313,7 @@ pipes.shift();
 createPipe(
 pipes[
 pipes.length - 1
-].x + 500
+].x + 550
 );
 
 }
@@ -258,6 +328,41 @@ ctx.clearRect(
 canvas.width,
 canvas.height
 );
+
+clouds.forEach(cloud=>{
+
+ctx.fillStyle =
+"rgba(255,255,255,.8)";
+
+ctx.beginPath();
+
+ctx.arc(
+cloud.x,
+cloud.y,
+cloud.size * .3,
+0,
+Math.PI * 2
+);
+
+ctx.arc(
+cloud.x + 25,
+cloud.y - 10,
+cloud.size * .35,
+0,
+Math.PI * 2
+);
+
+ctx.arc(
+cloud.x + 55,
+cloud.y,
+cloud.size * .3,
+0,
+Math.PI * 2
+);
+
+ctx.fill();
+
+});
 
 ctx.fillStyle =
 "#3fa34d";
@@ -281,7 +386,7 @@ canvas.height
 });
 
 ctx.font =
-"50px Arial";
+"52px Arial";
 
 ctx.textAlign =
 "center";
@@ -308,7 +413,9 @@ gameLoop
 );
 
 }
-  function calculateReward(){
+
+}
+function calculateReward(){
 
 if(score >= 100)
 return 1000;
@@ -337,7 +444,9 @@ calculateReward();
 credits += reward;
 
 const updateData = {
+
 credits
+
 };
 
 if(score > bestScore){
@@ -362,10 +471,29 @@ updateData
 
 }catch(error){
 
-console.error(
-"Mentési hiba:",
-error
+try{
+
+await setDoc(
+doc(
+db,
+"users",
+currentUser.uid
+),
+{
+credits,
+flappyBest:
+bestScore
+},
+{
+merge:true
+}
 );
+
+}catch(e){
+
+console.error(e);
+
+}
 
 }
 
@@ -483,6 +611,9 @@ jump();
 
 }
 
+},
+{
+passive:false
 }
 );
 
@@ -492,8 +623,11 @@ async(user)=>{
 
 if(!user){
 
-window.location.href =
-"/login/";
+loginLink.style.display =
+"block";
+
+userInfo.style.display =
+"none";
 
 return;
 
@@ -548,13 +682,28 @@ document.getElementById(
 "🏆 Best: " +
 bestScore;
 
+}else{
+
+await setDoc(
+doc(
+db,
+"users",
+user.uid
+),
+{
+credits:0,
+flappyBest:0
+},
+{
+merge:true
+}
+);
+
 }
 
 }catch(error){
 
-console.error(
-error
-);
+console.error(error);
 
 }
 
@@ -565,154 +714,20 @@ logoutBtn.addEventListener(
 "click",
 async()=>{
 
+try{
+
 await signOut(
 auth
 );
+
+}catch(error){
+
+console.error(error);
+
+}
 
 window.location.href =
 "/";
 
 }
 );
-
-/* háttér felhők */
-
-const clouds = [];
-
-for(
-let i = 0;
-i < 8;
-i++
-){
-
-clouds.push({
-
-x:
-Math.random() *
-window.innerWidth,
-
-y:
-Math.random() *
-(window.innerHeight * 0.5),
-
-size:
-50 +
-Math.random() * 80,
-
-speed:
-0.2 +
-Math.random() * 0.6
-
-});
-
-}
-
-function drawClouds(){
-
-ctx.fillStyle =
-"rgba(255,255,255,0.8)";
-
-clouds.forEach(cloud=>{
-
-cloud.x -=
-cloud.speed;
-
-if(
-cloud.x <
--cloud.size
-){
-
-cloud.x =
-canvas.width +
-100;
-
-cloud.y =
-Math.random() *
-(canvas.height * 0.5);
-
-}
-
-ctx.beginPath();
-
-ctx.arc(
-cloud.x,
-cloud.y,
-cloud.size * 0.3,
-0,
-Math.PI * 2
-);
-
-ctx.arc(
-cloud.x + 25,
-cloud.y - 10,
-cloud.size * 0.35,
-0,
-Math.PI * 2
-);
-
-ctx.arc(
-cloud.x + 55,
-cloud.y,
-cloud.size * 0.3,
-0,
-Math.PI * 2
-);
-
-ctx.fill();
-
-});
-
-}
-
-/* draw felülírás felhőkkel */
-
-const oldDraw =
-draw;
-
-draw = function(){
-
-ctx.clearRect(
-0,
-0,
-canvas.width,
-canvas.height
-);
-
-drawClouds();
-
-ctx.fillStyle =
-"#3fa34d";
-
-pipes.forEach(pipe=>{
-
-ctx.fillRect(
-pipe.x,
-0,
-pipe.width,
-pipe.topHeight
-);
-
-ctx.fillRect(
-pipe.x,
-pipe.bottomY,
-pipe.width,
-canvas.height
-);
-
-});
-
-ctx.font =
-"50px Arial";
-
-ctx.textAlign =
-"center";
-
-ctx.fillText(
-"🐦",
-bird.x,
-bird.y + 18
-);
-
-};
-
-}

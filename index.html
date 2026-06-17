@@ -262,6 +262,58 @@ await signOut(auth);
 location.reload();
 
 });
+  if(userDoc.exists()){
+
+const data =
+userDoc.data();
+
+userCredits.innerText =
+"💰 " +
+(data.credits || 0) +
+" kredit";
+
+document.getElementById(
+"userWins"
+).innerText =
+"🏆 " +
+(data.wins || 0) +
+" győzelem";
+
+document.getElementById(
+"userLosses"
+).innerText =
+"❌ " +
+(data.losses || 0) +
+" vereség";
+
+const totalGames =
+(data.wins || 0) +
+(data.losses || 0);
+
+let rate = 0;
+
+if(totalGames > 0){
+
+rate = Math.round(
+((data.wins || 0) /
+totalGames) * 100
+);
+
+}
+
+document.getElementById(
+"userRate"
+).innerText =
+"📈 " +
+rate +
+"%";
+
+}else{
+
+userCredits.innerText =
+"💰 0 kredit";
+
+}
 
 </script>
 

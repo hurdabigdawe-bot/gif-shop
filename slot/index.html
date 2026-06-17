@@ -58,8 +58,32 @@
 
 </div>
 
-<div class="bet">
-💸 Pörgetés ára: 100 kredit
+<div class="bet-panel">
+
+<label for="betAmount">
+💸 Tét:
+</label>
+
+<select id="betAmount">
+
+<option value="100">
+100 kredit
+</option>
+
+<option value="500">
+500 kredit
+</option>
+
+<option value="1000">
+1000 kredit
+</option>
+
+<option value="5000">
+5000 kredit
+</option>
+
+</select>
+
 </div>
 
 <button id="spinBtn">
@@ -69,6 +93,43 @@
 <div id="result">
 Sok szerencsét!
 </div>
+
+<div class="stats">
+
+<div>
+🎰 Pörgetések:
+<span id="slotSpins">0</span>
+</div>
+
+<div>
+🎉 Nyerések:
+<span id="slotWins">0</span>
+</div>
+
+<div>
+❌ Veszteségek:
+<span id="slotLosses">0</span>
+</div>
+
+<div>
+💰 Profit:
+<span id="slotProfit">0</span>
+</div>
+
+<div>
+💎 Jackpotok:
+<span id="slotJackpots">0</span>
+</div>
+
+</div>
+
+<a
+class="leaderboard-btn"
+href="/toplista/">
+
+🏆 TOPLISTA
+
+</a>
 
 </div>
 

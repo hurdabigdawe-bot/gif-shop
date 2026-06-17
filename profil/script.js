@@ -76,6 +76,25 @@ data.losses || 0;
 const totalGames =
 (data.wins || 0) +
 (data.losses || 0);
+  document.getElementById("games")
+.textContent =
+totalGames;
+
+let rank = "🥉 Bronz";
+
+if((data.wins || 0) >= 100){
+rank = "💎 Gyémánt";
+}
+else if((data.wins || 0) >= 50){
+rank = "🥇 Arany";
+}
+else if((data.wins || 0) >= 10){
+rank = "🥈 Ezüst";
+}
+
+document.getElementById("rank")
+.textContent =
+rank;
 
 let rate = 0;
 

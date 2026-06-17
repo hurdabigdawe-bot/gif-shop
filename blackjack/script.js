@@ -14,13 +14,12 @@ import {
 doc,
 getDoc,
 updateDoc,
-increment,
 arrayUnion
 }
 from "https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
 
 /* =========================
-   UI ELEMEK
+   UI
 ========================= */
 
 const loginLink =
@@ -78,31 +77,26 @@ const toast =
 document.getElementById("toast");
 
 /* =========================
-   JÁTÉK ADATOK
+   GAME
 ========================= */
 
 let balance = 0;
-
 let wins = 0;
-
 let losses = 0;
 
 let bet = 100;
 
 let deck = [];
-
 let player = [];
-
 let dealer = [];
 
 let gameActive = false;
+let doubleUsed = false;
 
 let currentUser = null;
 
-let doubleUsed = false;
-
 /* =========================
-   KÁRTYÁK
+   CARDS
 ========================= */
 
 const suits = [
@@ -134,6 +128,10 @@ const values = [
 
 function showToast(text){
 
+if(!toast){
+return;
+}
+
 toast.textContent =
 text;
 
@@ -152,32 +150,24 @@ toast.classList.remove(
 }
 
 /* =========================
-   RANGRENDSZER
+   RANK
 ========================= */
 
 function getRank(credits){
 
-if(
-credits >= 1000000
-){
+if(credits >= 1000000){
 return "👑 Legend";
 }
 
-if(
-credits >= 250000
-){
+if(credits >= 250000){
 return "💎 Diamond";
 }
 
-if(
-credits >= 50000
-){
+if(credits >= 50000){
 return "🥇 Gold";
 }
 
-if(
-credits >= 10000
-){
+if(credits >= 10000){
 return "🥈 Silver";
 }
 
@@ -187,30 +177,38 @@ return "🥉 Bronze";
 
 function updateRank(){
 
+if(userRank){
+
 userRank.textContent =
 getRank(balance);
 
 }
 
+}
+
 /* =========================
-   UI FRISSÍTÉS
+   UI UPDATE
 ========================= */
 
 function updateBalance(){
 
+if(balanceElement){
+
 balanceElement.textContent =
 Number(balance)
-.toLocaleString(
-"hu-HU"
-);
+.toLocaleString("hu-HU");
+
+}
+
+if(userCredits){
 
 userCredits.textContent =
 "💰 " +
 Number(balance)
-.toLocaleString(
-"hu-HU"
-) +
+.toLocaleString("hu-HU") +
 " kredit";
+
+}
 
 updateRank();
 
@@ -218,40 +216,89 @@ updateRank();
 
 function updateStats(){
 
+if(winsElement){
+
 winsElement.textContent =
 wins;
 
+}
+
+if(lossesElement){
+
 lossesElement.textContent =
 losses;
+
+}
 
 const total =
 wins + losses;
 
 const rate =
 total > 0
-?
-(
-wins /
-total *
-100
-).toFixed(1)
-:
-0;
+? ((wins / total) * 100).toFixed(1)
+: "0.0";
+
+if(winRateElement){
 
 winRateElement.textContent =
 rate + "%";
 
 }
 
+}
+
+function setMessage(text){
+
+if(messageElement){
+
+messageElement.textContent =
+text;
+
+}
+
+}
+
 /* =========================
-   ACHIEVEMENTEK
+   FIRESTORE
 ========================= */
+
+async function saveUser(){
+
+if(!currentUser){
+return;
+}
+
+try{
+
+await updateDoc(
+doc(
+db,
+"users",
+currentUser.uid
+),
+{
+credits: balance,
+wins: wins,
+losses: losses,
+blackjackGames:
+wins + losses
+}
+);
+
+}catch(error){
+
+console.error(
+"Mentési hiba:",
+error
+);
+
+}
+
+}
 
 async function unlockAchievement(id){
 
-if(
-!currentUser
-){
+if(!currentUser){
 return;
 }
 
@@ -270,16 +317,12 @@ arrayUnion(id)
 );
 
 showToast(
-"🏅 Achievement: " +
-id
+"🏅 Achievement: " + id
 );
 
 }catch(error){
 
-console.error(
-"Achievement hiba:",
-error
-);
+console.error(error);
 
 }
 
@@ -287,90 +330,20 @@ error
 
 async function checkAchievements(){
 
-if(
-wins >= 1
-){
-await unlockAchievement(
-"first_win"
-);
+if(wins >= 1){
+await unlockAchievement("first_win");
 }
 
-if(
-wins >= 10
-){
-await unlockAchievement(
-"win_10"
-);
+if(wins >= 10){
+await unlockAchievement("win_10");
 }
 
-if(
-wins >= 100
-){
-await unlockAchievement(
-"win_100"
-);
+if(balance >= 10000){
+await unlockAchievement("silver_rank");
 }
 
-if(
-balance >= 10000
-){
-await unlockAchievement(
-"credits_10000"
-);
-}
-
-if(
-balance >= 100000
-){
-await unlockAchievement(
-"credits_100000"
-);
-}
-
-if(
-balance >= 1000000
-){
-await unlockAchievement(
-"legend_rank"
-);
-}
-
-}
-
-/* =========================
-   FIRESTORE MENTÉS
-========================= */
-
-async function saveUser(){
-
-if(
-!currentUser
-){
-return;
-}
-
-try{
-
-await updateDoc(
-doc(
-db,
-"users",
-currentUser.uid
-),
-{
-credits: balance,
-wins: wins,
-losses: losses
-}
-);
-
-}catch(error){
-
-console.error(
-"Mentési hiba:",
-error
-);
-
+if(balance >= 50000){
+await unlockAchievement("gold_rank");
 }
 
 }
@@ -385,11 +358,15 @@ async(user)=>{
 
 if(!user){
 
+if(loginLink){
 loginLink.style.display =
 "block";
+}
 
+if(userInfo){
 userInfo.style.display =
 "none";
+}
 
 return;
 
@@ -397,11 +374,15 @@ return;
 
 currentUser = user;
 
+if(loginLink){
 loginLink.style.display =
 "none";
+}
 
+if(userInfo){
 userInfo.style.display =
 "flex";
+}
 
 try{
 
@@ -414,9 +395,7 @@ user.uid
 )
 );
 
-if(
-snap.exists()
-){
+if(snap.exists()){
 
 const data =
 snap.data();
@@ -434,62 +413,61 @@ const username =
 data.username ||
 user.email;
 
+if(userEmail){
+
 userEmail.textContent =
-"👤 " +
-username;
+"👤 " + username;
+
+}
 
 updateBalance();
-
 updateStats();
+
+if(achievementPreview){
 
 achievementPreview.textContent =
 "🏅 Achievement rendszer aktív";
 
 }
 
+}
+
 }catch(error){
 
-console.error(
-error
-);
+console.error(error);
 
 }
 
 }
 );
 
-/* =========================
-   KIJELENTKEZÉS
-========================= */
+if(logoutBtn){
 
 logoutBtn.addEventListener(
 "click",
 async()=>{
 
-await signOut(
-auth
-);
+await signOut(auth);
 
 window.location.href =
 "/";
 
 }
 );
+
+}
+
 /* =========================
-   PAKLI
+   DECK
 ========================= */
 
 function createDeck(){
 
 deck = [];
 
-for(
-const suit of suits
-){
+for(const suit of suits){
 
-for(
-const value of values
-){
+for(const value of values){
 
 deck.push({
 value,
@@ -515,8 +493,7 @@ Math.random() *
 [
 deck[i],
 deck[j]
-]
-=
+] =
 [
 deck[j],
 deck[i]
@@ -533,7 +510,7 @@ return deck.pop();
 }
 
 /* =========================
-   KÁRTYA ÉRTÉK
+   VALUES
 ========================= */
 
 function getCardValue(card){
@@ -545,34 +522,25 @@ if(
 return 10;
 }
 
-if(
-card.value === "A"
-){
+if(card.value === "A"){
 return 11;
 }
 
-return Number(
-card.value
-);
+return Number(card.value);
 
 }
 
 function handValue(hand){
 
 let total = 0;
-
 let aces = 0;
 
 hand.forEach(card=>{
 
 total +=
-getCardValue(
-card
-);
+getCardValue(card);
 
-if(
-card.value === "A"
-){
+if(card.value==="A"){
 aces++;
 }
 
@@ -584,7 +552,6 @@ aces > 0
 ){
 
 total -= 10;
-
 aces--;
 
 }
@@ -592,10 +559,6 @@ aces--;
 return total;
 
 }
-
-/* =========================
-   BLACKJACK
-========================= */
 
 function isBlackjack(hand){
 
@@ -621,9 +584,7 @@ dealerCardsElement.innerHTML =
 player.forEach(card=>{
 
 const div =
-document.createElement(
-"div"
-);
+document.createElement("div");
 
 div.className =
 "card";
@@ -632,9 +593,8 @@ div.textContent =
 card.value +
 card.suit;
 
-playerCardsElement.appendChild(
-div
-);
+playerCardsElement
+.appendChild(div);
 
 });
 
@@ -642,9 +602,7 @@ dealer.forEach(
 (card,index)=>{
 
 const div =
-document.createElement(
-"div"
-);
+document.createElement("div");
 
 if(
 gameActive &&
@@ -669,22 +627,17 @@ card.suit;
 
 }
 
-dealerCardsElement.appendChild(
-div
-);
+dealerCardsElement
+.appendChild(div);
 
 }
 );
 
 playerScoreElement.textContent =
 "Pont: " +
-handValue(
-player
-);
+handValue(player);
 
-if(
-gameActive
-){
+if(gameActive){
 
 dealerScoreElement.textContent =
 "Pont: ?";
@@ -694,40 +647,9 @@ else{
 
 dealerScoreElement.textContent =
 "Pont: " +
-handValue(
-dealer
-);
+handValue(dealer);
 
 }
-
-}
-
-/* =========================
-   ÜZENET
-========================= */
-
-function setMessage(text){
-
-messageElement.textContent =
-text;
-
-}
-
-/* =========================
-   ÚJ KÖR
-========================= */
-
-function resetRound(){
-
-player = [];
-
-dealer = [];
-
-doubleUsed = false;
-
-gameActive = false;
-
-renderCards();
 
 }
 
@@ -737,15 +659,11 @@ renderCards();
 
 async function deal(){
 
-if(
-gameActive
-){
+if(gameActive){
 return;
 }
 
-if(
-balance < bet
-){
+if(balance < bet){
 
 showToast(
 "❌ Nincs elég kredit"
@@ -774,7 +692,6 @@ drawCard()
 ];
 
 gameActive = true;
-
 doubleUsed = false;
 
 renderCards();
@@ -783,17 +700,11 @@ setMessage(
 "🃏 Lapot kérsz vagy megállsz?"
 );
 
-/* BLACKJACK CHECK */
-
 const playerBJ =
-isBlackjack(
-player
-);
+isBlackjack(player);
 
 const dealerBJ =
-isBlackjack(
-dealer
-);
+isBlackjack(dealer);
 
 if(
 playerBJ ||
@@ -814,13 +725,14 @@ balance += bet;
 updateBalance();
 
 setMessage(
-"🤝 Mindkettő Blackjack"
+"🤝 Push - Blackjack"
 );
 
+return;
+
 }
-else if(
-playerBJ
-){
+
+if(playerBJ){
 
 const payout =
 Math.floor(
@@ -832,11 +744,9 @@ balance += payout;
 wins++;
 
 updateBalance();
-
 updateStats();
 
 await saveUser();
-
 await checkAchievements();
 
 showToast(
@@ -844,15 +754,12 @@ showToast(
 );
 
 setMessage(
-"🎉 BLACKJACK! +"
-+
-(payout - bet)
-+
-" kredit"
+"🎉 Blackjack!"
 );
 
+return;
+
 }
-else{
 
 losses++;
 
@@ -866,15 +773,55 @@ setMessage(
 
 }
 
+}
+
+/* =========================
+   SOFT 17
+========================= */
+
+function isSoft17(hand){
+
+let total = 0;
+let aces = 0;
+
+hand.forEach(card=>{
+
+if(card.value === "A"){
+
+aces++;
+total += 11;
+
+}
+else if(
+["J","Q","K"]
+.includes(card.value)
+){
+
+total += 10;
+
+}
+else{
+
+total += Number(card.value);
+
+}
+
+});
+
+return (
+total === 17 &&
+aces > 0
+);
+
+}
+
 /* =========================
    HIT
 ========================= */
 
 async function hit(){
 
-if(
-!gameActive
-){
+if(!gameActive){
 return;
 }
 
@@ -885,13 +832,9 @@ drawCard()
 renderCards();
 
 const playerScore =
-handValue(
-player
-);
+handValue(player);
 
-if(
-playerScore > 21
-){
+if(playerScore > 21){
 
 gameActive = false;
 
@@ -914,50 +857,16 @@ showToast(
 }
 
 /* =========================
-   SOFT 17
-========================= */
-
-function isSoft17(hand){
-
-let total = 0;
-
-let aces = 0;
-
-hand.forEach(card=>{
-
-total +=
-getCardValue(card);
-
-if(
-card.value === "A"
-){
-aces++;
-}
-
-});
-
-return (
-total === 17 &&
-aces > 0
-);
-
-}
-
-/* =========================
    STAND
 ========================= */
 
 async function stand(){
 
-if(
-!gameActive
-){
+if(!gameActive){
 return;
 }
 
 gameActive = false;
-
-/* SOFT 17 RULE */
 
 while(
 
@@ -976,30 +885,24 @@ drawCard()
 renderCards();
 
 const playerScore =
-handValue(
-player
-);
+handValue(player);
 
 const dealerScore =
-handValue(
-dealer
-);
+handValue(dealer);
 
-let message = "";
+let resultText = "";
 
 /* DEALER BUST */
 
-if(
-dealerScore > 21
-){
+if(dealerScore > 21){
 
 balance +=
 bet * 2;
 
 wins++;
 
-message =
-"🎉 Dealer bust! Nyertél!";
+resultText =
+"🎉 Dealer bust!";
 
 }
 
@@ -1015,7 +918,7 @@ bet * 2;
 
 wins++;
 
-message =
+resultText =
 "🏆 Nyertél!";
 
 }
@@ -1029,7 +932,7 @@ dealerScore
 
 balance += bet;
 
-message =
+resultText =
 "🤝 Döntetlen";
 
 }
@@ -1040,21 +943,19 @@ else{
 
 losses++;
 
-message =
+resultText =
 "😢 Vesztettél";
 
 }
 
 updateBalance();
-
 updateStats();
 
 await saveUser();
-
 await checkAchievements();
 
 setMessage(
-message
+resultText
 );
 
 }
@@ -1065,15 +966,11 @@ message
 
 async function doubleDown(){
 
-if(
-!gameActive
-){
+if(!gameActive){
 return;
 }
 
-if(
-doubleUsed
-){
+if(doubleUsed){
 return;
 }
 
@@ -1082,16 +979,14 @@ player.length !== 2
 ){
 
 showToast(
-"⚠️ Csak első körben"
+"⚠️ Csak az első körben használható"
 );
 
 return;
 
 }
 
-if(
-balance < bet
-){
+if(balance < bet){
 
 showToast(
 "❌ Nincs elég kredit"
@@ -1134,6 +1029,10 @@ setMessage(
 "💥 Double Bust!"
 );
 
+showToast(
+"❌ Double Bust"
+);
+
 return;
 
 }
@@ -1143,22 +1042,18 @@ await stand();
 }
 
 /* =========================
-   BET
+   BET BUTTONS
 ========================= */
 
 document
-.querySelectorAll(
-".bet-btn"
-)
+.querySelectorAll(".bet-btn")
 .forEach(btn=>{
 
 btn.addEventListener(
 "click",
 ()=>{
 
-if(
-gameActive
-){
+if(gameActive){
 return;
 }
 
@@ -1167,8 +1062,14 @@ Number(
 btn.dataset.bet
 );
 
+if(
+betValueElement
+){
+
 betValueElement.textContent =
 bet;
+
+}
 
 showToast(
 "💰 Tét: " +
@@ -1181,47 +1082,67 @@ bet
 });
 
 /* =========================
-   GOMBOK
+   BUTTONS
 ========================= */
 
-document
-.getElementById(
+const dealBtn =
+document.getElementById(
 "dealBtn"
-)
-.addEventListener(
+);
+
+const hitBtn =
+document.getElementById(
+"hitBtn"
+);
+
+const standBtn =
+document.getElementById(
+"standBtn"
+);
+
+const doubleBtn =
+document.getElementById(
+"doubleBtn"
+);
+
+if(dealBtn){
+
+dealBtn.addEventListener(
 "click",
 deal
 );
 
-document
-.getElementById(
-"hitBtn"
-)
-.addEventListener(
+}
+
+if(hitBtn){
+
+hitBtn.addEventListener(
 "click",
 hit
 );
 
-document
-.getElementById(
-"standBtn"
-)
-.addEventListener(
+}
+
+if(standBtn){
+
+standBtn.addEventListener(
 "click",
 stand
 );
 
-document
-.getElementById(
-"doubleBtn"
-)
-.addEventListener(
+}
+
+if(doubleBtn){
+
+doubleBtn.addEventListener(
 "click",
 doubleDown
 );
 
+}
+
 /* =========================
-   KEZDÉS
+   STARTUP
 ========================= */
 
 updateBalance();
@@ -1230,4 +1151,8 @@ updateStats();
 
 setMessage(
 "🃏 Nyomd meg az Osztás gombot."
+);
+
+console.log(
+"✅ Blackjack V3 betöltve"
 );

@@ -29,6 +29,14 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
+const userWins =
+document.getElementById("userWins");
+
+const userLosses =
+document.getElementById("userLosses");
+
+const userWinRate =
+document.getElementById("userWinRate");
 
 let balance = 0;
 let bet = 10;

@@ -1,492 +1,591 @@
-<!DOCTYPE html>
-<html lang="hu">
-<head>
-
-<meta charset="UTF-8">
-
-<meta name="viewport"
-content="width=device-width, initial-scale=1.0">
-
-<title>
-🃏 Blackjack Casino
-</title>
-
-<link rel="stylesheet"
-href="style.css">
-
-</head>
-<body>
-
-<div class="bg-glow"></div>
-
-<header class="topbar">
-
-<div class="logo">
-
-🃏 Blackjack Casino
-
-</div>
-
-<nav class="top-nav">
-
-<a href="/dashboard/"
-class="nav-link active">
-
-🏠 Dashboard
-
-</a>
-
-<a href="/profil/"
-class="nav-link">
-
-👤 Profil
-
-</a>
-
-<a href="/toplista/"
-class="nav-link">
-
-🏆 Toplista
-
-</a>
-
-<a href="/donation/"
-class="nav-link">
-
-💎 Donation
-
-</a>
-
-</nav>
-
-<div id="userPanel">
-
-<a
-id="loginLink"
-href="/login/"
-class="login-btn">
-
-🔐 Bejelentkezés
-
-</a>
-
-<div
-id="userInfo"
-style="display:none">
-
-<div class="user-card">
-
-<div id="userEmail">
-
-👤 Felhasználó
-
-</div>
-
-<div id="userCredits">
-
-💰 0 kredit
-
-</div>
-
-<div id="userRank">
-
-🥉 Bronze
-
-</div>
-
-</div>
-
-<button id="logoutBtn">
-
-Kilépés
-
-</button>
-
-</div>
-
-</div>
-
-</header>
-
-<main class="container">
-
-<!-- HERO -->
-
-<section class="hero-card">
-
-<h1>
-
-Üdv a Blackjack Casinóban
-
-</h1>
-
-<p>
-
-Gyűjts krediteket,
-szerezz achievementeket
-és kerülj fel a toplistára.
-
-</p>
-
-</section>
-
-<!-- DAILY REWARD -->
-
-<section class="daily-card">
-
-<div class="daily-left">
-
-<div class="daily-icon">
-
-🎁
-
-</div>
-
-<div>
-
-<h2>
-
-Napi Jutalom
-
-</h2>
-
-<p>
-
-Minden nap egyszer vehető fel.
-
-</p>
-
-</div>
-
-</div>
-
-<div class="daily-right">
-
-<div id="dailyRewardAmount">
-
-+1000
-
-</div>
-
-<button
-id="claimRewardBtn">
-
-Felveszem
-
-</button>
-
-<div id="dailyCountdown">
-
-Elérhető
-
-</div>
-
-</div>
-
-</section>
-
-<!-- STATS -->
-
-<section class="stats-grid">
-
-<div class="stat-card">
-
-<div class="stat-icon">
-
-💰
-
-</div>
-
-<div>
-
-<span>
-
-Kreditek
-
-</span>
-
-<h3 id="balance">
-
-0
-
-</h3>
-
-</div>
-
-</div>
-
-<div class="stat-card">
-
-<div class="stat-icon">
-
-🏆
-
-</div>
-
-<div>
-
-<span>
-
-Győzelmek
-
-</span>
-
-<h3 id="userWins">
-
-0
-
-</h3>
-
-</div>
-
-</div>
-
-<div class="stat-card">
-
-<div class="stat-icon">
-
-❌
-
-</div>
-
-<div>
-
-<span>
-
-Vereségek
-
-</span>
-
-<h3 id="userLosses">
-
-0
-
-</h3>
-
-</div>
-
-</div>
-
-<div class="stat-card">
-
-<div class="stat-icon">
-
-📈
-
-</div>
-
-<div>
-
-<span>
-
-Win Rate
-
-</span>
-
-<h3 id="userWinRate">
-
-0%
-
-</h3>
-
-</div>
-
-</div>
-
-</section>
-
-<!-- GAMES -->
-
-<section class="games-section">
-
-<h2 class="section-title">
-
-🎮 Játékok
-
-</h2>
-
-<div class="games-grid">
-
-<a
-href="/blackjack/"
-class="game-card">
-
-<div class="game-icon">
-
-🃏
-
-</div>
-
-<h3>
-
-Blackjack
-
-</h3>
-
-<p>
-
-Blackjack 3:2,
-Double Down,
-Soft 17,
-Achievement rendszer.
-
-</p>
-
-</a>
-
-<div class="game-card disabled">
-
-<div class="game-icon">
-
-🎲
-
-</div>
-
-<h3>
-
-Roulette
-
-</h3>
-
-<p>
-
-Hamarosan...
-
-</p>
-
-</div>
-
-<div class="game-card disabled">
-
-<div class="game-icon">
-
-🪙
-
-</div>
-
-<h3>
-
-Coinflip
-
-</h3>
-
-<p>
-
-Hamarosan...
-
-</p>
-
-</div>
-
-</div>
-
-</section>
-
-<!-- BOTTOM -->
-
-<section class="bottom-grid">
-
-<div class="panel-card">
-
-<h2>
-
-🏅 Achievementek
-
-</h2>
-
-<div id="achievementPreview">
-
-Még nincs achievement.
-
-</div>
-
-</div>
-
-<div class="panel-card">
-
-<h2>
-
-📊 Platform Információ
-
-</h2>
-
-<div class="platform-stats">
-
-<div>
-
-💰 Saját Kreditek
+import {
+auth,
+db
+}
+from "../assets/js/firebase.js";
+
+import {
+onAuthStateChanged,
+signOut
+}
+from "https://www.gstatic.com/firebasejs/12.15.0/firebase-auth.js";
+
+import {
+doc,
+getDoc,
+updateDoc
+}
+from "https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
+
+import {
+getRank,
+formatNumber,
+calculateWinRate,
+getDailyReward,
+showToast,
+achievementData
+}
+from "../assets/js/shared.js";
+
+/* =========================
+   UI
+========================= */
+
+const loginLink =
+document.getElementById(
+"loginLink"
+);
+
+const userInfo =
+document.getElementById(
+"userInfo"
+);
+
+const logoutBtn =
+document.getElementById(
+"logoutBtn"
+);
+
+const userEmail =
+document.getElementById(
+"userEmail"
+);
+
+const userCredits =
+document.getElementById(
+"userCredits"
+);
+
+const userRank =
+document.getElementById(
+"userRank"
+);
+
+const balanceElement =
+document.getElementById(
+"balance"
+);
+
+const winsElement =
+document.getElementById(
+"userWins"
+);
+
+const lossesElement =
+document.getElementById(
+"userLosses"
+);
+
+const winRateElement =
+document.getElementById(
+"userWinRate"
+);
+
+const achievementPreview =
+document.getElementById(
+"achievementPreview"
+);
+
+const platformCredits =
+document.getElementById(
+"platformCredits"
+);
+
+const platformWins =
+document.getElementById(
+"platformWins"
+);
+
+const platformLosses =
+document.getElementById(
+"platformLosses"
+);
+
+const platformRank =
+document.getElementById(
+"platformRank"
+);
+
+const dailyRewardAmount =
+document.getElementById(
+"dailyRewardAmount"
+);
+
+const claimRewardBtn =
+document.getElementById(
+"claimRewardBtn"
+);
+
+const dailyCountdown =
+document.getElementById(
+"dailyCountdown"
+);
+
+/* =========================
+   USER DATA
+========================= */
+
+let currentUser = null;
+
+let credits = 0;
+let wins = 0;
+let losses = 0;
+
+let achievements = [];
+
+let dailyReward = 0;
+let dailyStreak = 1;
+
+/* =========================
+   UPDATE UI
+========================= */
+
+function updateStats(){
+
+balanceElement.textContent =
+formatNumber(
+credits
+);
+
+winsElement.textContent =
+formatNumber(
+wins
+);
+
+lossesElement.textContent =
+formatNumber(
+losses
+);
+
+winRateElement.textContent =
+calculateWinRate(
+wins,
+losses
+) + "%";
+
+platformCredits.textContent =
+formatNumber(
+credits
+);
+
+platformWins.textContent =
+formatNumber(
+wins
+);
+
+platformLosses.textContent =
+formatNumber(
+losses
+);
+
+platformRank.textContent =
+getRank(
+credits
+);
+
+userCredits.textContent =
+"💰 " +
+formatNumber(
+credits
+) +
+" kredit";
+
+userRank.textContent =
+getRank(
+credits
+);
+
+}
+
+function updateAchievementPreview(){
+
+if(
+!achievements ||
+achievements.length === 0
+){
+
+achievementPreview.innerHTML =
+`
+🏅 0 achievement
+`;
+
+return;
+
+}
+
+const latest =
+achievements[
+achievements.length - 1
+];
+
+const latestName =
+achievementData[latest]
+? achievementData[latest].name
+: latest;
+
+achievementPreview.innerHTML =
+`
+🏅 ${achievements.length} achievement
+
+<br><br>
+
+Legutóbbi:
 
 <br>
 
-<strong id="platformCredits">
+${latestName}
+`;
 
-0
+}
 
-</strong>
+/* =========================
+   DAILY
+========================= */
 
-</div>
+function updateDailyRewardUI(){
 
-<div>
+const reward =
+getDailyReward(
+dailyStreak
+);
 
-🏆 Saját Győzelmek
+dailyRewardAmount.textContent =
+"+" +
+formatNumber(
+reward
+);
 
-<br>
+}
 
-<strong id="platformWins">
+/* =========================
+   SAVE USER
+========================= */
 
-0
+async function saveUser(){
 
-</strong>
+if(!currentUser){
+return;
+}
 
-</div>
+try{
 
-<div>
+await updateDoc(
+doc(
+db,
+"users",
+currentUser.uid
+),
+{
+credits,
+wins,
+losses,
+dailyReward,
+dailyStreak
+}
+);
 
-❌ Saját Vereségek
+}catch(error){
 
-<br>
+console.error(
+"Mentési hiba:",
+error
+);
 
-<strong id="platformLosses">
+}
 
-0
+}
 
-</strong>
+/* =========================
+   COUNTDOWN
+========================= */
 
-</div>
+function startCountdown(){
 
-<div>
+const interval =
+setInterval(()=>{
 
-🥉 Rang
+const now =
+Date.now();
 
-<br>
+const nextClaim =
+dailyReward +
+(24 * 60 * 60 * 1000);
 
-<strong id="platformRank">
+const diff =
+nextClaim - now;
 
-Bronze
+if(diff <= 0){
 
-</strong>
+dailyCountdown.textContent =
+"Elérhető";
 
-</div>
+claimRewardBtn.disabled =
+false;
 
-</div>
+clearInterval(
+interval
+);
 
-</div>
+return;
 
-</section>
+}
 
-</main>
+const hours =
+Math.floor(
+diff / 1000 / 60 / 60
+);
 
-<footer class="footer">
+const minutes =
+Math.floor(
+(diff / 1000 / 60) % 60
+);
 
-© Blackjack Casino V1.0
+const seconds =
+Math.floor(
+(diff / 1000) % 60
+);
 
-</footer>
+dailyCountdown.textContent =
+hours +
+"ó " +
+minutes +
+"p " +
+seconds +
+"mp";
 
-<script type="module"
-src="../assets/js/firebase.js"></script>
+},1000);
 
-<script type="module"
-src="script.js"></script>
+}
 
-</body>
-</html>
+/* =========================
+   CLAIM REWARD
+========================= */
+
+async function claimReward(){
+
+if(!currentUser){
+return;
+}
+
+const now =
+Date.now();
+
+const nextClaim =
+dailyReward +
+(24 * 60 * 60 * 1000);
+
+if(now < nextClaim){
+
+showToast(
+"⏳ A jutalom még nem vehető fel."
+);
+
+return;
+
+}
+
+const reward =
+getDailyReward(
+dailyStreak
+);
+
+credits += reward;
+
+dailyReward =
+now;
+
+dailyStreak++;
+
+if(dailyStreak > 7){
+
+dailyStreak = 1;
+
+}
+
+updateStats();
+
+updateDailyRewardUI();
+
+await saveUser();
+
+showToast(
+"🎁 +" +
+formatNumber(
+reward
+) +
+" kredit"
+);
+
+claimRewardBtn.disabled =
+true;
+
+startCountdown();
+
+}
+
+/* =========================
+   AUTH
+========================= */
+
+onAuthStateChanged(
+auth,
+async(user)=>{
+
+if(!user){
+
+loginLink.style.display =
+"block";
+
+userInfo.style.display =
+"none";
+
+return;
+
+}
+
+currentUser = user;
+
+loginLink.style.display =
+"none";
+
+userInfo.style.display =
+"flex";
+
+try{
+
+const snap =
+await getDoc(
+doc(
+db,
+"users",
+user.uid
+)
+);
+
+if(!snap.exists()){
+
+return;
+
+}
+
+const data =
+snap.data();
+
+credits =
+data.credits || 0;
+
+wins =
+data.wins || 0;
+
+losses =
+data.losses || 0;
+
+achievements =
+data.achievements || [];
+
+dailyReward =
+data.dailyReward || 0;
+
+dailyStreak =
+data.dailyStreak || 1;
+
+const username =
+data.username ||
+user.email.split("@")[0];
+
+userEmail.textContent =
+"👤 " + username;
+
+updateStats();
+
+updateAchievementPreview();
+
+updateDailyRewardUI();
+
+const nextClaim =
+dailyReward +
+(24 * 60 * 60 * 1000);
+
+if(Date.now() < nextClaim){
+
+claimRewardBtn.disabled =
+true;
+
+startCountdown();
+
+}else{
+
+claimRewardBtn.disabled =
+false;
+
+dailyCountdown.textContent =
+"Elérhető";
+
+}
+
+}catch(error){
+
+console.error(
+"Dashboard hiba:",
+error
+);
+
+}
+
+}
+);
+
+/* =========================
+   LOGOUT
+========================= */
+
+if(logoutBtn){
+
+logoutBtn.addEventListener(
+"click",
+async()=>{
+
+try{
+
+await signOut(
+auth
+);
+
+window.location.href =
+"/";
+
+}catch(error){
+
+console.error(
+error
+);
+
+}
+
+}
+);
+
+}
+
+/* =========================
+   DAILY BUTTON
+========================= */
+
+if(claimRewardBtn){
+
+claimRewardBtn.addEventListener(
+"click",
+claimReward
+);
+
+}
+
+/* =========================
+   STARTUP
+========================= */
+
+updateDailyRewardUI();
+
+console.log(
+"✅ Dashboard V1.0 betöltve"
+);

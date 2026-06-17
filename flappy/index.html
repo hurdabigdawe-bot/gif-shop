@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>🐦 Flappy Bird</title>
+
+<link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+
+<div id="userPanel" class="user-panel">
+
+<a href="/login/" id="loginLink">
+🔐 Bejelentkezés
+</a>
+
+<div id="userInfo" style="display:none">
+
+<div class="user-data">
+
+<div id="userEmail"></div>
+
+<div id="userCredits">
+💰 0 kredit
+</div>
+
+<div id="userBest">
+🏆 Best: 0
+</div>
+
+</div>
+
+<button id="logoutBtn">
+🚪 Kilépés
+</button>
+
+</div>
+
+</div>
+
+<div id="gameContainer">
+
+<canvas id="gameCanvas"></canvas>
+
+<div id="startScreen">
+
+<h1>🐦 FLAPPY BIRD</h1>
+
+<p>
+Kattints, érints vagy nyomd meg a SPACE gombot.
+</p>
+
+<button id="startBtn">
+▶ Játék indítása
+</button>
+
+</div>
+
+<div id="gameOverScreen" class="hidden">
+
+<h2>💀 GAME OVER</h2>
+
+<p>
+Pontszám:
+<span id="finalScore">0</span>
+</p>
+
+<p>
+🏆 Legjobb:
+<span id="bestScore">0</span>
+</p>
+
+<p>
+💰 Jutalom:
+<span id="reward">0</span>
+kredit
+</p>
+
+<button id="restartBtn">
+🔄 Újra
+</button>
+
+</div>
+
+<div id="hud">
+
+<div id="score">
+0
+</div>
+
+</div>
+
+</div>
+
+<a href="/" class="back-btn">
+🏠 Vissza a főoldalra
+</a>
+
+<script type="module" src="script.js"></script>
+
+</body>
+</html>

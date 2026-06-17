@@ -1,9 +1,202 @@
-const btn = document.getElementById("buyBtn");
+import { initializeApp }
+from "https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js";
 
-btn.addEventListener("click", async () => {
-  const response = await fetch("/api/create-payment");
+import {
+getAuth,
+onAuthStateChanged,
+signOut
+}
+from "https://www.gstatic.com/firebasejs/12.15.0/firebase-auth.js";
 
-  const data = await response.json();
+import {
+getFirestore,
+doc,
+getDoc
+}
+from "https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
 
-  window.location.href = data.paymentUrl;
-});
+const firebaseConfig = {
+
+apiKey: "AIzaSyBoIILW2sbfyuSSvK108YAxnLPB_GlZZP0",
+
+authDomain: "game-6df94.firebaseapp.com",
+
+projectId: "game-6df94",
+
+storageBucket: "game-6df94.firebasestorage.app",
+
+messagingSenderId: "443187158566",
+
+appId: "1:443187158566:web:2e055a515f29b5021110e7"
+
+};
+
+const app =
+initializeApp(firebaseConfig);
+
+const auth =
+getAuth(app);
+
+const db =
+getFirestore(app);
+
+const loginLink =
+document.getElementById("loginLink");
+
+const userInfo =
+document.getElementById("userInfo");
+
+const logoutBtn =
+document.getElementById("logoutBtn");
+
+const userEmail =
+document.getElementById("userEmail");
+
+const userCredits =
+document.getElementById("userCredits");
+
+const userRank =
+document.getElementById("userRank");
+
+const dashboardCredits =
+document.getElementById("dashboardCredits");
+
+const dashboardWins =
+document.getElementById("dashboardWins");
+
+const dashboardLosses =
+document.getElementById("dashboardLosses");
+
+const dashboardFlappy =
+document.getElementById("dashboardFlappy");
+
+function getRank(credits){
+
+if(credits >= 1000000){
+
+return "👑 Legend";
+
+}
+
+if(credits >= 250000){
+
+return "💎 Diamond";
+
+}
+
+if(credits >= 50000){
+
+return "🥇 Gold";
+
+}
+
+if(credits >= 10000){
+
+return "🥈 Silver";
+
+}
+
+return "🥉 Bronze";
+
+}
+
+onAuthStateChanged(
+auth,
+async(user)=>{
+
+if(!user){
+
+loginLink.style.display =
+"block";
+
+userInfo.style.display =
+"none";
+
+return;
+
+}
+
+loginLink.style.display =
+"none";
+
+userInfo.style.display =
+"flex";
+
+try{
+
+const snap =
+await getDoc(
+doc(
+db,
+"users",
+user.uid
+)
+);
+
+if(!snap.exists()){
+
+return;
+
+}
+
+const data =
+snap.data();
+
+const username =
+data.username ||
+user.email;
+
+const credits =
+data.credits || 0;
+
+const wins =
+data.wins || 0;
+
+const losses =
+data.losses || 0;
+
+const flappyBest =
+data.flappyBest || 0;
+
+userEmail.textContent =
+"👤 " + username;
+
+userCredits.textContent =
+"💰 " +
+credits.toLocaleString() +
+" kredit";
+
+userRank.textContent =
+getRank(credits);
+
+dashboardCredits.textContent =
+credits.toLocaleString();
+
+dashboardWins.textContent =
+wins.toLocaleString();
+
+dashboardLosses.textContent =
+losses.toLocaleString();
+
+dashboardFlappy.textContent =
+flappyBest.toLocaleString();
+
+}catch(error){
+
+console.error(error);
+
+}
+
+}
+);
+
+logoutBtn.addEventListener(
+"click",
+async()=>{
+
+await signOut(auth);
+
+window.location.reload();
+
+}
+);

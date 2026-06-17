@@ -13,7 +13,7 @@ padding:30px;
 }
 
 .container{
-max-width:1400px;
+max-width:1600px;
 margin:auto;
 }
 
@@ -59,15 +59,15 @@ border-bottom:none;
 .rank{
 font-size:22px;
 font-weight:bold;
-width:45px;
+width:50px;
 }
 
 .name{
 flex:1;
 padding-left:10px;
 overflow:hidden;
-text-overflow:ellipsis;
 white-space:nowrap;
+text-overflow:ellipsis;
 }
 
 .score{
@@ -100,13 +100,9 @@ border-radius:12px;
 font-size:18px;
 }
 
-.back-btn:hover{
-transform:scale(1.03);
-}
-
 .loading{
 text-align:center;
-color:#999;
+color:#888;
 padding:20px;
 }
 

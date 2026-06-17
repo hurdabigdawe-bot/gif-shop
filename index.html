@@ -3,35 +3,101 @@
 <head>
 
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>🎮 Mystery Box Platform</title>
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
 
-<link rel="stylesheet" href="style.css">
+<title>🎮 Mystery Box</title>
+
+<link rel="stylesheet"
+href="style.css">
 
 </head>
 <body>
 
-<div class="bg-glow"></div>
+<div class="app">
+
+<aside class="sidebar">
+
+<div class="brand">
+
+<div class="brand-logo">
+🎮
+</div>
+
+<div class="brand-text">
+
+<h2>Mystery Box</h2>
+
+<p>Gaming Platform</p>
+
+</div>
+
+</div>
+
+<nav class="menu">
+
+<a href="/" class="menu-item active">
+🏠 Dashboard
+</a>
+
+<a href="/blackjack/" class="menu-item">
+🃏 Blackjack
+</a>
+
+<a href="/flappy/" class="menu-item">
+🐦 Flappy Bird
+</a>
+
+<a href="/slot/" class="menu-item">
+🎰 Slot Machine
+</a>
+
+<a href="/toplista/" class="menu-item">
+🏆 Toplista
+</a>
+
+<a href="/profil/" class="menu-item">
+👤 Profil
+</a>
+
+</nav>
+
+</aside>
+
+<main class="content">
 
 <header class="topbar">
 
-<div class="logo">
-🎮 Mystery Box
+<div class="welcome">
+
+<h1>
+🎮 Dashboard
+</h1>
+
+<p>
+Üdv újra a platformon
+</p>
+
 </div>
 
-<div id="userPanel" class="user-panel">
+<div id="userPanel">
 
-<a href="/login/" id="loginLink">
+<a href="/login/"
+id="loginLink"
+class="login-btn">
+
 🔐 Bejelentkezés
+
 </a>
 
-<div id="userInfo" style="display:none">
+<div id="userInfo"
+style="display:none">
 
-<div class="user-card">
+<div class="profile-box">
 
 <div id="userEmail">
-👤 Vendég
+👤 Felhasználó
 </div>
 
 <div id="userCredits">
@@ -39,13 +105,15 @@
 </div>
 
 <div id="userRank">
-🏆 Bronze
+🥉 Bronze
 </div>
 
 </div>
 
 <button id="logoutBtn">
+
 Kilépés
+
 </button>
 
 </div>
@@ -54,31 +122,7 @@ Kilépés
 
 </header>
 
-<main>
-
-<section class="hero">
-
-<div class="hero-content">
-
-<div class="hero-badge">
-🚀 Játékplatform
-</div>
-
-<h1>
-A saját
-<span>Gaming Platformod</span>
-</h1>
-
-<p>
-Játssz Blackjacket, Flappy Birdöt vagy Slot Machine-t,
-szerezz krediteket és kerülj fel a toplistára.
-</p>
-
-</div>
-
-</section>
-
-<section class="dashboard">
+<section class="stats-grid">
 
 <div class="stat-card">
 
@@ -86,12 +130,16 @@ szerezz krediteket és kerülj fel a toplistára.
 💰
 </div>
 
-<div class="stat-title">
-Kreditek
-</div>
+<div class="stat-info">
 
-<div id="dashboardCredits" class="stat-value">
+<span>
+Kreditek
+</span>
+
+<h3 id="dashboardCredits">
 0
+</h3>
+
 </div>
 
 </div>
@@ -102,12 +150,16 @@ Kreditek
 🃏
 </div>
 
-<div class="stat-title">
-Győzelmek
-</div>
+<div class="stat-info">
 
-<div id="dashboardWins" class="stat-value">
+<span>
+Győzelmek
+</span>
+
+<h3 id="dashboardWins">
 0
+</h3>
+
 </div>
 
 </div>
@@ -118,12 +170,16 @@ Győzelmek
 ❌
 </div>
 
-<div class="stat-title">
-Vereségek
-</div>
+<div class="stat-info">
 
-<div id="dashboardLosses" class="stat-value">
+<span>
+Vereségek
+</span>
+
+<h3 id="dashboardLosses">
 0
+</h3>
+
 </div>
 
 </div>
@@ -134,115 +190,189 @@ Vereségek
 🐦
 </div>
 
-<div class="stat-title">
+<div class="stat-info">
+
+<span>
 Flappy Rekord
+</span>
+
+<h3 id="dashboardFlappy">
+0
+</h3>
+
 </div>
 
-<div id="dashboardFlappy" class="stat-value">
+</div>
+
+<div class="stat-card">
+
+<div class="stat-icon">
+🎰
+</div>
+
+<div class="stat-info">
+
+<span>
+Slot Profit
+</span>
+
+<h3 id="dashboardSlotProfit">
 0
+</h3>
+
+</div>
+
+</div>
+
+<div class="stat-card">
+
+<div class="stat-icon">
+💎
+</div>
+
+<div class="stat-info">
+
+<span>
+Jackpotok
+</span>
+
+<h3 id="dashboardJackpots">
+0
+</h3>
+
 </div>
 
 </div>
 
 </section>
 
-<section class="games">
+<section class="games-section">
 
-<a href="/blackjack/" class="game-card">
+<div class="section-title">
 
-<div class="game-icon">
+<h2>
+🎮 Játékok
+</h2>
+
+</div>
+
+<div class="games-grid">
+
+<a href="/blackjack/"
+class="game-card">
+
+<div class="game-emoji">
 🃏
 </div>
 
-<h3>Blackjack</h3>
+<h3>
+Blackjack
+</h3>
 
 <p>
-Győzd le a kaszinót és szerezz krediteket.
+Győzd le az osztót és szerezz krediteket.
 </p>
-
-<span>
-Játék indítása →
-</span>
 
 </a>
 
-<a href="/flappy/" class="game-card">
+<a href="/flappy/"
+class="game-card">
 
-<div class="game-icon">
+<div class="game-emoji">
 🐦
 </div>
 
-<h3>Flappy Bird</h3>
+<h3>
+Flappy Bird
+</h3>
 
 <p>
-Döntsd meg a rekordodat és szerezz jutalmakat.
+Döntsd meg a rekordodat.
 </p>
-
-<span>
-Játék indítása →
-</span>
 
 </a>
 
-<a href="/slot/" class="game-card">
+<a href="/slot/"
+class="game-card">
 
-<div class="game-icon">
+<div class="game-emoji">
 🎰
 </div>
 
-<h3>Slot Machine</h3>
+<h3>
+Slot Machine
+</h3>
 
 <p>
-Pörgesd meg a gépet és nyerd meg a jackpotot.
+Nyerd meg a jackpotot.
 </p>
-
-<span>
-Játék indítása →
-</span>
 
 </a>
 
-<a href="/toplista/" class="game-card">
-
-<div class="game-icon">
-🏆
 </div>
 
-<h3>Toplista</h3>
+</section>
 
-<p>
-Nézd meg a legjobb játékosokat.
-</p>
+<section class="bottom-grid">
 
-<span>
-Megnyitás →
-</span>
+<div class="news-card">
 
-</a>
+<h2>
+🏆 Rangrendszer
+</h2>
 
-<a href="/profil/" class="game-card">
+<div class="rank-list">
 
-<div class="game-icon">
-👤
+<div>🥉 Bronze</div>
+
+<div>🥈 Silver</div>
+
+<div>🥇 Gold</div>
+
+<div>💎 Diamond</div>
+
+<div>👑 Legend</div>
+
 </div>
 
-<h3>Profil</h3>
+</div>
 
-<p>
-Statisztikák és felhasználói adatok.
-</p>
+<div class="news-card">
 
-<span>
-Megnyitás →
-</span>
+<h2>
+📈 Platform Statisztika
+</h2>
 
-</a>
+<div class="platform-stats">
+
+<div>
+🃏 Blackjack
+</div>
+
+<div>
+🐦 Flappy
+</div>
+
+<div>
+🎰 Slot
+</div>
+
+<div>
+🏆 Toplisták
+</div>
+
+</div>
+
+</div>
 
 </section>
 
 </main>
 
-<script type="module" src="script.js"></script>
+</div>
+
+<script type="module"
+src="script.js"></script>
 
 </body>
 </html>

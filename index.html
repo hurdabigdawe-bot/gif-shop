@@ -5,12 +5,20 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>🎁 Mystery Box</title>
+<title>🎮 Mystery Box Platform</title>
 
 <link rel="stylesheet" href="style.css">
 
 </head>
 <body>
+
+<div class="bg-glow"></div>
+
+<header class="topbar">
+
+<div class="logo">
+🎮 Mystery Box
+</div>
 
 <div id="userPanel" class="user-panel">
 
@@ -20,321 +28,221 @@
 
 <div id="userInfo" style="display:none">
 
-<div class="user-data">
+<div class="user-card">
 
-<div id="userEmail"></div>
+<div id="userEmail">
+👤 Vendég
+</div>
 
 <div id="userCredits">
 💰 0 kredit
 </div>
 
-<div id="userWins">
-🏆 0 győzelem
-</div>
-
-<div id="userLosses">
-❌ 0 vereség
-</div>
-
-<div id="userWinRate">
-📊 0%
+<div id="userRank">
+🏆 Bronze
 </div>
 
 </div>
 
 <button id="logoutBtn">
-🚪 Kilépés
+Kilépés
 </button>
 
 </div>
 
 </div>
 
-<div class="background"></div>
+</header>
+
+<main>
 
 <section class="hero">
 
-<div class="container">
+<div class="hero-content">
 
-<div class="badge">
-🎰 RANDOM MYSTERY BOX
+<div class="hero-badge">
+🚀 Játékplatform
 </div>
 
 <h1>
-Nyisd ki a<br>
-<span>Mystery Boxot</span>
+A saját
+<span>Gaming Platformod</span>
 </h1>
 
-<p class="subtitle">
-1000 Ft-ért egy teljesen véletlenszerű jutalom vár rád.
-Minden nyitás egy új meglepetés.
-</p>
-
-<div class="price">
-1000 Ft
-</div>
-
-<div class="cards">
-
-<div class="card">
-🎁
-<h3>Meglepetés</h3>
-<p>Soha nem tudhatod mit kapsz.</p>
-</div>
-
-<div class="card">
-🎲
-<h3>Véletlen</h3>
-<p>Minden nyitás más.</p>
-</div>
-
-<div class="card">
-🏆
-<h3>Ritkaságok</h3>
-<p>Gyakori, Ritka, Epikus, Legendás.</p>
-</div>
-
-</div>
-
-<div class="rarities">
-
-<div class="rarity">
-🟢 Gyakori
-</div>
-
-<div class="rarity">
-🔵 Ritka
-</div>
-
-<div class="rarity">
-🟣 Epikus
-</div>
-
-<div class="rarity">
-🟡 Legendás
-</div>
-
-</div>
-
-<a
-class="buy-btn"
-href="https://hurdabigdawe.gumroad.com/l/pwjesa"
-target="_blank">
-
-🎁 KINYITOM A MYSTERY BOXOT
-
-</a>
-
-<a
-class="poker-btn"
-href="/blackjack/">
-
-🃏 INGYENES BLACKJACK
-
-
-</a>
-  <a
-class="poker-btn"
-href="/slot/">
-
-🎰 SLOT MACHINE
-
-</a>
-
-  <a
-class="poker-btn"
-href="/toplista/">
-
-🏆 TOPLISTA
-
-</a>
-  
-<a class="poker-btn" href="/flappy/">
-🐦 FLAPPY BIRD
-</a>
-
-<a
-class="poker-btn"
-href="/profil/">
-
-👤 PROFIL
-
-</a>
-
-<p class="footer-text">
-🎲 Minden nyitás teljesen véletlenszerű.
+<p>
+Játssz Blackjacket, Flappy Birdöt vagy Slot Machine-t,
+szerezz krediteket és kerülj fel a toplistára.
 </p>
 
 </div>
 
 </section>
 
-<script type="module">
+<section class="dashboard">
 
-import { initializeApp }
-from "https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js";
+<div class="stat-card">
 
-import {
-getAuth,
-onAuthStateChanged,
-signOut
-}
-from "https://www.gstatic.com/firebasejs/12.15.0/firebase-auth.js";
+<div class="stat-icon">
+💰
+</div>
 
-import {
-getFirestore,
-doc,
-getDoc
-}
-from "https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
+<div class="stat-title">
+Kreditek
+</div>
 
-const firebaseConfig = {
-apiKey: "AIzaSyBoIILW2sbfyuSSvK108YAxnLPB_GlZZP0",
-authDomain: "game-6df94.firebaseapp.com",
-projectId: "game-6df94",
-storageBucket: "game-6df94.firebasestorage.app",
-messagingSenderId: "443187158566",
-appId: "1:443187158566:web:2e055a515f29b5021110e7"
-};
+<div id="dashboardCredits" class="stat-value">
+0
+</div>
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
+</div>
 
-const loginLink =
-document.getElementById("loginLink");
+<div class="stat-card">
 
-const userInfo =
-document.getElementById("userInfo");
+<div class="stat-icon">
+🃏
+</div>
 
-const userEmail =
-document.getElementById("userEmail");
+<div class="stat-title">
+Győzelmek
+</div>
 
-const userCredits =
-document.getElementById("userCredits");
+<div id="dashboardWins" class="stat-value">
+0
+</div>
 
-const userWins =
-document.getElementById("userWins");
+</div>
 
-const userLosses =
-document.getElementById("userLosses");
+<div class="stat-card">
 
-const userWinRate =
-document.getElementById("userWinRate");
+<div class="stat-icon">
+❌
+</div>
 
-const logoutBtn =
-document.getElementById("logoutBtn");
+<div class="stat-title">
+Vereségek
+</div>
 
-onAuthStateChanged(auth, async (user)=>{
+<div id="dashboardLosses" class="stat-value">
+0
+</div>
 
-if(user){
+</div>
 
-loginLink.style.display = "none";
-userInfo.style.display = "flex";
+<div class="stat-card">
 
-userEmail.innerText =
-"👤 " + user.email;
+<div class="stat-icon">
+🐦
+</div>
 
-try{
+<div class="stat-title">
+Flappy Rekord
+</div>
 
-const userDoc =
-await getDoc(
-doc(
-db,
-"users",
-user.uid
-)
-);
+<div id="dashboardFlappy" class="stat-value">
+0
+</div>
 
-if(userDoc.exists()){
+</div>
 
-const data =
-userDoc.data();
+</section>
 
-const credits =
-data.credits || 0;
+<section class="games">
 
-const wins =
-data.wins || 0;
+<a href="/blackjack/" class="game-card">
 
-const losses =
-data.losses || 0;
+<div class="game-icon">
+🃏
+</div>
 
-const totalGames =
-wins + losses;
+<h3>Blackjack</h3>
 
-const winRate =
-totalGames > 0
-? Math.round(
-(wins / totalGames) * 100
-)
-: 0;
+<p>
+Győzd le a kaszinót és szerezz krediteket.
+</p>
 
-userCredits.innerText =
-"💰 " +
-credits +
-" kredit";
+<span>
+Játék indítása →
+</span>
 
-userWins.innerText =
-"🏆 " +
-wins +
-" győzelem";
+</a>
 
-userLosses.innerText =
-"❌ " +
-losses +
-" vereség";
+<a href="/flappy/" class="game-card">
 
-userWinRate.innerText =
-"📊 " +
-winRate +
-"% winrate";
+<div class="game-icon">
+🐦
+</div>
 
-}else{
+<h3>Flappy Bird</h3>
 
-userCredits.innerText =
-"💰 0 kredit";
+<p>
+Döntsd meg a rekordodat és szerezz jutalmakat.
+</p>
 
-userWins.innerText =
-"🏆 0 győzelem";
+<span>
+Játék indítása →
+</span>
 
-userLosses.innerText =
-"❌ 0 vereség";
+</a>
 
-userWinRate.innerText =
-"📊 0%";
+<a href="/slot/" class="game-card">
 
-}
+<div class="game-icon">
+🎰
+</div>
 
-}catch(error){
+<h3>Slot Machine</h3>
 
-console.error(error);
+<p>
+Pörgesd meg a gépet és nyerd meg a jackpotot.
+</p>
 
-userCredits.innerText =
-"💰 Hiba";
+<span>
+Játék indítása →
+</span>
 
-}
+</a>
 
-}else{
+<a href="/toplista/" class="game-card">
 
-loginLink.style.display = "block";
-userInfo.style.display = "none";
+<div class="game-icon">
+🏆
+</div>
 
-}
+<h3>Toplista</h3>
 
-});
+<p>
+Nézd meg a legjobb játékosokat.
+</p>
 
-logoutBtn.addEventListener(
-"click",
-async()=>{
+<span>
+Megnyitás →
+</span>
 
-await signOut(auth);
+</a>
 
-location.reload();
+<a href="/profil/" class="game-card">
 
-});
+<div class="game-icon">
+👤
+</div>
 
-</script>
+<h3>Profil</h3>
+
+<p>
+Statisztikák és felhasználói adatok.
+</p>
+
+<span>
+Megnyitás →
+</span>
+
+</a>
+
+</section>
+
+</main>
+
+<script type="module" src="script.js"></script>
 
 </body>
 </html>

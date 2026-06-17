@@ -1,636 +1,477 @@
-import { initializeApp }
-from "https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js";
+import {
+auth,
+db
+}
+from "./firebase.js";
 
 import {
-  getAuth,
-  onAuthStateChanged,
-  signOut
+onAuthStateChanged,
+signOut
 }
 from "https://www.gstatic.com/firebasejs/12.15.0/firebase-auth.js";
 
 import {
-  getFirestore,
-  doc,
-  getDoc,
-  updateDoc,
-  increment
+doc,
+getDoc,
+updateDoc,
+increment,
+arrayUnion
 }
 from "https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
 
-const firebaseConfig = {
-  apiKey: "AIzaSyBoIILW2sbfyuSSvK108YAxnLPB_GlZZP0",
-  authDomain: "game-6df94.firebaseapp.com",
-  projectId: "game-6df94",
-  storageBucket: "game-6df94.firebasestorage.app",
-  messagingSenderId: "443187158566",
-  appId: "1:443187158566:web:2e055a515f29b5021110e7"
-};
+/* =========================
+   UI ELEMEK
+========================= */
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
-const userWins =
+const loginLink =
+document.getElementById("loginLink");
+
+const userInfo =
+document.getElementById("userInfo");
+
+const logoutBtn =
+document.getElementById("logoutBtn");
+
+const userEmail =
+document.getElementById("userEmail");
+
+const userCredits =
+document.getElementById("userCredits");
+
+const userRank =
+document.getElementById("userRank");
+
+const balanceElement =
+document.getElementById("balance");
+
+const winsElement =
 document.getElementById("userWins");
 
-const userLosses =
+const lossesElement =
 document.getElementById("userLosses");
 
-const userWinRate =
+const winRateElement =
 document.getElementById("userWinRate");
 
+const dealerCardsElement =
+document.getElementById("dealerCards");
+
+const playerCardsElement =
+document.getElementById("playerCards");
+
+const dealerScoreElement =
+document.getElementById("dealerScore");
+
+const playerScoreElement =
+document.getElementById("playerScore");
+
+const messageElement =
+document.getElementById("message");
+
+const betValueElement =
+document.getElementById("betValue");
+
+const achievementPreview =
+document.getElementById("achievementPreview");
+
+const toast =
+document.getElementById("toast");
+
+/* =========================
+   JÁTÉK ADATOK
+========================= */
+
 let balance = 0;
-let bet = 10;
+
+let wins = 0;
+
+let losses = 0;
+
+let bet = 100;
 
 let deck = [];
+
 let player = [];
+
 let dealer = [];
 
 let gameActive = false;
 
-const suits = ["♠","♥","♦","♣"];
-const values = ["A","2","3","4","5","6","7","8","9","10","J","Q","K"];
+let currentUser = null;
+
+let doubleUsed = false;
+
+/* =========================
+   KÁRTYÁK
+========================= */
+
+const suits = [
+"♠",
+"♥",
+"♦",
+"♣"
+];
+
+const values = [
+"A",
+"2",
+"3",
+"4",
+"5",
+"6",
+"7",
+"8",
+"9",
+"10",
+"J",
+"Q",
+"K"
+];
+
+/* =========================
+   TOAST
+========================= */
+
+function showToast(text){
+
+toast.textContent =
+text;
+
+toast.classList.add(
+"show"
+);
+
+setTimeout(()=>{
+
+toast.classList.remove(
+"show"
+);
+
+},3000);
+
+}
+
+/* =========================
+   RANGRENDSZER
+========================= */
+
+function getRank(credits){
+
+if(
+credits >= 1000000
+){
+return "👑 Legend";
+}
+
+if(
+credits >= 250000
+){
+return "💎 Diamond";
+}
+
+if(
+credits >= 50000
+){
+return "🥇 Gold";
+}
+
+if(
+credits >= 10000
+){
+return "🥈 Silver";
+}
+
+return "🥉 Bronze";
+
+}
+
+function updateRank(){
+
+userRank.textContent =
+getRank(balance);
+
+}
+
+/* =========================
+   UI FRISSÍTÉS
+========================= */
 
 function updateBalance(){
 
-  document.getElementById(
-    "balance"
-  ).textContent = balance;
+balanceElement.textContent =
+Number(balance)
+.toLocaleString(
+"hu-HU"
+);
 
-  const credits =
-    document.getElementById(
-      "userCredits"
-    );
+userCredits.textContent =
+"💰 " +
+Number(balance)
+.toLocaleString(
+"hu-HU"
+) +
+" kredit";
 
-  if(credits){
+updateRank();
 
-    credits.textContent =
-      "💰 " + balance + " kredit";
+}
 
-  }
+function updateStats(){
+
+winsElement.textContent =
+wins;
+
+lossesElement.textContent =
+losses;
+
+const total =
+wins + losses;
+
+const rate =
+total > 0
+?
+(
+wins /
+total *
+100
+).toFixed(1)
+:
+0;
+
+winRateElement.textContent =
+rate + "%";
 
 }
 
-async function saveGameResult(result){
+/* =========================
+   ACHIEVEMENTEK
+========================= */
 
-  const user = auth.currentUser;
+async function unlockAchievement(id){
 
-  if(!user) return;
+if(
+!currentUser
+){
+return;
+}
 
-  try{
+try{
 
-    const updateData = {
-      credits: balance
-    };
+await updateDoc(
+doc(
+db,
+"users",
+currentUser.uid
+),
+{
+achievements:
+arrayUnion(id)
+}
+);
 
-    if(result === "win"){
-      updateData.wins =
-        increment(1);
-    }
+showToast(
+"🏅 Achievement: " +
+id
+);
 
-    if(result === "loss"){
-      updateData.losses =
-        increment(1);
-    }
+}catch(error){
 
-    await updateDoc(
-      doc(
-        db,
-        "users",
-        user.uid
-      ),
-      updateData
-    );
-
-  }catch(error){
-
-    console.error(
-      "Mentési hiba:",
-      error
-    );
-
-  }
+console.error(
+"Achievement hiba:",
+error
+);
 
 }
+
+}
+
+async function checkAchievements(){
+
+if(
+wins >= 1
+){
+await unlockAchievement(
+"first_win"
+);
+}
+
+if(
+wins >= 10
+){
+await unlockAchievement(
+"win_10"
+);
+}
+
+if(
+wins >= 100
+){
+await unlockAchievement(
+"win_100"
+);
+}
+
+if(
+balance >= 10000
+){
+await unlockAchievement(
+"credits_10000"
+);
+}
+
+if(
+balance >= 100000
+){
+await unlockAchievement(
+"credits_100000"
+);
+}
+
+if(
+balance >= 1000000
+){
+await unlockAchievement(
+"legend_rank"
+);
+}
+
+}
+
+/* =========================
+   FIRESTORE MENTÉS
+========================= */
+
+async function saveUser(){
+
+if(
+!currentUser
+){
+return;
+}
+
+try{
+
+await updateDoc(
+doc(
+db,
+"users",
+currentUser.uid
+),
+{
+credits: balance,
+wins: wins,
+losses: losses
+}
+);
+
+}catch(error){
+
+console.error(
+"Mentési hiba:",
+error
+);
+
+}
+
+}
+
+/* =========================
+   AUTH
+========================= */
 
 onAuthStateChanged(
-  auth,
-  async(user)=>{
+auth,
+async(user)=>{
 
-    const loginLink =
-      document.getElementById(
-        "loginLink"
-      );
+if(!user){
 
-    const userInfo =
-      document.getElementById(
-        "userInfo"
-      );
+loginLink.style.display =
+"block";
 
-    if(!user){
+userInfo.style.display =
+"none";
 
-      loginLink.style.display =
-        "block";
+return;
 
-      userInfo.style.display =
-        "none";
+}
 
-      return;
+currentUser = user;
 
-    }
+loginLink.style.display =
+"none";
 
-    loginLink.style.display =
-      "none";
+userInfo.style.display =
+"flex";
 
-    userInfo.style.display =
-      "flex";
+try{
 
-    document.getElementById(
-      "userEmail"
-    ).textContent =
-      "👤 " + user.email;
+const snap =
+await getDoc(
+doc(
+db,
+"users",
+user.uid
+)
+);
 
-    try{
-
-      const userDoc =
-        await getDoc(
-          doc(
-            db,
-            "users",
-            user.uid
-          )
-        );
-
-    if(userDoc.exists()){
+if(
+snap.exists()
+){
 
 const data =
-userDoc.data();
+snap.data();
 
 balance =
 data.credits || 0;
 
-const wins =
+wins =
 data.wins || 0;
 
-const losses =
+losses =
 data.losses || 0;
 
-const totalGames =
-wins + losses;
+const username =
+data.username ||
+user.email;
 
-const winRate =
-totalGames > 0
-? Math.round(
-(wins / totalGames) * 100
-)
-: 0;
-
-userWins.textContent =
-"🏆 " +
-wins +
-" győzelem";
-
-userLosses.textContent =
-"❌ " +
-losses +
-" vereség";
-
-userWinRate.textContent =
-"📊 " +
-winRate +
-"%";
+userEmail.textContent =
+"👤 " +
+username;
 
 updateBalance();
 
+updateStats();
+
+achievementPreview.textContent =
+"🏅 Achievement rendszer aktív";
+
 }
 
-    }catch(error){
+}catch(error){
 
-      console.error(error);
-
-    }
-
-  }
+console.error(
+error
 );
 
-document
-  .getElementById(
-    "logoutBtn"
-  )
-  .addEventListener(
-    "click",
-    async()=>{
-
-      await signOut(auth);
-
-      window.location.href="/";
-
-    }
-  );
-
-function createDeck(){
-
-  deck = [];
-
-  for(const suit of suits){
-
-    for(const value of values){
-
-      deck.push({
-        value,
-        suit
-      });
-
-    }
-
-  }
-
-  for(
-    let i = deck.length - 1;
-    i > 0;
-    i--
-  ){
-
-    const j =
-      Math.floor(
-        Math.random() *
-        (i + 1)
-      );
-
-    [deck[i],deck[j]] =
-      [deck[j],deck[i]];
-
-  }
-
 }
 
-function drawCard(){
+}
+);
 
-  return deck.pop();
+/* =========================
+   KIJELENTKEZÉS
+========================= */
+
+logoutBtn.addEventListener(
+"click",
+async()=>{
+
+await signOut(
+auth
+);
+
+window.location.href =
+"/";
 
 }
-
-function getValue(card){
-
-  if(
-    ["J","Q","K"]
-    .includes(card.value)
-  ){
-    return 10;
-  }
-
-  if(card.value==="A"){
-    return 11;
-  }
-
-  return Number(card.value);
-
-}
-
-function handValue(hand){
-
-  let total = 0;
-  let aces = 0;
-
-  hand.forEach(card=>{
-
-    total +=
-      getValue(card);
-
-    if(card.value==="A"){
-      aces++;
-    }
-
-  });
-
-  while(
-    total > 21 &&
-    aces > 0
-  ){
-
-    total -= 10;
-    aces--;
-
-  }
-
-  return total;
-
-}
-
-function renderCards(){
-
-  const playerArea =
-    document.getElementById(
-      "playerCards"
-    );
-
-  const dealerArea =
-    document.getElementById(
-      "dealerCards"
-    );
-
-  playerArea.innerHTML = "";
-  dealerArea.innerHTML = "";
-
-  player.forEach(card=>{
-
-    const div =
-      document.createElement(
-        "div"
-      );
-
-    div.className =
-      "card";
-
-    div.textContent =
-      card.value +
-      card.suit;
-
-    playerArea.appendChild(
-      div
-    );
-
-  });
-
-  dealer.forEach(
-    (card,index)=>{
-
-      const div =
-        document.createElement(
-          "div"
-        );
-
-      if(
-        index===1 &&
-        gameActive
-      ){
-
-        div.className =
-          "card hidden";
-
-        div.textContent =
-          "??";
-
-      }else{
-
-        div.className =
-          "card";
-
-        div.textContent =
-          card.value +
-          card.suit;
-
-      }
-
-      dealerArea.appendChild(
-        div
-      );
-
-    }
-  );
-
-  document.getElementById(
-    "playerScore"
-  ).textContent =
-    "Pont: " +
-    handValue(player);
-
-  document.getElementById(
-    "dealerScore"
-  ).textContent =
-    gameActive
-      ? "Pont: ?"
-      : "Pont: " +
-        handValue(dealer);
-
-}
-function deal(){
-
-  if(gameActive){
-    return;
-  }
-
-  if(balance < bet){
-
-    alert(
-      "Nincs elég kredit!"
-    );
-
-    return;
-  }
-
-  balance -= bet;
-
-  updateBalance();
-
-  saveGameResult(null);
-
-  createDeck();
-
-  player = [
-    drawCard(),
-    drawCard()
-  ];
-
-  dealer = [
-    drawCard(),
-    drawCard()
-  ];
-
-  gameActive = true;
-
-  renderCards();
-
-  document.getElementById(
-    "message"
-  ).textContent =
-    "Lapot kérsz vagy megállsz?";
-
-}
-
-async function hit(){
-
-  if(!gameActive){
-    return;
-  }
-
-  player.push(
-    drawCard()
-  );
-
-  renderCards();
-
-  if(
-    handValue(player) > 21
-  ){
-
-    gameActive = false;
-
-    renderCards();
-
-    await saveGameResult(
-      "loss"
-    );
-
-    document.getElementById(
-      "message"
-    ).textContent =
-      "💥 BUST! Vesztettél.";
-
-  }
-
-}
-
-async function stand(){
-
-  if(!gameActive){
-    return;
-  }
-
-  gameActive = false;
-
-  while(
-    handValue(dealer) < 17
-  ){
-
-    dealer.push(
-      drawCard()
-    );
-
-  }
-
-  renderCards();
-
-  const playerScore =
-    handValue(player);
-
-  const dealerScore =
-    handValue(dealer);
-
-  let msg = "";
-
-  if(
-    dealerScore > 21
-  ){
-
-    msg =
-      "🎉 Dealer bust! Nyertél!";
-
-    balance +=
-      bet * 2;
-
-    updateBalance();
-
-    await saveGameResult(
-      "win"
-    );
-
-  }
-  else if(
-    playerScore >
-    dealerScore
-  ){
-
-    msg =
-      "🏆 Nyertél!";
-
-    balance +=
-      bet * 2;
-
-    updateBalance();
-
-    await saveGameResult(
-      "win"
-    );
-
-  }
-  else if(
-    playerScore ===
-    dealerScore
-  ){
-
-    msg =
-      "🤝 Döntetlen";
-
-    balance += bet;
-
-    updateBalance();
-
-    await saveGameResult(
-      null
-    );
-
-  }
-  else{
-
-    msg =
-      "😢 Vesztettél";
-
-    await saveGameResult(
-      "loss"
-    );
-
-  }
-
-  document.getElementById(
-    "message"
-  ).textContent =
-    msg;
-
-}
-document
-  .querySelectorAll(
-    ".bet-btn"
-  )
-  .forEach(btn=>{
-
-    btn.addEventListener(
-      "click",
-      ()=>{
-
-        if(gameActive){
-          return;
-        }
-
-        bet =
-          Number(
-            btn.dataset.bet
-          );
-
-        document.getElementById(
-          "betValue"
-        ).textContent =
-          bet;
-
-      }
-    );
-
-  });
-
-document
-  .getElementById(
-    "dealBtn"
-  )
-  .addEventListener(
-    "click",
-    deal
-  );
-
-document
-  .getElementById(
-    "hitBtn"
-  )
-  .addEventListener(
-    "click",
-    hit
-  );
-
-document
-  .getElementById(
-    "standBtn"
-  )
-  .addEventListener(
-    "click",
-    stand
-  );
-
-updateBalance();
+);

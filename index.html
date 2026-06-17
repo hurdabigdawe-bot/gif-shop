@@ -1,12 +1,142 @@
 <!DOCTYPE html>
+
 <html lang="hu">
 <head>
+
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
 <title>🎁 Mystery Box</title>
+
 <link rel="stylesheet" href="style.css">
+
 </head>
 <body>
+
+<div id="userPanel" class="user-panel">
+
+<a href="/login/" id="loginLink">
+🔐 Bejelentkezés
+</a>
+
+<div id="userInfo" style="display:none">
+
+<div class="user-data">
+
+<div id="userEmail"></div>
+
+<div id="userCredits">
+💰 0 kredit
+</div>
+
+</div>
+
+<button id="logoutBtn">
+🚪 Kilépés
+</button>
+
+</div>
+
+</div>
+
+<div class="background"></div>
+
+<section class="hero">
+
+<div class="container">
+
+<div class="badge">
+🎰 RANDOM MYSTERY BOX
+</div>
+
+<h1>
+Nyisd ki a<br>
+<span>Mystery Boxot</span>
+</h1>
+
+<p class="subtitle">
+1000 Ft-ért egy teljesen véletlenszerű jutalom vár rád.
+Minden nyitás egy új meglepetés.
+</p>
+
+<div class="price">
+1000 Ft
+</div>
+
+<div class="cards">
+
+<div class="card">
+🎁
+<h3>Meglepetés</h3>
+<p>Soha nem tudhatod mit kapsz.</p>
+</div>
+
+<div class="card">
+🎲
+<h3>Véletlen</h3>
+<p>Minden nyitás más.</p>
+</div>
+
+<div class="card">
+🏆
+<h3>Ritkaságok</h3>
+<p>Gyakori, Ritka, Epikus, Legendás.</p>
+</div>
+
+</div>
+
+<div class="rarities">
+
+<div class="rarity">
+🟢 Gyakori
+</div>
+
+<div class="rarity">
+🔵 Ritka
+</div>
+
+<div class="rarity">
+🟣 Epikus
+</div>
+
+<div class="rarity">
+🟡 Legendás
+</div>
+
+</div>
+
+<a
+class="buy-btn"
+href="https://hurdabigdawe.gumroad.com/l/pwjesa"
+target="_blank">
+
+🎁 KINYITOM A MYSTERY BOXOT
+
+</a>
+
+<a
+class="poker-btn"
+href="/blackjack/">
+
+🃏 INGYENES BLACKJACK
+
+</a>
+  <a
+class="poker-btn"
+href="/profil/">
+
+👤 PROFIL
+
+</a>
+
+<p class="footer-text">
+🎲 Minden nyitás teljesen véletlenszerű.
+</p>
+
+</div>
+
+</section>
+
 <script type="module">
 
 import { initializeApp }
@@ -36,7 +166,9 @@ appId: "1:443187158566:web:2e055a515f29b5021110e7"
 };
 
 const app = initializeApp(firebaseConfig);
+
 const auth = getAuth(app);
+
 const db = getFirestore(app);
 
 const loginLink =
@@ -59,6 +191,7 @@ onAuthStateChanged(auth, async (user)=>{
 if(user){
 
 loginLink.style.display = "none";
+
 userInfo.style.display = "flex";
 
 userEmail.innerText =
@@ -77,47 +210,10 @@ user.uid
 
 if(userDoc.exists()){
 
-const data =
-userDoc.data();
-
 userCredits.innerText =
 "💰 " +
-(data.credits || 0) +
+userDoc.data().credits +
 " kredit";
-
-document.getElementById(
-"userWins"
-).innerText =
-"🏆 " +
-(data.wins || 0) +
-" győzelem";
-
-document.getElementById(
-"userLosses"
-).innerText =
-"❌ " +
-(data.losses || 0) +
-" vereség";
-
-const totalGames =
-(data.wins || 0) +
-(data.losses || 0);
-
-let rate = 0;
-
-if(totalGames > 0){
-
-rate = Math.round(
-((data.wins || 0) /
-totalGames) * 100
-);
-
-}
-
-document.getElementById(
-"userRate"
-).innerText =
-"📈 " + rate + "%";
 
 }else{
 
@@ -137,11 +233,9 @@ userCredits.innerText =
 
 }else{
 
-loginLink.style.display =
-"block";
+loginLink.style.display = "block";
 
-userInfo.style.display =
-"none";
+userInfo.style.display = "none";
 
 }
 
@@ -158,3 +252,6 @@ location.reload();
 });
 
 </script>
+
+</body>
+</html>

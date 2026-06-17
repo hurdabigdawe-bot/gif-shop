@@ -9,17 +9,12 @@ box-sizing:border-box;
 --bg:#0f172a;
 --bg2:#111827;
 
---sidebar:#0b1220;
-
 --card:rgba(255,255,255,.05);
-
 --border:rgba(255,255,255,.08);
 
 --green:#00e701;
 --blue:#00d2ff;
-
 --gold:#ffd700;
-
 --red:#ff5252;
 
 }
@@ -49,7 +44,6 @@ overflow-x:hidden;
 .app{
 
 display:flex;
-
 min-height:100vh;
 
 }
@@ -70,7 +64,6 @@ border-right:
 padding:25px;
 
 display:flex;
-
 flex-direction:column;
 
 }
@@ -78,9 +71,7 @@ flex-direction:column;
 .brand{
 
 display:flex;
-
 align-items:center;
-
 gap:15px;
 
 margin-bottom:40px;
@@ -118,7 +109,6 @@ font-size:22px;
 .brand-text p{
 
 color:#9ca3af;
-
 font-size:13px;
 
 }
@@ -126,9 +116,7 @@ font-size:13px;
 .menu{
 
 display:flex;
-
 flex-direction:column;
-
 gap:10px;
 
 }
@@ -168,7 +156,6 @@ rgba(0,210,255,.15)
 .content{
 
 flex:1;
-
 padding:30px;
 
 }
@@ -176,12 +163,10 @@ padding:30px;
 .topbar{
 
 display:flex;
-
 justify-content:space-between;
-
 align-items:center;
 
-margin-bottom:30px;
+margin-bottom:25px;
 
 }
 
@@ -202,9 +187,7 @@ color:#9ca3af;
 #userInfo{
 
 display:flex;
-
 align-items:center;
-
 gap:12px;
 
 }
@@ -215,17 +198,11 @@ background:var(--card);
 
 border:1px solid var(--border);
 
-backdrop-filter:blur(20px);
-
 padding:14px 18px;
 
 border-radius:16px;
 
-}
-
-#userEmail{
-
-margin-bottom:5px;
+backdrop-filter:blur(20px);
 
 }
 
@@ -235,6 +212,7 @@ color:var(--gold);
 
 font-weight:bold;
 
+margin-top:4px;
 margin-bottom:4px;
 
 }
@@ -243,9 +221,9 @@ margin-bottom:4px;
 
 color:var(--green);
 
-font-size:14px;
-
 font-weight:bold;
+
+font-size:14px;
 
 }
 
@@ -253,10 +231,10 @@ font-weight:bold;
 
 padding:12px 20px;
 
+border-radius:12px;
+
 background:
 rgba(255,255,255,.08);
-
-border-radius:12px;
 
 text-decoration:none;
 
@@ -280,6 +258,127 @@ cursor:pointer;
 
 }
 
+/* DAILY REWARD */
+
+.daily-section{
+
+margin-bottom:25px;
+
+}
+
+.daily-card{
+
+background:
+linear-gradient(
+135deg,
+rgba(255,215,0,.12),
+rgba(255,215,0,.04)
+);
+
+border:1px solid
+rgba(255,215,0,.15);
+
+border-radius:28px;
+
+padding:25px;
+
+display:flex;
+
+justify-content:space-between;
+align-items:center;
+
+gap:20px;
+
+backdrop-filter:
+blur(20px);
+
+}
+
+.daily-icon{
+
+font-size:70px;
+
+}
+
+.daily-info h2{
+
+font-size:28px;
+
+margin-bottom:8px;
+
+}
+
+.daily-info p{
+
+color:#c8d2e3;
+
+}
+
+.daily-action{
+
+display:flex;
+
+flex-direction:column;
+
+align-items:flex-end;
+
+gap:10px;
+
+}
+
+#dailyRewardAmount{
+
+font-size:24px;
+
+font-weight:bold;
+
+color:var(--gold);
+
+}
+
+#claimRewardBtn{
+
+padding:14px 24px;
+
+border:none;
+
+border-radius:14px;
+
+font-weight:bold;
+
+font-size:16px;
+
+cursor:pointer;
+
+background:
+linear-gradient(
+135deg,
+#ffd700,
+#ffb300
+);
+
+color:black;
+
+}
+
+#claimRewardBtn:disabled{
+
+opacity:.5;
+
+cursor:not-allowed;
+
+}
+
+#dailyCountdown{
+
+font-size:14px;
+
+color:#9ca3af;
+
+}
+
+/* STATS */
+
 .stats-grid{
 
 display:grid;
@@ -289,7 +388,7 @@ repeat(auto-fit,minmax(240px,1fr));
 
 gap:20px;
 
-margin-bottom:35px;
+margin-bottom:30px;
 
 }
 
@@ -330,11 +429,11 @@ font-size:40px;
 
 .stat-info span{
 
-color:#9ca3af;
-
 display:block;
 
 margin-bottom:8px;
+
+color:#9ca3af;
 
 }
 
@@ -343,6 +442,8 @@ margin-bottom:8px;
 font-size:28px;
 
 }
+
+/* GAMES */
 
 .games-section{
 
@@ -405,9 +506,9 @@ margin-bottom:15px;
 
 .game-card h3{
 
-margin-bottom:10px;
-
 font-size:26px;
+
+margin-bottom:10px;
 
 }
 
@@ -419,6 +520,8 @@ line-height:1.7;
 
 }
 
+/* BOTTOM */
+
 .bottom-grid{
 
 display:grid;
@@ -428,7 +531,7 @@ grid-template-columns:
 
 gap:20px;
 
-margin-top:35px;
+margin-top:30px;
 
 }
 
@@ -453,9 +556,7 @@ margin-bottom:20px;
 .rank-list{
 
 display:flex;
-
 flex-wrap:wrap;
-
 gap:10px;
 
 }
@@ -464,10 +565,10 @@ gap:10px;
 
 padding:10px 14px;
 
+border-radius:12px;
+
 background:
 rgba(255,255,255,.05);
-
-border-radius:12px;
 
 }
 
@@ -494,6 +595,8 @@ border-radius:12px;
 text-align:center;
 
 }
+
+/* MOBILE */
 
 @media(max-width:1000px){
 
@@ -534,9 +637,17 @@ align-items:flex-start;
 
 }
 
-.welcome h1{
+.daily-card{
 
-font-size:32px;
+flex-direction:column;
+
+align-items:flex-start;
+
+}
+
+.daily-action{
+
+align-items:flex-start;
 
 }
 

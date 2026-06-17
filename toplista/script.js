@@ -42,12 +42,20 @@ document.getElementById(
 "creditsLeaderboard"
 );
 
-function getDisplayName(email){
+function getDisplayName(player){
 
-if(!email)
+if(
+player.username &&
+player.username.trim() !== ""
+){
+return player.username;
+}
+
+if(player.email){
+return player.email.split("@")[0];
+}
+
 return "Ismeretlen";
-
-return email.split("@")[0];
 
 }
 
@@ -99,7 +107,7 @@ ${medal(index)}
 </div>
 
 <div class="name">
-${getDisplayName(player.email)}
+${getDisplayName(player)}
 </div>
 
 <div class="score">
@@ -136,6 +144,9 @@ const data =
 doc.data();
 
 users.push({
+
+username:
+data.username || "",
 
 email:
 data.email || "",

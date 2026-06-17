@@ -12,8 +12,8 @@ import {
 getFirestore,
 doc,
 getDoc,
-updateDoc,
-setDoc
+setDoc,
+updateDoc
 }
 from "https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
 
@@ -30,35 +30,35 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-const reel1 =
-document.getElementById("reel1");
+const reel1 = document.getElementById("reel1");
+const reel2 = document.getElementById("reel2");
+const reel3 = document.getElementById("reel3");
 
-const reel2 =
-document.getElementById("reel2");
+const spinBtn = document.getElementById("spinBtn");
+const result = document.getElementById("result");
+const betAmount = document.getElementById("betAmount");
 
-const reel3 =
-document.getElementById("reel3");
+const loginLink = document.getElementById("loginLink");
+const userInfo = document.getElementById("userInfo");
+const logoutBtn = document.getElementById("logoutBtn");
 
-const spinBtn =
-document.getElementById("spinBtn");
+const userEmail = document.getElementById("userEmail");
+const userCredits = document.getElementById("userCredits");
 
-const result =
-document.getElementById("result");
+const slotSpinsEl =
+document.getElementById("slotSpins");
 
-const loginLink =
-document.getElementById("loginLink");
+const slotWinsEl =
+document.getElementById("slotWins");
 
-const userInfo =
-document.getElementById("userInfo");
+const slotLossesEl =
+document.getElementById("slotLosses");
 
-const logoutBtn =
-document.getElementById("logoutBtn");
+const slotProfitEl =
+document.getElementById("slotProfit");
 
-const userEmail =
-document.getElementById("userEmail");
-
-const userCredits =
-document.getElementById("userCredits");
+const slotJackpotsEl =
+document.getElementById("slotJackpots");
 
 const symbols = [
 "🍒",
@@ -70,7 +70,38 @@ const symbols = [
 ];
 
 let currentUser = null;
+
 let credits = 0;
+
+let slotSpins = 0;
+let slotWins = 0;
+let slotLosses = 0;
+let slotProfit = 0;
+let slotJackpots = 0;
+
+function updateStatsUI(){
+
+slotSpinsEl.textContent =
+slotSpins;
+
+slotWinsEl.textContent =
+slotWins;
+
+slotLossesEl.textContent =
+slotLosses;
+
+slotProfitEl.textContent =
+slotProfit.toLocaleString();
+
+slotJackpotsEl.textContent =
+slotJackpots;
+
+userCredits.textContent =
+"💰 " +
+credits.toLocaleString() +
+" kredit";
+
+}
 
 function randomSymbol(){
 
@@ -83,7 +114,61 @@ symbols.length
 
 }
 
-async function updateCredits(){
+function getMultiplier(a,b,c){
+
+if(
+a==="7️⃣" &&
+b==="7️⃣" &&
+c==="7️⃣"
+){
+return 500;
+}
+
+if(
+a==="💎" &&
+b==="💎" &&
+c==="💎"
+){
+return 100;
+}
+
+if(
+a==="⭐" &&
+b==="⭐" &&
+c==="⭐"
+){
+return 25;
+}
+
+if(
+a==="🍋" &&
+b==="🍋" &&
+c==="🍋"
+){
+return 10;
+}
+
+if(
+a==="🍒" &&
+b==="🍒" &&
+c==="🍒"
+){
+return 5;
+}
+
+if(
+a===b ||
+b===c ||
+a===c
+){
+return 1.5;
+}
+
+return 0;
+
+}
+
+async function saveStats(){
 
 if(!currentUser)
 return;
@@ -95,68 +180,14 @@ db,
 currentUser.uid
 ),
 {
-credits
+credits,
+slotSpins,
+slotWins,
+slotLosses,
+slotProfit,
+slotJackpots
 }
 );
-
-userCredits.textContent =
-"💰 " +
-credits +
-" kredit";
-
-}
-
-function calculateWin(a,b,c){
-
-if(
-a === "7️⃣" &&
-b === "7️⃣" &&
-c === "7️⃣"
-){
-return 50000;
-}
-
-if(
-a === "💎" &&
-b === "💎" &&
-c === "💎"
-){
-return 10000;
-}
-
-if(
-a === "⭐" &&
-b === "⭐" &&
-c === "⭐"
-){
-return 2500;
-}
-
-if(
-a === "🍋" &&
-b === "🍋" &&
-c === "🍋"
-){
-return 1000;
-}
-
-if(
-a === "🍒" &&
-b === "🍒" &&
-c === "🍒"
-){
-return 500;
-}
-
-if(
-a === b ||
-b === c ||
-a === c
-){
-return 150;
-}
-
-return 0;
 
 }
 
@@ -165,7 +196,12 @@ async function spin(){
 if(!currentUser)
 return;
 
-if(credits < 100){
+const bet =
+Number(
+betAmount.value
+);
+
+if(credits < bet){
 
 result.textContent =
 "❌ Nincs elég kredited!";
@@ -176,18 +212,13 @@ return;
 
 spinBtn.disabled = true;
 
-credits -= 100;
+credits -= bet;
 
-await updateCredits();
+slotSpins++;
 
-result.textContent =
-"🎰 Pörgetés...";
+updateStatsUI();
 
-reel1.classList.add("spin");
-reel2.classList.add("spin");
-reel3.classList.add("spin");
-
-const animation =
+const interval =
 setInterval(()=>{
 
 reel1.textContent =
@@ -199,18 +230,12 @@ randomSymbol();
 reel3.textContent =
 randomSymbol();
 
-},100);
+},80);
 
 setTimeout(
 async()=>{
 
-clearInterval(
-animation
-);
-
-reel1.classList.remove("spin");
-reel2.classList.remove("spin");
-reel3.classList.remove("spin");
+clearInterval(interval);
 
 const a =
 randomSymbol();
@@ -225,30 +250,62 @@ reel1.textContent = a;
 reel2.textContent = b;
 reel3.textContent = c;
 
-const win =
-calculateWin(
+const multiplier =
+getMultiplier(
 a,
 b,
 c
 );
 
-if(win > 0){
+if(multiplier > 0){
+
+const win =
+Math.floor(
+bet *
+multiplier
+);
 
 credits += win;
 
+slotWins++;
+
+slotProfit +=
+(win - bet);
+
+if(
+a==="7️⃣" &&
+b==="7️⃣" &&
+c==="7️⃣"
+){
+
+slotJackpots++;
+
 result.textContent =
-"🎉 Nyertél " +
-win +
-" kreditet!";
+"💎 JACKPOT! +" +
+win.toLocaleString();
 
 }else{
 
 result.textContent =
-"😢 Nem nyertél.";
+"🎉 Nyertél +" +
+win.toLocaleString();
 
 }
 
-await updateCredits();
+}else{
+
+slotLosses++;
+
+slotProfit -= bet;
+
+result.textContent =
+"😢 Nem nyertél";
+
+}
+
+updateStatsUI();
+
+await saveStats();
 
 spinBtn.disabled =
 false;
@@ -277,7 +334,7 @@ userInfo.style.display =
 spinBtn.disabled = true;
 
 result.textContent =
-"🔒 Jelentkezz be!";
+"🔒 Jelentkezz be";
 
 return;
 
@@ -294,8 +351,6 @@ userInfo.style.display =
 userEmail.textContent =
 "👤 " +
 user.email;
-
-try{
 
 const snap =
 await getDoc(
@@ -314,10 +369,20 @@ snap.data();
 credits =
 data.credits || 0;
 
-userCredits.textContent =
-"💰 " +
-credits +
-" kredit";
+slotSpins =
+data.slotSpins || 0;
+
+slotWins =
+data.slotWins || 0;
+
+slotLosses =
+data.slotLosses || 0;
+
+slotProfit =
+data.slotProfit || 0;
+
+slotJackpots =
+data.slotJackpots || 0;
 
 }else{
 
@@ -328,25 +393,21 @@ db,
 user.uid
 ),
 {
-credits:5000
+credits:5000,
+slotSpins:0,
+slotWins:0,
+slotLosses:0,
+slotProfit:0,
+slotJackpots:0
 },
 {
 merge:true
 }
 );
 
-credits = 5000;
-
-userCredits.textContent =
-"💰 5000 kredit";
-
 }
 
-}catch(error){
-
-console.error(error);
-
-}
+updateStatsUI();
 
 }
 );

@@ -1,141 +1,333 @@
 <!DOCTYPE html>
-
 <html lang="hu">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>🃏 Blackjack</title>
 
-<link rel="stylesheet" href="style.css">
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>🃏 Blackjack Casino</title>
+
+<link rel="stylesheet"
+href="style.css">
 
 </head>
 <body>
 
-<div id="userPanel" class="user-panel">
+<div class="bg-glow"></div>
 
-<a href="/login/" id="loginLink">
+<header class="topbar">
+
+<div class="logo">
+🃏 Blackjack Casino
+</div>
+
+<div id="userPanel">
+
+<a href="/login/"
+id="loginLink"
+class="login-btn">
+
 🔐 Bejelentkezés
+
 </a>
 
-<div id="userInfo" style="display:none">
+<div id="userInfo"
+style="display:none">
 
-<div class="user-data">
+<div class="user-card">
 
-<div id="userEmail"></div>
+<div id="userEmail">
+👤 Felhasználó
+</div>
 
 <div id="userCredits">
 💰 0 kredit
 </div>
 
-<div id="userWins">
-🏆 0 győzelem
-</div>
-
-<div id="userLosses">
-❌ 0 vereség
-</div>
-
-<div id="userWinRate">
-📊 0%
+<div id="userRank">
+🥉 Bronze
 </div>
 
 </div>
 
 <button id="logoutBtn">
-🚪 Kilépés
+
+Kilépés
+
 </button>
 
 </div>
 
 </div>
 
+</header>
+
+<main class="container">
+
+<section class="stats-grid">
+
+<div class="stat-card">
+
+<div class="stat-icon">
+💰
 </div>
 
-<div class="table">
+<div>
 
-<h1>🃏 BLACKJACK</h1>
+<span>
+Kreditek
+</span>
 
-<div class="bank">
-💰 Egyenleg:
-<span id="balance">0</span>
-</div>
+<h3 id="balance">
+0
+</h3>
 
-<div class="bet-area">
-
-<p>
-Tét:
-<span id="betValue">10</span>
-</p>
-
-<button class="bet-btn" data-bet="10">
-10
-</button>
-
-<button class="bet-btn" data-bet="50">
-50
-</button>
-
-<button class="bet-btn" data-bet="100">
-100
-</button>
-
-<button class="bet-btn" data-bet="500">
-500
-</button>
-
-</div>
-
-<div class="dealer-section">
-
-<h2>🤵 Dealer</h2>
-
-<div id="dealerCards" class="cards"></div>
-
-<div id="dealerScore">
-Pont: ?
 </div>
 
 </div>
 
-<div class="player-section">
+<div class="stat-card">
 
-<h2>😎 Te</h2>
+<div class="stat-icon">
+🏆
+</div>
 
-<div id="playerCards" class="cards"></div>
+<div>
 
-<div id="playerScore">
+<span>
+Győzelmek
+</span>
+
+<h3 id="userWins">
+0
+</h3>
+
+</div>
+
+</div>
+
+<div class="stat-card">
+
+<div class="stat-icon">
+❌
+</div>
+
+<div>
+
+<span>
+Vereségek
+</span>
+
+<h3 id="userLosses">
+0
+</h3>
+
+</div>
+
+</div>
+
+<div class="stat-card">
+
+<div class="stat-icon">
+📈
+</div>
+
+<div>
+
+<span>
+Win Rate
+</span>
+
+<h3 id="userWinRate">
+0%
+</h3>
+
+</div>
+
+</div>
+
+</section>
+
+<section class="table-card">
+
+<div class="dealer-area">
+
+<h2>
+🎩 Dealer
+</h2>
+
+<div id="dealerCards"
+class="cards">
+
+</div>
+
+<div id="dealerScore"
+class="score">
+
 Pont: 0
-</div>
 
 </div>
 
-<div class="controls">
+</div>
+
+<div class="table-center">
+
+<div id="message">
+
+Nyomd meg az osztás gombot.
+
+</div>
+
+</div>
+
+<div class="player-area">
+
+<h2>
+😎 Játékos
+</h2>
+
+<div id="playerCards"
+class="cards">
+
+</div>
+
+<div id="playerScore"
+class="score">
+
+Pont: 0
+
+</div>
+
+</div>
+
+</section>
+
+<section class="bet-section">
+
+<h2>
+💵 Tét kiválasztása
+</h2>
+
+<div class="chips">
+
+<button
+class="bet-btn"
+data-bet="100">
+
+100
+
+</button>
+
+<button
+class="bet-btn"
+data-bet="500">
+
+500
+
+</button>
+
+<button
+class="bet-btn"
+data-bet="1000">
+
+1000
+
+</button>
+
+<button
+class="bet-btn"
+data-bet="5000">
+
+5000
+
+</button>
+
+<button
+class="bet-btn"
+data-bet="10000">
+
+10000
+
+</button>
+
+</div>
+
+<div class="current-bet">
+
+Aktuális tét:
+
+<span id="betValue">
+
+100
+
+</span>
+
+kredit
+
+</div>
+
+</section>
+
+<section class="controls">
 
 <button id="dealBtn">
-🎲 OSZTÁS
+
+🃏 Osztás
+
 </button>
 
 <button id="hitBtn">
-➕ LAPOT
+
+➕ Lapot kérek
+
 </button>
 
 <button id="standBtn">
-✋ MEGÁLLOK
+
+✋ Megállok
+
 </button>
 
-</div>
+</section>
 
-<div id="message">
-Válassz tétet és nyomj OSZTÁST.
-</div>
+<section class="bottom-actions">
 
-<a href="/" class="back-btn">
-🎁 Vissza a főoldalra
+<a href="/toplista/"
+class="action-btn blue">
+
+🏆 Toplista
+
 </a>
 
+<a href="/profil/"
+class="action-btn gold">
+
+👤 Profil
+
+</a>
+
+<a href="/"
+class="action-btn green">
+
+🏠 Dashboard
+
+</a>
+
+</section>
+
+</main>
+
+<div id="toast"
+class="toast">
+
+🏅 Achievement Feloldva
+
 </div>
 
-<script type="module" src="script.js"></script>
+<script type="module"
+src="script.js"></script>
 
 </body>
 </html>

@@ -7,7 +7,9 @@
 <meta name="viewport"
 content="width=device-width, initial-scale=1.0">
 
-<title>🎮 Mystery Box</title>
+<title>
+🃏 Blackjack Casino
+</title>
 
 <link rel="stylesheet"
 href="style.css">
@@ -15,97 +17,81 @@ href="style.css">
 </head>
 <body>
 
-<div class="app">
+<div class="bg-glow"></div>
 
-<aside class="sidebar">
+<header class="topbar">
 
-<div class="brand">
+<div class="logo">
 
-<div class="brand-logo">
-🎮
-</div>
-
-<div class="brand-text">
-
-<h2>Mystery Box</h2>
-
-<p>Gaming Platform</p>
+🃏 Blackjack Casino
 
 </div>
 
-</div>
+<nav class="top-nav">
 
-<nav class="menu">
+<a href="/dashboard/"
+class="nav-link active">
 
-<a href="/" class="menu-item active">
 🏠 Dashboard
+
 </a>
 
-<a href="/blackjack/" class="menu-item">
-🃏 Blackjack
-</a>
+<a href="/profil/"
+class="nav-link">
 
-<a href="/flappy/" class="menu-item">
-🐦 Flappy Bird
-</a>
-
-<a href="/slot/" class="menu-item">
-🎰 Slot Machine
-</a>
-
-<a href="/toplista/" class="menu-item">
-🏆 Toplista
-</a>
-
-<a href="/profil/" class="menu-item">
 👤 Profil
+
+</a>
+
+<a href="/toplista/"
+class="nav-link">
+
+🏆 Toplista
+
+</a>
+
+<a href="/donation/"
+class="nav-link">
+
+💎 Donation
+
 </a>
 
 </nav>
 
-</aside>
-
-<main class="content">
-
-<header class="topbar">
-
-<div class="welcome">
-
-<h1>
-🎮 Dashboard
-</h1>
-
-<p>
-Üdv újra a platformon
-</p>
-
-</div>
-
 <div id="userPanel">
 
-<a href="/login/"
+<a
 id="loginLink"
+href="/login/"
 class="login-btn">
 
 🔐 Bejelentkezés
 
 </a>
 
-<div id="userInfo"
+<div
+id="userInfo"
 style="display:none">
 
-<div class="profile-box">
+<div class="user-card">
 
 <div id="userEmail">
+
 👤 Felhasználó
+
 </div>
 
 <div id="userCredits">
+
 💰 0 kredit
+
 </div>
 
 <div id="userRank">
+
 🥉 Bronze
+
 </div>
 
 </div>
@@ -122,37 +108,70 @@ Kilépés
 
 </header>
 
-<section class="daily-section">
+<main class="container">
 
-<div class="daily-card">
+<!-- HERO -->
+
+<section class="hero-card">
+
+<h1>
+
+Üdv a Blackjack Casinóban
+
+</h1>
+
+<p>
+
+Gyűjts krediteket,
+szerezz achievementeket
+és kerülj fel a toplistára.
+
+</p>
+
+</section>
+
+<!-- DAILY REWARD -->
+
+<section class="daily-card">
+
+<div class="daily-left">
 
 <div class="daily-icon">
+
 🎁
+
 </div>
 
-<div class="daily-info">
+<div>
 
 <h2>
+
 Napi Jutalom
+
 </h2>
 
 <p>
-Minden 24 órában átvehető
+
+Minden nap egyszer vehető fel.
+
 </p>
 
 </div>
 
-<div class="daily-action">
+</div>
+
+<div class="daily-right">
 
 <div id="dailyRewardAmount">
 
-+500 kredit
++1000
 
 </div>
 
-<button id="claimRewardBtn">
+<button
+id="claimRewardBtn">
 
-🎁 ÁTVESZEM
+Felveszem
 
 </button>
 
@@ -164,26 +183,32 @@ Elérhető
 
 </div>
 
-</div>
-
 </section>
+
+<!-- STATS -->
 
 <section class="stats-grid">
 
 <div class="stat-card">
 
 <div class="stat-icon">
+
 💰
+
 </div>
 
-<div class="stat-info">
+<div>
 
 <span>
+
 Kreditek
+
 </span>
 
-<h3 id="dashboardCredits">
+<h3 id="balance">
+
 0
+
 </h3>
 
 </div>
@@ -193,17 +218,23 @@ Kreditek
 <div class="stat-card">
 
 <div class="stat-icon">
-🃏
+
+🏆
+
 </div>
 
-<div class="stat-info">
+<div>
 
 <span>
+
 Győzelmek
+
 </span>
 
-<h3 id="dashboardWins">
+<h3 id="userWins">
+
 0
+
 </h3>
 
 </div>
@@ -213,17 +244,23 @@ Győzelmek
 <div class="stat-card">
 
 <div class="stat-icon">
+
 ❌
+
 </div>
 
-<div class="stat-info">
+<div>
 
 <span>
+
 Vereségek
+
 </span>
 
-<h3 id="dashboardLosses">
+<h3 id="userLosses">
+
 0
+
 </h3>
 
 </div>
@@ -233,57 +270,23 @@ Vereségek
 <div class="stat-card">
 
 <div class="stat-icon">
-🐦
+
+📈
+
 </div>
 
-<div class="stat-info">
+<div>
 
 <span>
-Flappy Rekord
+
+Win Rate
+
 </span>
 
-<h3 id="dashboardFlappy">
-0
-</h3>
+<h3 id="userWinRate">
 
-</div>
+0%
 
-</div>
-
-<div class="stat-card">
-
-<div class="stat-icon">
-🎰
-</div>
-
-<div class="stat-info">
-
-<span>
-Slot Profit
-</span>
-
-<h3 id="dashboardSlotProfit">
-0
-</h3>
-
-</div>
-
-</div>
-
-<div class="stat-card">
-
-<div class="stat-icon">
-💎
-</div>
-
-<div class="stat-info">
-
-<span>
-Jackpotok
-</span>
-
-<h3 id="dashboardJackpots">
-0
 </h3>
 
 </div>
@@ -291,106 +294,179 @@ Jackpotok
 </div>
 
 </section>
+
+<!-- GAMES -->
 
 <section class="games-section">
 
-<div class="section-title">
+<h2 class="section-title">
 
-<h2>
 🎮 Játékok
-</h2>
 
-</div>
+</h2>
 
 <div class="games-grid">
 
-<a href="/blackjack/"
+<a
+href="/blackjack/"
 class="game-card">
 
-<div class="game-emoji">
+<div class="game-icon">
+
 🃏
+
 </div>
 
 <h3>
+
 Blackjack
+
 </h3>
 
 <p>
-Győzd le az osztót és szerezz krediteket.
+
+Blackjack 3:2,
+Double Down,
+Soft 17,
+Achievement rendszer.
+
 </p>
 
 </a>
 
-<a href="/flappy/"
-class="game-card">
+<div class="game-card disabled">
 
-<div class="game-emoji">
-🐦
+<div class="game-icon">
+
+🎲
+
 </div>
 
 <h3>
-Flappy Bird
+
+Roulette
+
 </h3>
 
 <p>
-Döntsd meg a rekordodat.
+
+Hamarosan...
+
 </p>
 
-</a>
+</div>
 
-<a href="/slot/"
-class="game-card">
+<div class="game-card disabled">
 
-<div class="game-emoji">
-🎰
+<div class="game-icon">
+
+🪙
+
 </div>
 
 <h3>
-Slot Machine
+
+Coinflip
+
 </h3>
 
 <p>
-Nyerd meg a jackpotot.
+
+Hamarosan...
+
 </p>
 
-</a>
+</div>
 
 </div>
 
 </section>
 
+<!-- BOTTOM -->
+
 <section class="bottom-grid">
 
-<div class="news-card">
+<div class="panel-card">
 
 <h2>
-🏆 Rangrendszer
+
+🏅 Achievementek
+
 </h2>
 
-<div class="rank-list">
+<div id="achievementPreview">
 
-<div>🥉 Bronze</div>
-<div>🥈 Silver</div>
-<div>🥇 Gold</div>
-<div>💎 Diamond</div>
-<div>👑 Legend</div>
+Még nincs achievement.
 
 </div>
 
 </div>
 
-<div class="news-card">
+<div class="panel-card">
 
 <h2>
-📈 Platform Statisztika
+
+📊 Platform Információ
+
 </h2>
 
 <div class="platform-stats">
 
-<div>🃏 Blackjack</div>
-<div>🐦 Flappy</div>
-<div>🎰 Slot</div>
-<div>🏆 Toplista</div>
+<div>
+
+💰 Saját Kreditek
+
+<br>
+
+<strong id="platformCredits">
+
+0
+
+</strong>
+
+</div>
+
+<div>
+
+🏆 Saját Győzelmek
+
+<br>
+
+<strong id="platformWins">
+
+0
+
+</strong>
+
+</div>
+
+<div>
+
+❌ Saját Vereségek
+
+<br>
+
+<strong id="platformLosses">
+
+0
+
+</strong>
+
+</div>
+
+<div>
+
+🥉 Rang
+
+<br>
+
+<strong id="platformRank">
+
+Bronze
+
+</strong>
+
+</div>
 
 </div>
 
@@ -400,7 +476,14 @@ Nyerd meg a jackpotot.
 
 </main>
 
-</div>
+<footer class="footer">
+
+© Blackjack Casino V1.0
+
+</footer>
+
+<script type="module"
+src="../assets/js/firebase.js"></script>
 
 <script type="module"
 src="script.js"></script>

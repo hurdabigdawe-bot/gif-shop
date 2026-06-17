@@ -28,19 +28,22 @@ const auth = getAuth(app);
 const db = getFirestore(app);
 
 const blackjackLeaderboard =
-document.getElementById(
-"blackjackLeaderboard"
-);
+document.getElementById("blackjackLeaderboard");
 
 const flappyLeaderboard =
-document.getElementById(
-"flappyLeaderboard"
-);
+document.getElementById("flappyLeaderboard");
 
 const creditsLeaderboard =
-document.getElementById(
-"creditsLeaderboard"
-);
+document.getElementById("creditsLeaderboard");
+
+const slotWinsLeaderboard =
+document.getElementById("slotWinsLeaderboard");
+
+const slotJackpotLeaderboard =
+document.getElementById("slotJackpotLeaderboard");
+
+const slotProfitLeaderboard =
+document.getElementById("slotProfitLeaderboard");
 
 function getDisplayName(player){
 
@@ -61,19 +64,19 @@ return "Ismeretlen";
 
 function medal(index){
 
-if(index === 0) return "🥇";
-if(index === 1) return "🥈";
-if(index === 2) return "🥉";
+if(index===0) return "🥇";
+if(index===1) return "🥈";
+if(index===2) return "🥉";
 
-return "#" + (index + 1);
+return "#" + (index+1);
 
 }
 
 function medalClass(index){
 
-if(index === 0) return "gold";
-if(index === 1) return "silver";
-if(index === 2) return "bronze";
+if(index===0) return "gold";
+if(index===1) return "silver";
+if(index===2) return "bronze";
 
 return "";
 
@@ -85,7 +88,7 @@ players,
 field
 ){
 
-if(players.length === 0){
+if(players.length===0){
 
 container.innerHTML =
 '<div class="empty">Nincs adat</div>';
@@ -111,7 +114,7 @@ ${getDisplayName(player)}
 </div>
 
 <div class="score">
-${player[field] || 0}
+${Number(player[field] || 0).toLocaleString()}
 </div>
 
 </div>
@@ -119,8 +122,7 @@ ${player[field] || 0}
 
 });
 
-container.innerHTML =
-html;
+container.innerHTML = html;
 
 }
 
@@ -161,54 +163,67 @@ losses:
 data.losses || 0,
 
 flappyBest:
-data.flappyBest || 0
+data.flappyBest || 0,
+
+slotWins:
+data.slotWins || 0,
+
+slotProfit:
+data.slotProfit || 0,
+
+slotJackpots:
+data.slotJackpots || 0
 
 });
 
 });
-
-const blackjack =
-[...users]
-.sort(
-(a,b)=>
-b.wins - a.wins
-)
-.slice(0,10);
-
-const flappy =
-[...users]
-.sort(
-(a,b)=>
-b.flappyBest -
-a.flappyBest
-)
-.slice(0,10);
-
-const credits =
-[...users]
-.sort(
-(a,b)=>
-b.credits -
-a.credits
-)
-.slice(0,10);
 
 renderLeaderboard(
 blackjackLeaderboard,
-blackjack,
+[...users]
+.sort((a,b)=>b.wins-a.wins)
+.slice(0,10),
 "wins"
 );
 
 renderLeaderboard(
 flappyLeaderboard,
-flappy,
+[...users]
+.sort((a,b)=>b.flappyBest-a.flappyBest)
+.slice(0,10),
 "flappyBest"
 );
 
 renderLeaderboard(
 creditsLeaderboard,
-credits,
+[...users]
+.sort((a,b)=>b.credits-a.credits)
+.slice(0,10),
 "credits"
+);
+
+renderLeaderboard(
+slotWinsLeaderboard,
+[...users]
+.sort((a,b)=>b.slotWins-a.slotWins)
+.slice(0,10),
+"slotWins"
+);
+
+renderLeaderboard(
+slotJackpotLeaderboard,
+[...users]
+.sort((a,b)=>b.slotJackpots-a.slotJackpots)
+.slice(0,10),
+"slotJackpots"
+);
+
+renderLeaderboard(
+slotProfitLeaderboard,
+[...users]
+.sort((a,b)=>b.slotProfit-a.slotProfit)
+.slice(0,10),
+"slotProfit"
 );
 
 }catch(error){
@@ -217,15 +232,6 @@ console.error(
 "Toplista hiba:",
 error
 );
-
-blackjackLeaderboard.innerHTML =
-'<div class="empty">Hiba</div>';
-
-flappyLeaderboard.innerHTML =
-'<div class="empty">Hiba</div>';
-
-creditsLeaderboard.innerHTML =
-'<div class="empty">Hiba</div>';
 
 }
 
@@ -237,14 +243,18 @@ auth,
 
 if(!user){
 
-blackjackLeaderboard.innerHTML =
-'<div class="empty">🔒 Jelentkezz be</div>';
-
-flappyLeaderboard.innerHTML =
-'<div class="empty">🔒 Jelentkezz be</div>';
-
-creditsLeaderboard.innerHTML =
-'<div class="empty">🔒 Jelentkezz be</div>';
+document.body.innerHTML = `
+<div style="
+display:flex;
+justify-content:center;
+align-items:center;
+height:100vh;
+font-size:32px;
+color:white;
+background:#000;">
+🔒 Jelentkezz be!
+</div>
+`;
 
 return;
 

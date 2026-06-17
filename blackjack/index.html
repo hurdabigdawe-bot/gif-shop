@@ -7,7 +7,7 @@
 <meta name="viewport"
 content="width=device-width, initial-scale=1.0">
 
-<title>🃏 Blackjack Casino V6</title>
+<title>🃏 Blackjack Casino V7</title>
 
 <link rel="stylesheet"
 href="style.css">
@@ -19,29 +19,36 @@ href="style.css">
 
 <header class="topbar">
 
-<div class="top-left">
-
 <div class="logo">
+
 🃏 Blackjack
+
 </div>
 
 <nav class="top-nav">
 
-<a href="/" class="nav-link">
+<a href="/"
+class="nav-link">
+
 🏠 Dashboard
+
 </a>
 
-<a href="/profil/" class="nav-link">
+<a href="/profil/"
+class="nav-link">
+
 👤 Profil
+
 </a>
 
-<a href="/toplista/" class="nav-link">
+<a href="/toplista/"
+class="nav-link">
+
 🏆 Toplista
+
 </a>
 
 </nav>
-
-</div>
 
 <div id="userPanel">
 
@@ -59,21 +66,29 @@ style="display:none">
 <div class="user-card">
 
 <div id="userEmail">
+
 👤 Felhasználó
+
 </div>
 
 <div id="userCredits">
+
 💰 0 kredit
+
 </div>
 
 <div id="userRank">
+
 🥉 Bronze
+
 </div>
 
 </div>
 
 <button id="logoutBtn">
+
 Kilépés
+
 </button>
 
 </div>
@@ -84,16 +99,18 @@ Kilépés
 
 <main class="container">
 
-<!-- KOMPAKT STATS -->
+<!-- STATS -->
 
-<section class="stats-bar">
+<section class="stats-row">
 
 <div class="mini-stat">
 
 <span>💰</span>
 
 <strong id="balance">
+
 0
+
 </strong>
 
 </div>
@@ -103,7 +120,9 @@ Kilépés
 <span>🏆</span>
 
 <strong id="userWins">
+
 0
+
 </strong>
 
 </div>
@@ -113,7 +132,9 @@ Kilépés
 <span>❌</span>
 
 <strong id="userLosses">
+
 0
+
 </strong>
 
 </div>
@@ -123,81 +144,29 @@ Kilépés
 <span>📈</span>
 
 <strong id="userWinRate">
+
 0%
+
 </strong>
 
 </div>
 
 </section>
 
-<!-- ASZTAL -->
+<!-- MAIN LAYOUT -->
 
-<section class="table-card">
+<section class="casino-layout">
 
-<div class="table-header">
+<!-- LEFT PANEL -->
 
-<div class="side-title">
+<aside class="bet-panel">
 
-🎩 Dealer
-
-</div>
-
-<div id="dealerScore"
-class="score">
-
-Pont: 0
-
-</div>
-
-</div>
-
-<div id="dealerCards"
-class="cards">
-
-</div>
-
-<div class="table-center">
-
-<div id="message">
-
-Nyomd meg az Osztás gombot.
-
-</div>
-
-</div>
-
-<div id="playerCards"
-class="cards">
-
-</div>
-
-<div class="table-footer">
-
-<div class="side-title">
-
-😎 Játékos
-
-</div>
-
-<div id="playerScore"
-class="score">
-
-Pont: 0
-
-</div>
-
-</div>
-
-</section>
-
-<!-- JÁTÉKPANEL -->
-
-<section class="game-panel">
-
-<div class="bet-section">
+<div class="panel-card">
 
 <h3>
+
 💵 Tét
+
 </h3>
 
 <div class="chips">
@@ -247,18 +216,17 @@ data-bet="10000">
 <div class="current-bet">
 
 Tét:
-
 <span id="betValue">
 
 100
 
 </span>
 
-kredit
-
 </div>
 
 </div>
+
+<div class="panel-card">
 
 <div class="controls">
 
@@ -288,12 +256,14 @@ kredit
 
 </div>
 
-</section>
+</div>
 
-<section class="achievement-panel">
+<div class="panel-card">
 
 <h3>
+
 🏅 Achievementek
+
 </h3>
 
 <div id="achievementPreview">
@@ -301,6 +271,68 @@ kredit
 Achievement rendszer aktív
 
 </div>
+
+</div>
+
+</aside>
+
+<!-- TABLE -->
+
+<section class="table-panel">
+
+<div class="dealer-section">
+
+<div class="table-title">
+
+🎩 Dealer
+
+<span id="dealerScore">
+
+Pont: 0
+
+</span>
+
+</div>
+
+<div id="dealerCards"
+class="cards">
+
+</div>
+
+</div>
+
+<div class="table-message">
+
+<div id="message">
+
+Nyomd meg az Osztás gombot.
+
+</div>
+
+</div>
+
+<div class="player-section">
+
+<div id="playerCards"
+class="cards">
+
+</div>
+
+<div class="table-title">
+
+😎 Játékos
+
+<span id="playerScore">
+
+Pont: 0
+
+</span>
+
+</div>
+
+</div>
+
+</section>
 
 </section>
 

@@ -475,3 +475,759 @@ window.location.href =
 
 }
 );
+/* =========================
+   PAKLI
+========================= */
+
+function createDeck(){
+
+deck = [];
+
+for(
+const suit of suits
+){
+
+for(
+const value of values
+){
+
+deck.push({
+value,
+suit
+});
+
+}
+
+}
+
+for(
+let i = deck.length - 1;
+i > 0;
+i--
+){
+
+const j =
+Math.floor(
+Math.random() *
+(i + 1)
+);
+
+[
+deck[i],
+deck[j]
+]
+=
+[
+deck[j],
+deck[i]
+];
+
+}
+
+}
+
+function drawCard(){
+
+return deck.pop();
+
+}
+
+/* =========================
+   KÁRTYA ÉRTÉK
+========================= */
+
+function getCardValue(card){
+
+if(
+["J","Q","K"]
+.includes(card.value)
+){
+return 10;
+}
+
+if(
+card.value === "A"
+){
+return 11;
+}
+
+return Number(
+card.value
+);
+
+}
+
+function handValue(hand){
+
+let total = 0;
+
+let aces = 0;
+
+hand.forEach(card=>{
+
+total +=
+getCardValue(
+card
+);
+
+if(
+card.value === "A"
+){
+aces++;
+}
+
+});
+
+while(
+total > 21 &&
+aces > 0
+){
+
+total -= 10;
+
+aces--;
+
+}
+
+return total;
+
+}
+
+/* =========================
+   BLACKJACK
+========================= */
+
+function isBlackjack(hand){
+
+return (
+hand.length === 2 &&
+handValue(hand) === 21
+);
+
+}
+
+/* =========================
+   RENDER
+========================= */
+
+function renderCards(){
+
+playerCardsElement.innerHTML =
+"";
+
+dealerCardsElement.innerHTML =
+"";
+
+player.forEach(card=>{
+
+const div =
+document.createElement(
+"div"
+);
+
+div.className =
+"card";
+
+div.textContent =
+card.value +
+card.suit;
+
+playerCardsElement.appendChild(
+div
+);
+
+});
+
+dealer.forEach(
+(card,index)=>{
+
+const div =
+document.createElement(
+"div"
+);
+
+if(
+gameActive &&
+index === 1
+){
+
+div.className =
+"card hidden";
+
+div.textContent =
+"🂠";
+
+}
+else{
+
+div.className =
+"card";
+
+div.textContent =
+card.value +
+card.suit;
+
+}
+
+dealerCardsElement.appendChild(
+div
+);
+
+}
+);
+
+playerScoreElement.textContent =
+"Pont: " +
+handValue(
+player
+);
+
+if(
+gameActive
+){
+
+dealerScoreElement.textContent =
+"Pont: ?";
+
+}
+else{
+
+dealerScoreElement.textContent =
+"Pont: " +
+handValue(
+dealer
+);
+
+}
+
+}
+
+/* =========================
+   ÜZENET
+========================= */
+
+function setMessage(text){
+
+messageElement.textContent =
+text;
+
+}
+
+/* =========================
+   ÚJ KÖR
+========================= */
+
+function resetRound(){
+
+player = [];
+
+dealer = [];
+
+doubleUsed = false;
+
+gameActive = false;
+
+renderCards();
+
+}
+
+/* =========================
+   DEAL
+========================= */
+
+async function deal(){
+
+if(
+gameActive
+){
+return;
+}
+
+if(
+balance < bet
+){
+
+showToast(
+"❌ Nincs elég kredit"
+);
+
+return;
+
+}
+
+balance -= bet;
+
+updateBalance();
+
+await saveUser();
+
+createDeck();
+
+player = [
+drawCard(),
+drawCard()
+];
+
+dealer = [
+drawCard(),
+drawCard()
+];
+
+gameActive = true;
+
+doubleUsed = false;
+
+renderCards();
+
+setMessage(
+"🃏 Lapot kérsz vagy megállsz?"
+);
+
+/* BLACKJACK CHECK */
+
+const playerBJ =
+isBlackjack(
+player
+);
+
+const dealerBJ =
+isBlackjack(
+dealer
+);
+
+if(
+playerBJ ||
+dealerBJ
+){
+
+gameActive = false;
+
+renderCards();
+
+if(
+playerBJ &&
+dealerBJ
+){
+
+balance += bet;
+
+updateBalance();
+
+setMessage(
+"🤝 Mindkettő Blackjack"
+);
+
+}
+else if(
+playerBJ
+){
+
+const payout =
+Math.floor(
+bet * 2.5
+);
+
+balance += payout;
+
+wins++;
+
+updateBalance();
+
+updateStats();
+
+await saveUser();
+
+await checkAchievements();
+
+showToast(
+"🃏 BLACKJACK!"
+);
+
+setMessage(
+"🎉 BLACKJACK! +"
++
+(payout - bet)
++
+" kredit"
+);
+
+}
+else{
+
+losses++;
+
+updateStats();
+
+await saveUser();
+
+setMessage(
+"😢 Dealer Blackjack"
+);
+
+}
+
+/* =========================
+   HIT
+========================= */
+
+async function hit(){
+
+if(
+!gameActive
+){
+return;
+}
+
+player.push(
+drawCard()
+);
+
+renderCards();
+
+const playerScore =
+handValue(
+player
+);
+
+if(
+playerScore > 21
+){
+
+gameActive = false;
+
+losses++;
+
+updateStats();
+
+await saveUser();
+
+setMessage(
+"💥 BUST! Vesztettél."
+);
+
+showToast(
+"❌ Bust"
+);
+
+}
+
+}
+
+/* =========================
+   SOFT 17
+========================= */
+
+function isSoft17(hand){
+
+let total = 0;
+
+let aces = 0;
+
+hand.forEach(card=>{
+
+total +=
+getCardValue(card);
+
+if(
+card.value === "A"
+){
+aces++;
+}
+
+});
+
+return (
+total === 17 &&
+aces > 0
+);
+
+}
+
+/* =========================
+   STAND
+========================= */
+
+async function stand(){
+
+if(
+!gameActive
+){
+return;
+}
+
+gameActive = false;
+
+/* SOFT 17 RULE */
+
+while(
+
+handValue(dealer) < 17 ||
+
+isSoft17(dealer)
+
+){
+
+dealer.push(
+drawCard()
+);
+
+}
+
+renderCards();
+
+const playerScore =
+handValue(
+player
+);
+
+const dealerScore =
+handValue(
+dealer
+);
+
+let message = "";
+
+/* DEALER BUST */
+
+if(
+dealerScore > 21
+){
+
+balance +=
+bet * 2;
+
+wins++;
+
+message =
+"🎉 Dealer bust! Nyertél!";
+
+}
+
+/* PLAYER WIN */
+
+else if(
+playerScore >
+dealerScore
+){
+
+balance +=
+bet * 2;
+
+wins++;
+
+message =
+"🏆 Nyertél!";
+
+}
+
+/* PUSH */
+
+else if(
+playerScore ===
+dealerScore
+){
+
+balance += bet;
+
+message =
+"🤝 Döntetlen";
+
+}
+
+/* LOSS */
+
+else{
+
+losses++;
+
+message =
+"😢 Vesztettél";
+
+}
+
+updateBalance();
+
+updateStats();
+
+await saveUser();
+
+await checkAchievements();
+
+setMessage(
+message
+);
+
+}
+
+/* =========================
+   DOUBLE DOWN
+========================= */
+
+async function doubleDown(){
+
+if(
+!gameActive
+){
+return;
+}
+
+if(
+doubleUsed
+){
+return;
+}
+
+if(
+player.length !== 2
+){
+
+showToast(
+"⚠️ Csak első körben"
+);
+
+return;
+
+}
+
+if(
+balance < bet
+){
+
+showToast(
+"❌ Nincs elég kredit"
+);
+
+return;
+
+}
+
+balance -= bet;
+
+bet *= 2;
+
+doubleUsed = true;
+
+updateBalance();
+
+betValueElement.textContent =
+bet;
+
+player.push(
+drawCard()
+);
+
+renderCards();
+
+if(
+handValue(player) > 21
+){
+
+gameActive = false;
+
+losses++;
+
+updateStats();
+
+await saveUser();
+
+setMessage(
+"💥 Double Bust!"
+);
+
+return;
+
+}
+
+await stand();
+
+}
+
+/* =========================
+   BET
+========================= */
+
+document
+.querySelectorAll(
+".bet-btn"
+)
+.forEach(btn=>{
+
+btn.addEventListener(
+"click",
+()=>{
+
+if(
+gameActive
+){
+return;
+}
+
+bet =
+Number(
+btn.dataset.bet
+);
+
+betValueElement.textContent =
+bet;
+
+showToast(
+"💰 Tét: " +
+bet
+);
+
+}
+);
+
+});
+
+/* =========================
+   GOMBOK
+========================= */
+
+document
+.getElementById(
+"dealBtn"
+)
+.addEventListener(
+"click",
+deal
+);
+
+document
+.getElementById(
+"hitBtn"
+)
+.addEventListener(
+"click",
+hit
+);
+
+document
+.getElementById(
+"standBtn"
+)
+.addEventListener(
+"click",
+stand
+);
+
+document
+.getElementById(
+"doubleBtn"
+)
+.addEventListener(
+"click",
+doubleDown
+);
+
+/* =========================
+   KEZDÉS
+========================= */
+
+updateBalance();
+
+updateStats();
+
+setMessage(
+"🃏 Nyomd meg az Osztás gombot."
+);

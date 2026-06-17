@@ -273,5 +273,15 @@ color:#ddd;
 color:#00ff88;
 font-weight:bold;
 }
+#userWins,
+#userLosses,
+#userRate{
+font-size:13px;
+color:#ddd;
+}
 
+#userRate{
+color:#00ff88;
+font-weight:bold;
+}
 }

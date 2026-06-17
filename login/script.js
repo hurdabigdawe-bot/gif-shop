@@ -31,14 +31,20 @@ appId: "1:443187158566:web:2e055a515f29b5021110e7"
 
 };
 
-const app = initializeApp(firebaseConfig);
+const app =
+initializeApp(firebaseConfig);
 
-const auth = getAuth(app);
+const auth =
+getAuth(app);
 
-const db = getFirestore(app);
+const db =
+getFirestore(app);
 
 const email =
 document.getElementById("email");
+
+const username =
+document.getElementById("username");
 
 const password =
 document.getElementById("password");
@@ -48,24 +54,29 @@ document.getElementById("message");
 
 document
 .getElementById("registerBtn")
-.addEventListener("click", async () => {
+.addEventListener(
+"click",
+async()=>{
 
-try {
+try{
+
+if(
+!username.value ||
+username.value.length < 3
+){
+
+message.innerText =
+"❌ Minimum 3 karakteres név kell";
+
+return;
+
+}
 
 const userCredential =
 await createUserWithEmailAndPassword(
 auth,
 email.value,
 password.value
-);
-
-console.log(
-"Felhasználó létrehozva:",
-userCredential.user.uid
-);
-
-console.log(
-"Firestore mentés indul..."
 );
 
 await setDoc(
@@ -75,30 +86,42 @@ db,
 userCredential.user.uid
 ),
 {
-email: email.value,
-credits: 5000,
-wins: 0,
-losses: 0,
-createdAt: Date.now()
-}
-);
+username:
+username.value.trim(),
 
-console.log(
-"Firestore mentés sikeres!"
+email:
+email.value,
+
+credits:5000,
+
+wins:0,
+
+losses:0,
+
+flappyBest:0,
+
+createdAt:
+Date.now()
+}
 );
 
 message.innerText =
 "✅ Sikeres regisztráció!";
 
-} catch(error) {
+setTimeout(()=>{
 
-console.error(
-"REGISZTRÁCIÓ HIBA:",
-error
-);
+window.location.href =
+"https://gifzshop.netlify.app/";
+
+},1000);
+
+}catch(error){
+
+console.error(error);
 
 alert(
-error.code + "\n" +
+error.code +
+"\n" +
 error.message
 );
 
@@ -107,13 +130,16 @@ error.code;
 
 }
 
-});
+}
+);
 
 document
 .getElementById("loginBtn")
-.addEventListener("click", async () => {
+.addEventListener(
+"click",
+async()=>{
 
-try {
+try{
 
 await signInWithEmailAndPassword(
 auth,
@@ -124,22 +150,20 @@ password.value
 message.innerText =
 "✅ Sikeres bejelentkezés!";
 
-setTimeout(() => {
+setTimeout(()=>{
 
 window.location.href =
 "https://gifzshop.netlify.app/";
 
-}, 1000);
+},1000);
 
-} catch(error) {
+}catch(error){
 
-console.error(
-"BELÉPÉS HIBA:",
-error
-);
+console.error(error);
 
 alert(
-error.code + "\n" +
+error.code +
+"\n" +
 error.message
 );
 
@@ -148,4 +172,5 @@ error.code;
 
 }
 
-});
+}
+);

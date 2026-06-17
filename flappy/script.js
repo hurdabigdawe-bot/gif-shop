@@ -59,6 +59,15 @@ document.getElementById("bestScore");
 const rewardEl =
 document.getElementById("reward");
 
+const loginLink =
+document.getElementById("loginLink");
+
+const userInfo =
+document.getElementById("userInfo");
+
+const logoutBtn =
+document.getElementById("logoutBtn");
+
 let currentUser = null;
 let credits = 0;
 let bestScore = 0;
@@ -81,12 +90,12 @@ resizeCanvas
 );
 
 const bird = {
-x: 120,
+x: 140,
 y: 300,
-radius: 20,
+radius: 22,
 velocity: 0,
-gravity: 0.55,
-jump: -9
+gravity: 0.35,
+jump: -8
 };
 
 let pipes = [];
@@ -96,20 +105,27 @@ let animationId = null;
 
 function resetGame(){
 
-bird.y = canvas.height / 2;
+bird.y =
+canvas.height / 2;
+
 bird.velocity = 0;
 
 pipes = [];
 
 score = 0;
 
-scoreEl.textContent = "0";
+scoreEl.textContent =
+"0";
 
-for(let i=0;i<4;i++){
+for(
+let i = 0;
+i < 4;
+i++
+){
 
 createPipe(
 canvas.width +
-(i * 350)
+(i * 500)
 );
 
 }
@@ -118,20 +134,26 @@ canvas.width +
 
 function createPipe(x){
 
-const gap = 220;
+const gap = 320;
 
 const topHeight =
 Math.random() *
-(canvas.height - 400)
+(canvas.height - 500)
 + 100;
 
 pipes.push({
+
 x,
+
 width: 90,
+
 topHeight,
+
 bottomY:
 topHeight + gap,
+
 passed:false
+
 });
 
 }
@@ -166,7 +188,7 @@ return;
 
 pipes.forEach(pipe=>{
 
-pipe.x -= 4;
+pipe.x -= 2.5;
 
 if(
 !pipe.passed &&
@@ -184,17 +206,23 @@ score;
 }
 
 if(
-bird.x + bird.radius >
+
+bird.x + 10 >
 pipe.x &&
-bird.x - bird.radius <
+
+bird.x - 10 <
 pipe.x + pipe.width
+
 ){
 
 if(
+
 bird.y - bird.radius <
 pipe.topHeight ||
+
 bird.y + bird.radius >
 pipe.bottomY
+
 ){
 
 gameOver();
@@ -207,15 +235,15 @@ gameOver();
 
 if(
 pipes.length &&
-pipes[0].x <
--120
+pipes[0].x < -120
 ){
 
 pipes.shift();
 
 createPipe(
-pipes[pipes.length-1].x +
-350
+pipes[
+pipes.length - 1
+].x + 500
 );
 
 }
@@ -252,22 +280,17 @@ canvas.height
 
 });
 
-ctx.beginPath();
+ctx.font =
+"50px Arial";
 
-ctx.arc(
+ctx.textAlign =
+"center";
+
+ctx.fillText(
+"🐦",
 bird.x,
-bird.y,
-bird.radius,
-0,
-Math.PI * 2
+bird.y + 18
 );
-
-ctx.fillStyle =
-"#ffd700";
-
-ctx.fill();
-
-ctx.closePath();
 
 }
 
@@ -283,12 +306,10 @@ animationId =
 requestAnimationFrame(
 gameLoop
 );
-
-}
-
-}
-
 function calculateReward(){
+
+if(score >= 100)
+return 1000;
 
 if(score >= 50)
 return 500;
@@ -326,6 +347,8 @@ score;
 
 }
 
+try{
+
 await updateDoc(
 doc(
 db,
@@ -334,6 +357,15 @@ currentUser.uid
 ),
 updateData
 );
+
+}catch(error){
+
+console.error(
+"Mentési hiba:",
+error
+);
+
+}
 
 document.getElementById(
 "userCredits"
@@ -407,7 +439,9 @@ window.addEventListener(
 "keydown",
 e=>{
 
-if(e.code==="Space"){
+if(
+e.code === "Space"
+){
 
 e.preventDefault();
 
@@ -424,27 +458,30 @@ jump();
 
 canvas.addEventListener(
 "click",
-jump
+()=>{
+
+if(gameRunning){
+
+jump();
+
+}
+
+}
 );
 
 canvas.addEventListener(
 "touchstart",
-jump
-);
+e=>{
 
-const loginLink =
-document.getElementById(
-"loginLink"
-);
+e.preventDefault();
 
-const userInfo =
-document.getElementById(
-"userInfo"
-);
+if(gameRunning){
 
-const logoutBtn =
-document.getElementById(
-"logoutBtn"
+jump();
+
+}
+
+}
 );
 
 onAuthStateChanged(
@@ -471,7 +508,10 @@ userInfo.style.display =
 document.getElementById(
 "userEmail"
 ).textContent =
-"👤 " + user.email;
+"👤 " +
+user.email;
+
+try{
 
 const snap =
 await getDoc(
@@ -508,6 +548,14 @@ bestScore;
 
 }
 
+}catch(error){
+
+console.error(
+error
+);
+
+}
+
 }
 );
 
@@ -515,9 +563,155 @@ logoutBtn.addEventListener(
 "click",
 async()=>{
 
-await signOut(auth);
+await signOut(
+auth
+);
 
-window.location.href="/";
+window.location.href =
+"/";
 
 }
 );
+
+/* háttér felhők */
+
+const clouds = [];
+
+for(
+let i = 0;
+i < 8;
+i++
+){
+
+clouds.push({
+
+x:
+Math.random() *
+window.innerWidth,
+
+y:
+Math.random() *
+(window.innerHeight * 0.5),
+
+size:
+50 +
+Math.random() * 80,
+
+speed:
+0.2 +
+Math.random() * 0.6
+
+});
+
+}
+
+function drawClouds(){
+
+ctx.fillStyle =
+"rgba(255,255,255,0.8)";
+
+clouds.forEach(cloud=>{
+
+cloud.x -=
+cloud.speed;
+
+if(
+cloud.x <
+-cloud.size
+){
+
+cloud.x =
+canvas.width +
+100;
+
+cloud.y =
+Math.random() *
+(canvas.height * 0.5);
+
+}
+
+ctx.beginPath();
+
+ctx.arc(
+cloud.x,
+cloud.y,
+cloud.size * 0.3,
+0,
+Math.PI * 2
+);
+
+ctx.arc(
+cloud.x + 25,
+cloud.y - 10,
+cloud.size * 0.35,
+0,
+Math.PI * 2
+);
+
+ctx.arc(
+cloud.x + 55,
+cloud.y,
+cloud.size * 0.3,
+0,
+Math.PI * 2
+);
+
+ctx.fill();
+
+});
+
+}
+
+/* draw felülírás felhőkkel */
+
+const oldDraw =
+draw;
+
+draw = function(){
+
+ctx.clearRect(
+0,
+0,
+canvas.width,
+canvas.height
+);
+
+drawClouds();
+
+ctx.fillStyle =
+"#3fa34d";
+
+pipes.forEach(pipe=>{
+
+ctx.fillRect(
+pipe.x,
+0,
+pipe.width,
+pipe.topHeight
+);
+
+ctx.fillRect(
+pipe.x,
+pipe.bottomY,
+pipe.width,
+canvas.height
+);
+
+});
+
+ctx.font =
+"50px Arial";
+
+ctx.textAlign =
+"center";
+
+ctx.fillText(
+"🐦",
+bird.x,
+bird.y + 18
+);
+
+};
+}
+
+}

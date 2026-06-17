@@ -308,5 +308,411 @@ gameLoop
 );
 
 }
+  function calculateReward(){
+
+if(score >= 100)
+return 1000;
+
+if(score >= 50)
+return 500;
+
+if(score >= 25)
+return 150;
+
+if(score >= 10)
+return 50;
+
+return 10;
+
+}
+
+async function saveResult(){
+
+if(!currentUser)
+return;
+
+const reward =
+calculateReward();
+
+credits += reward;
+
+const updateData = {
+credits
+};
+
+if(score > bestScore){
+
+bestScore = score;
+
+updateData.flappyBest =
+score;
+
+}
+
+try{
+
+await updateDoc(
+doc(
+db,
+"users",
+currentUser.uid
+),
+updateData
+);
+
+}catch(error){
+
+console.error(
+"Mentési hiba:",
+error
+);
+
+}
+
+document.getElementById(
+"userCredits"
+).textContent =
+"💰 " +
+credits +
+" kredit";
+
+document.getElementById(
+"userBest"
+).textContent =
+"🏆 Best: " +
+bestScore;
+
+rewardEl.textContent =
+reward;
+
+bestScoreEl.textContent =
+bestScore;
+
+}
+
+async function gameOver(){
+
+if(!gameRunning)
+return;
+
+gameRunning = false;
+
+cancelAnimationFrame(
+animationId
+);
+
+await saveResult();
+
+finalScoreEl.textContent =
+score;
+
+gameOverScreen.classList
+.remove("hidden");
+
+}
+
+function startGame(){
+
+resetGame();
+
+gameRunning = true;
+
+startScreen.classList
+.add("hidden");
+
+gameOverScreen.classList
+.add("hidden");
+
+gameLoop();
+
+}
+
+startBtn.addEventListener(
+"click",
+startGame
+);
+
+restartBtn.addEventListener(
+"click",
+startGame
+);
+
+window.addEventListener(
+"keydown",
+e=>{
+
+if(
+e.code === "Space"
+){
+
+e.preventDefault();
+
+if(gameRunning){
+
+jump();
+
+}
+
+}
+
+}
+);
+
+canvas.addEventListener(
+"click",
+()=>{
+
+if(gameRunning){
+
+jump();
+
+}
+
+}
+);
+
+canvas.addEventListener(
+"touchstart",
+e=>{
+
+e.preventDefault();
+
+if(gameRunning){
+
+jump();
+
+}
+
+}
+);
+
+onAuthStateChanged(
+auth,
+async(user)=>{
+
+if(!user){
+
+window.location.href =
+"/login/";
+
+return;
+
+}
+
+currentUser = user;
+
+loginLink.style.display =
+"none";
+
+userInfo.style.display =
+"flex";
+
+document.getElementById(
+"userEmail"
+).textContent =
+"👤 " +
+user.email;
+
+try{
+
+const snap =
+await getDoc(
+doc(
+db,
+"users",
+user.uid
+)
+);
+
+if(snap.exists()){
+
+const data =
+snap.data();
+
+credits =
+data.credits || 0;
+
+bestScore =
+data.flappyBest || 0;
+
+document.getElementById(
+"userCredits"
+).textContent =
+"💰 " +
+credits +
+" kredit";
+
+document.getElementById(
+"userBest"
+).textContent =
+"🏆 Best: " +
+bestScore;
+
+}
+
+}catch(error){
+
+console.error(
+error
+);
+
+}
+
+}
+);
+
+logoutBtn.addEventListener(
+"click",
+async()=>{
+
+await signOut(
+auth
+);
+
+window.location.href =
+"/";
+
+}
+);
+
+/* háttér felhők */
+
+const clouds = [];
+
+for(
+let i = 0;
+i < 8;
+i++
+){
+
+clouds.push({
+
+x:
+Math.random() *
+window.innerWidth,
+
+y:
+Math.random() *
+(window.innerHeight * 0.5),
+
+size:
+50 +
+Math.random() * 80,
+
+speed:
+0.2 +
+Math.random() * 0.6
+
+});
+
+}
+
+function drawClouds(){
+
+ctx.fillStyle =
+"rgba(255,255,255,0.8)";
+
+clouds.forEach(cloud=>{
+
+cloud.x -=
+cloud.speed;
+
+if(
+cloud.x <
+-cloud.size
+){
+
+cloud.x =
+canvas.width +
+100;
+
+cloud.y =
+Math.random() *
+(canvas.height * 0.5);
+
+}
+
+ctx.beginPath();
+
+ctx.arc(
+cloud.x,
+cloud.y,
+cloud.size * 0.3,
+0,
+Math.PI * 2
+);
+
+ctx.arc(
+cloud.x + 25,
+cloud.y - 10,
+cloud.size * 0.35,
+0,
+Math.PI * 2
+);
+
+ctx.arc(
+cloud.x + 55,
+cloud.y,
+cloud.size * 0.3,
+0,
+Math.PI * 2
+);
+
+ctx.fill();
+
+});
+
+}
+
+/* draw felülírás felhőkkel */
+
+const oldDraw =
+draw;
+
+draw = function(){
+
+ctx.clearRect(
+0,
+0,
+canvas.width,
+canvas.height
+);
+
+drawClouds();
+
+ctx.fillStyle =
+"#3fa34d";
+
+pipes.forEach(pipe=>{
+
+ctx.fillRect(
+pipe.x,
+0,
+pipe.width,
+pipe.topHeight
+);
+
+ctx.fillRect(
+pipe.x,
+pipe.bottomY,
+pipe.width,
+canvas.height
+);
+
+});
+
+ctx.font =
+"50px Arial";
+
+ctx.textAlign =
+"center";
+
+ctx.fillText(
+"🐦",
+bird.x,
+bird.y + 18
+);
+
+};
 
 }

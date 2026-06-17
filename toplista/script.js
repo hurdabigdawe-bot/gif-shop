@@ -2,6 +2,12 @@ import { initializeApp }
 from "https://www.gstatic.com/firebasejs/12.15.0/firebase-app.js";
 
 import {
+getAuth,
+onAuthStateChanged
+}
+from "https://www.gstatic.com/firebasejs/12.15.0/firebase-auth.js";
+
+import {
 getFirestore,
 collection,
 getDocs
@@ -18,6 +24,7 @@ appId: "1:443187158566:web:2e055a515f29b5021110e7"
 };
 
 const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
 const db = getFirestore(app);
 
 const blackjackLeaderboard =
@@ -44,33 +51,23 @@ return email.split("@")[0];
 
 }
 
-function medalClass(index){
+function medal(index){
 
-if(index === 0)
-return "gold";
+if(index === 0) return "🥇";
+if(index === 1) return "🥈";
+if(index === 2) return "🥉";
 
-if(index === 1)
-return "silver";
-
-if(index === 2)
-return "bronze";
-
-return "";
+return "#" + (index + 1);
 
 }
 
-function medal(index){
+function medalClass(index){
 
-if(index === 0)
-return "🥇";
+if(index === 0) return "gold";
+if(index === 1) return "silver";
+if(index === 2) return "bronze";
 
-if(index === 1)
-return "🥈";
-
-if(index === 2)
-return "🥉";
-
-return "#" + (index + 1);
+return "";
 
 }
 
@@ -95,7 +92,6 @@ players.forEach(
 (player,index)=>{
 
 html += `
-
 <div class="player">
 
 <div class="rank ${medalClass(index)}">
@@ -107,11 +103,10 @@ ${getDisplayName(player.email)}
 </div>
 
 <div class="score">
-${player[field]}
+${player[field] || 0}
 </div>
 
 </div>
-
 `;
 
 });
@@ -143,7 +138,7 @@ doc.data();
 users.push({
 
 email:
-data.email || "ismeretlen",
+data.email || "",
 
 credits:
 data.credits || 0,
@@ -207,7 +202,10 @@ credits,
 
 }catch(error){
 
-console.error(error);
+console.error(
+"Toplista hiba:",
+error
+);
 
 blackjackLeaderboard.innerHTML =
 '<div class="empty">Hiba</div>';
@@ -222,4 +220,26 @@ creditsLeaderboard.innerHTML =
 
 }
 
+onAuthStateChanged(
+auth,
+(user)=>{
+
+if(!user){
+
+blackjackLeaderboard.innerHTML =
+'<div class="empty">🔒 Jelentkezz be</div>';
+
+flappyLeaderboard.innerHTML =
+'<div class="empty">🔒 Jelentkezz be</div>';
+
+creditsLeaderboard.innerHTML =
+'<div class="empty">🔒 Jelentkezz be</div>';
+
+return;
+
+}
+
 loadLeaderboard();
+
+}
+);

@@ -3,71 +3,284 @@
 <head>
 
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
 
 <title>👤 Profil</title>
 
-<link rel="stylesheet" href="style.css">
+<link rel="stylesheet"
+href="style.css">
 
 </head>
 <body>
 
-<div class="container">
+<div class="profile-page">
 
-<h1>👤 Profil</h1>
+<div class="profile-header">
 
-<div class="card">
+<div class="avatar">
 
-<div class="row">
-<span>Email:</span>
-<strong id="email">Betöltés...</strong>
+👤
+
 </div>
 
-<div class="row">
-<span>💰 Kredit:</span>
-<strong id="credits">0</strong>
-</div>
+<div class="profile-info">
 
-<div class="row">
-<span>🏆 Győzelem:</span>
-<strong id="wins">0</strong>
-</div>
+<h1 id="username">
+Betöltés...
+</h1>
 
-<div class="row">
-<span>❌ Vereség:</span>
-<strong id="losses">0</strong>
-</div>
+<p id="email">
+email@email.com
+</p>
 
-<div class="row">
-<span>🎮 Játékok:</span>
-<strong id="games">0</strong>
-</div>
+<div id="rank"
+class="rank">
 
-<div class="row">
-<span>📈 Win Rate:</span>
-<strong id="winrate">0%</strong>
-</div>
+🥉 Bronze
 
-<div class="row">
-<span>💎 Rang:</span>
-<strong id="rank">Bronz</strong>
-</div>
-
-<div class="row">
-<span>📅 Regisztráció:</span>
-<strong id="createdAt">-</strong>
 </div>
 
 </div>
+
 </div>
 
-<a href="/" class="back-btn">
-🏠 Vissza
+<div class="stats-grid">
+
+<div class="stat-card">
+
+<div class="icon">
+💰
+</div>
+
+<div>
+
+<span>
+Kreditek
+</span>
+
+<h3 id="credits">
+0
+</h3>
+
+</div>
+
+</div>
+
+<div class="stat-card">
+
+<div class="icon">
+🃏
+</div>
+
+<div>
+
+<span>
+Győzelmek
+</span>
+
+<h3 id="wins">
+0
+</h3>
+
+</div>
+
+</div>
+
+<div class="stat-card">
+
+<div class="icon">
+❌
+</div>
+
+<div>
+
+<span>
+Vereségek
+</span>
+
+<h3 id="losses">
+0
+</h3>
+
+</div>
+
+</div>
+
+<div class="stat-card">
+
+<div class="icon">
+📈
+</div>
+
+<div>
+
+<span>
+Win Rate
+</span>
+
+<h3 id="winrate">
+0%
+</h3>
+
+</div>
+
+</div>
+
+<div class="stat-card">
+
+<div class="icon">
+🐦
+</div>
+
+<div>
+
+<span>
+Flappy Rekord
+</span>
+
+<h3 id="flappyBest">
+0
+</h3>
+
+</div>
+
+</div>
+
+<div class="stat-card">
+
+<div class="icon">
+🎰
+</div>
+
+<div>
+
+<span>
+Slot Profit
+</span>
+
+<h3 id="slotProfit">
+0
+</h3>
+
+</div>
+
+</div>
+
+<div class="stat-card">
+
+<div class="icon">
+💎
+</div>
+
+<div>
+
+<span>
+Jackpotok
+</span>
+
+<h3 id="slotJackpots">
+0
+</h3>
+
+</div>
+
+</div>
+
+<div class="stat-card">
+
+<div class="icon">
+🎮
+</div>
+
+<div>
+
+<span>
+Pörgetések
+</span>
+
+<h3 id="slotSpins">
+0
+</h3>
+
+</div>
+
+</div>
+
+</div>
+
+<div class="info-card">
+
+<h2>
+📅 Fiók adatok
+</h2>
+
+<div class="info-row">
+
+<span>
+Regisztráció
+</span>
+
+<strong id="createdAt">
+-
+</strong>
+
+</div>
+
+<div class="info-row">
+
+<span>
+Összes játék
+</span>
+
+<strong id="games">
+0
+</strong>
+
+</div>
+
+</div>
+
+<div class="achievement-card">
+
+<h2>
+🏅 Achievementek
+</h2>
+
+<div class="achievement-list">
+
+<div class="achievement">
+🥉 Első Győzelem
+</div>
+
+<div class="achievement">
+🐦 Flappy Rekord
+</div>
+
+<div class="achievement">
+💎 Jackpot Vadász
+</div>
+
+<div class="achievement">
+👑 Legend Rang
+</div>
+
+</div>
+
+</div>
+
+<a href="/"
+class="back-btn">
+
+🏠 Vissza a Dashboardra
+
 </a>
 
 </div>
 
-<script type="module" src="script.js"></script>
+<script type="module"
+src="script.js"></script>
 
 </body>
 </html>

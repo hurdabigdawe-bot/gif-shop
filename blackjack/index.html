@@ -7,7 +7,7 @@
 <meta name="viewport"
 content="width=device-width, initial-scale=1.0">
 
-<title>🃏 Blackjack Casino V5</title>
+<title>🃏 Blackjack Casino V6</title>
 
 <link rel="stylesheet"
 href="style.css">
@@ -73,9 +73,7 @@ style="display:none">
 </div>
 
 <button id="logoutBtn">
-
 Kilépés
-
 </button>
 
 </div>
@@ -86,92 +84,61 @@ Kilépés
 
 <main class="container">
 
-<section class="stats-grid">
+<!-- KOMPAKT STATS -->
 
-<div class="stat-card">
+<section class="stats-bar">
 
-<div class="stat-icon">
-💰
-</div>
+<div class="mini-stat">
 
-<div>
+<span>💰</span>
 
-<span>Kreditek</span>
-
-<h3 id="balance">
+<strong id="balance">
 0
-</h3>
+</strong>
 
 </div>
 
-</div>
+<div class="mini-stat">
 
-<div class="stat-card">
+<span>🏆</span>
 
-<div class="stat-icon">
-🏆
-</div>
-
-<div>
-
-<span>Győzelmek</span>
-
-<h3 id="userWins">
+<strong id="userWins">
 0
-</h3>
+</strong>
 
 </div>
 
-</div>
+<div class="mini-stat">
 
-<div class="stat-card">
+<span>❌</span>
 
-<div class="stat-icon">
-❌
-</div>
-
-<div>
-
-<span>Vereségek</span>
-
-<h3 id="userLosses">
+<strong id="userLosses">
 0
-</h3>
+</strong>
 
 </div>
 
-</div>
+<div class="mini-stat">
 
-<div class="stat-card">
+<span>📈</span>
 
-<div class="stat-icon">
-📈
-</div>
-
-<div>
-
-<span>Win Rate</span>
-
-<h3 id="userWinRate">
+<strong id="userWinRate">
 0%
-</h3>
-
-</div>
+</strong>
 
 </div>
 
 </section>
 
+<!-- ASZTAL -->
+
 <section class="table-card">
 
-<div class="dealer-area">
+<div class="table-header">
 
-<h2>
+<div class="side-title">
+
 🎩 Dealer
-</h2>
-
-<div id="dealerCards"
-class="cards">
 
 </div>
 
@@ -183,6 +150,12 @@ Pont: 0
 </div>
 
 </div>
+
+<div id="dealerCards"
+class="cards">
+
+</div>
+
 <div class="table-center">
 
 <div id="message">
@@ -193,7 +166,18 @@ Nyomd meg az Osztás gombot.
 
 </div>
 
-<div class="player-area">
+<div id="playerCards"
+class="cards">
+
+</div>
+
+<div class="table-footer">
+
+<div class="side-title">
+
+😎 Játékos
+
+</div>
 
 <div id="playerScore"
 class="score">
@@ -202,24 +186,19 @@ Pont: 0
 
 </div>
 
-<div id="playerCards"
-class="cards">
-
-</div>
-
-<h2>
-😎 Játékos
-</h2>
-
 </div>
 
 </section>
 
-<section class="bet-section">
+<!-- JÁTÉKPANEL -->
 
-<h2>
-💵 Tét kiválasztása
-</h2>
+<section class="game-panel">
+
+<div class="bet-section">
+
+<h3>
+💵 Tét
+</h3>
 
 <div class="chips">
 
@@ -267,7 +246,7 @@ data-bet="10000">
 
 <div class="current-bet">
 
-Aktuális tét:
+Tét:
 
 <span id="betValue">
 
@@ -279,9 +258,9 @@ kredit
 
 </div>
 
-</section>
+</div>
 
-<section class="controls">
+<div class="controls">
 
 <button id="dealBtn">
 
@@ -307,16 +286,19 @@ kredit
 
 </button>
 
+</div>
+
 </section>
+
 <section class="achievement-panel">
 
-<h2>
+<h3>
 🏅 Achievementek
-</h2>
+</h3>
 
 <div id="achievementPreview">
 
-Még nincs achievement.
+Achievement rendszer aktív
 
 </div>
 

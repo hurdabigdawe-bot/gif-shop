@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
+
+<title>
+💎 Támogasd a Blackjack Casino Projektet
+</title>
+
+<link rel="stylesheet"
+href="style.css">
+
+</head>
+<body>
+
+<div class="bg-glow"></div>
+
+<header class="topbar">
+
+<div class="logo">
+
+💎 Donation Center
+
+</div>
+
+<nav class="top-nav">
+
+<a href="/"
+class="nav-link">
+
+🏠 Dashboard
+
+</a>
+
+<a href="/blackjack/"
+class="nav-link">
+
+🃏 Blackjack
+
+</a>
+
+<a href="/profil/"
+class="nav-link">
+
+👤 Profil
+
+</a>
+
+<a href="/toplista/"
+class="nav-link">
+
+🏆 Toplista
+
+</a>
+
+</nav>
+
+</header>
+
+<main class="container">
+
+<section class="hero-card">
+
+<h1>
+
+💎 Support Blackjack Casino
+
+</h1>
+
+<p>
+
+Ha tetszik a projekt és szeretnéd támogatni a további fejlesztést,
+küldhetsz kriptós támogatást az alábbi wallet címekre.
+
+</p>
+
+</section>
+
+<section class="wallet-grid">
+
+<!-- BTC -->
+
+<div class="wallet-card">
+
+<h2>
+
+₿ Bitcoin (BTC)
+
+</h2>
+
+<img
+src="qr/btc.png"
+alt="BTC QR"
+class="qr-image">
+
+<div
+class="wallet-address"
+id="btcAddress">
+
+IDE_JON_A_BTC_CIM
+
+</div>
+
+<button
+class="copy-btn"
+onclick="copyWallet('btcAddress')">
+
+📋 Másolás
+
+</button>
+
+</div>
+
+<!-- TRX -->
+
+<div class="wallet-card">
+
+<h2>
+
+⚡ Tron (TRX)
+
+</h2>
+
+<img
+src="qr/trx.png"
+alt="TRX QR"
+class="qr-image">
+
+<div
+class="wallet-address"
+id="trxAddress">
+
+IDE_JON_A_TRX_CIM
+
+</div>
+
+<button
+class="copy-btn"
+onclick="copyWallet('trxAddress')">
+
+📋 Másolás
+
+</button>
+
+</div>
+
+<!-- LTC -->
+
+<div class="wallet-card">
+
+<h2>
+
+🥈 Litecoin (LTC)
+
+</h2>
+
+<img
+src="qr/ltc.png"
+alt="LTC QR"
+class="qr-image">
+
+<div
+class="wallet-address"
+id="ltcAddress">
+
+IDE_JON_A_LTC_CIM
+
+</div>
+
+<button
+class="copy-btn"
+onclick="copyWallet('ltcAddress')">
+
+📋 Másolás
+
+</button>
+
+</div>
+
+<!-- USDT -->
+
+<div class="wallet-card">
+
+<h2>
+
+💵 USDT (TRC20)
+
+</h2>
+
+<img
+src="qr/usdt.png"
+alt="USDT QR"
+class="qr-image">
+
+<div
+class="wallet-address"
+id="usdtAddress">
+
+IDE_JON_A_USDT_CIM
+
+</div>
+
+<button
+class="copy-btn"
+onclick="copyWallet('usdtAddress')">
+
+📋 Másolás
+
+</button>
+
+</div>
+
+<!-- BNB -->
+
+<div class="wallet-card">
+
+<h2>
+
+🟡 Binance Coin (BNB)
+
+</h2>
+
+<img
+src="qr/bnb.png"
+alt="BNB QR"
+class="qr-image">
+
+<div
+class="wallet-address"
+id="bnbAddress">
+
+IDE_JON_A_BNB_CIM
+
+</div>
+
+<button
+class="copy-btn"
+onclick="copyWallet('bnbAddress')">
+
+📋 Másolás
+
+</button>
+
+</div>
+
+</section>
+
+<section class="thanks-card">
+
+<h2>
+
+❤️ Köszönjük!
+
+</h2>
+
+<p>
+
+Minden támogatás segíti a Blackjack Casino
+további fejlesztését, új játékok,
+achievementek és funkciók készítését.
+
+</p>
+
+</section>
+
+</main>
+
+<div id="toast"
+class="toast">
+
+📋 Wallet cím másolva
+
+</div>
+
+<script src="script.js"></script>
+
+</body>
+</html>

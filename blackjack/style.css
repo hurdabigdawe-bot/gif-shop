@@ -528,25 +528,49 @@ overflow:hidden;
 
 }
 
-.table-title{
+.dealer-name{
 
-display:flex;
-
-justify-content:space-between;
-
-align-items:center;
+text-align:center;
 
 font-size:22px;
 
 font-weight:800;
 
+margin-bottom:8px;
+
 }
 
-.table-title span{
+.player-name{
+
+display:flex;
+
+justify-content:center;
+
+align-items:center;
+
+gap:8px;
+
+font-size:22px;
+
+font-weight:800;
+
+margin-top:8px;
+
+}
+
+.score{
+
+text-align:center;
+
+font-size:18px;
+
+font-weight:800;
 
 color:var(--gold);
 
-font-size:18px;
+margin-bottom:12px;
+
+}
 
 }
 

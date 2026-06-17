@@ -284,4 +284,21 @@ color:#ddd;
 color:#00ff88;
 font-weight:bold;
 }
+  #userWins{
+color:#00ff88;
+font-size:13px;
+font-weight:bold;
+}
+
+#userLosses{
+color:#ff5555;
+font-size:13px;
+font-weight:bold;
+}
+
+#userWinRate{
+color:gold;
+font-size:13px;
+font-weight:bold;
+}
 }

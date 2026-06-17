@@ -160,14 +160,48 @@ onAuthStateChanged(
           )
         );
 
-      if(userDoc.exists()){
+    if(userDoc.exists()){
 
-        balance =
-          userDoc.data().credits || 0;
+const data =
+userDoc.data();
 
-        updateBalance();
+balance =
+data.credits || 0;
 
-      }
+const wins =
+data.wins || 0;
+
+const losses =
+data.losses || 0;
+
+const totalGames =
+wins + losses;
+
+const winRate =
+totalGames > 0
+? Math.round(
+(wins / totalGames) * 100
+)
+: 0;
+
+userWins.textContent =
+"🏆 " +
+wins +
+" győzelem";
+
+userLosses.textContent =
+"❌ " +
+losses +
+" vereség";
+
+userWinRate.textContent =
+"📊 " +
+winRate +
+"%";
+
+updateBalance();
+
+}
 
     }catch(error){
 

@@ -7,7 +7,7 @@
 <meta name="viewport"
 content="width=device-width, initial-scale=1.0">
 
-<title>🃏 Blackjack Casino V3</title>
+<title>🃏 Blackjack Casino V4</title>
 
 <link rel="stylesheet"
 href="style.css">
@@ -69,7 +69,7 @@ Kilépés
 <section class="hero-card">
 
 <h1>
-🃏 Blackjack Casino V3
+🃏 Blackjack Casino V4
 </h1>
 
 <p>
@@ -78,89 +78,9 @@ Valódi kaszinó szabályok • 3:2 Blackjack • Double Down
 
 </section>
 
-<section class="stats-grid">
+<section class="game-layout">
 
-<div class="stat-card">
-
-<div class="stat-icon">
-💰
-</div>
-
-<div>
-
-<span>
-Kreditek
-</span>
-
-<h3 id="balance">
-0
-</h3>
-
-</div>
-
-</div>
-
-<div class="stat-card">
-
-<div class="stat-icon">
-🏆
-</div>
-
-<div>
-
-<span>
-Győzelmek
-</span>
-
-<h3 id="userWins">
-0
-</h3>
-
-</div>
-
-</div>
-
-<div class="stat-card">
-
-<div class="stat-icon">
-❌
-</div>
-
-<div>
-
-<span>
-Vereségek
-</span>
-
-<h3 id="userLosses">
-0
-</h3>
-
-</div>
-
-</div>
-
-<div class="stat-card">
-
-<div class="stat-icon">
-📈
-</div>
-
-<div>
-
-<span>
-Win Rate
-</span>
-
-<h3 id="userWinRate">
-0%
-</h3>
-
-</div>
-
-</div>
-
-</section>
+<div class="game-table">
 
 <section class="table-card">
 
@@ -189,6 +109,7 @@ Pont: 0
 <div id="message">
 
 Nyomd meg az osztás gombot.
+
 </div>
 
 </div>
@@ -215,10 +136,90 @@ Pont: 0
 
 </section>
 
-<section class="bet-section">
+</div>
+
+<aside class="game-sidebar">
+
+<section class="stats-grid">
+
+<div class="stat-card">
+
+<div class="stat-icon">
+💰
+</div>
+
+<div>
+
+<span>Kreditek</span>
+
+<h3 id="balance">
+0
+</h3>
+
+</div>
+
+</div>
+
+<div class="stat-card">
+
+<div class="stat-icon">
+🏆
+</div>
+
+<div>
+
+<span>Győzelmek</span>
+
+<h3 id="userWins">
+0
+</h3>
+
+</div>
+
+</div>
+
+<div class="stat-card">
+
+<div class="stat-icon">
+❌
+</div>
+
+<div>
+
+<span>Vereségek</span>
+
+<h3 id="userLosses">
+0
+</h3>
+
+</div>
+
+</div>
+
+<div class="stat-card">
+
+<div class="stat-icon">
+📈
+</div>
+
+<div>
+
+<span>Win Rate</span>
+
+<h3 id="userWinRate">
+0%
+</h3>
+
+</div>
+
+</div>
+
+</section>
+
+  <section class="bet-section">
 
 <h2>
-💵 Tét kiválasztása
+💵 Tét
 </h2>
 
 <div class="chips">
@@ -267,15 +268,10 @@ data-bet="10000">
 
 <div class="current-bet">
 
-Aktuális tét:
-
+Tét:
 <span id="betValue">
-
 100
-
 </span>
-
-kredit
 
 </div>
 
@@ -297,7 +293,7 @@ kredit
 
 <button id="doubleBtn">
 
-💰 Double Down
+💎 Double
 
 </button>
 
@@ -320,6 +316,10 @@ kredit
 Még nincs achievement.
 
 </div>
+
+</section>
+
+</aside>
 
 </section>
 

@@ -7,7 +7,7 @@
 <meta name="viewport"
 content="width=device-width, initial-scale=1.0">
 
-<title>🃏 Blackjack Casino</title>
+<title>🃏 Blackjack Casino V3</title>
 
 <link rel="stylesheet"
 href="style.css">
@@ -65,6 +65,18 @@ Kilépés
 </header>
 
 <main class="container">
+
+<section class="hero-card">
+
+<h1>
+🃏 Blackjack Casino V3
+</h1>
+
+<p>
+Valódi kaszinó szabályok • 3:2 Blackjack • Double Down
+</p>
+
+</section>
 
 <section class="stats-grid">
 
@@ -177,7 +189,6 @@ Pont: 0
 <div id="message">
 
 Nyomd meg az osztás gombot.
-
 </div>
 
 </div>
@@ -273,29 +284,51 @@ kredit
 <section class="controls">
 
 <button id="dealBtn">
+
 🃏 Osztás
+
 </button>
 
 <button id="hitBtn">
+
 ➕ Lapot kérek
+
 </button>
 
 <button id="doubleBtn">
+
 💰 Double Down
+
 </button>
 
 <button id="standBtn">
+
 ✋ Megállok
+
 </button>
+
+</section>
+
+<section class="achievement-panel">
+
+<h2>
+🏅 Achievementek
+</h2>
+
+<div id="achievementPreview">
+
+Még nincs achievement.
+
+</div>
 
 </section>
 
 <section class="bottom-actions">
 
-<a href="/toplista/"
-class="action-btn blue">
+<a href="/"
+class="action-btn green">
 
-🏆 Toplista
+🏠 Dashboard
 
 </a>
 
@@ -306,10 +339,10 @@ class="action-btn gold">
 
 </a>
 
-<a href="/"
-class="action-btn green">
+<a href="/toplista/"
+class="action-btn blue">
 
-🏠 Dashboard
+🏆 Toplista
 
 </a>
 
@@ -323,6 +356,9 @@ class="toast">
 🏅 Achievement Feloldva
 
 </div>
+
+<script type="module"
+src="firebase.js"></script>
 
 <script type="module"
 src="script.js"></script>

@@ -72,6 +72,112 @@ return date.toLocaleDateString(
 
 }
 
+const achievementData = {
+
+first_win:{
+name:"🥉 Első Győzelem",
+rarity:"common"
+},
+
+win_10:{
+name:"🥈 10 Győzelem",
+rarity:"rare"
+},
+
+win_100:{
+name:"🥇 100 Győzelem",
+rarity:"epic"
+},
+
+flappy_10:{
+name:"🐦 Flappy 10+",
+rarity:"common"
+},
+
+flappy_50:{
+name:"🐦 Flappy 50+",
+rarity:"legendary"
+},
+
+flappy_100:{
+name:"🐦 Flappy 100+",
+rarity:"mythic"
+},
+
+first_jackpot:{
+name:"🎰 Első Jackpot",
+rarity:"rare"
+},
+
+jackpot_10:{
+name:"💎 10 Jackpot",
+rarity:"legendary"
+},
+
+credits_10000:{
+name:"💰 10 000 Kredit",
+rarity:"rare"
+},
+
+credits_100000:{
+name:"💰 100 000 Kredit",
+rarity:"epic"
+},
+
+legend_rank:{
+name:"👑 Legend Rang",
+rarity:"mythic"
+}
+
+};
+
+function renderAchievements(list){
+
+const container =
+document.getElementById(
+"achievementList"
+);
+
+if(!container){
+return;
+}
+
+if(!list || list.length === 0){
+
+container.innerHTML = `
+<div class="achievement-empty">
+Még nincs achievement.
+</div>
+`;
+
+return;
+
+}
+
+let html = "";
+
+list.forEach(id=>{
+
+const achievement =
+achievementData[id];
+
+if(!achievement){
+return;
+}
+
+html += `
+<div class="achievement ${achievement.rarity}">
+${achievement.name}
+</div>
+`;
+
+});
+
+container.innerHTML =
+html;
+
+}
+
 onAuthStateChanged(
 auth,
 async(user)=>{
@@ -129,6 +235,9 @@ data.slotJackpots || 0;
 
 const slotSpins =
 data.slotSpins || 0;
+
+const achievements =
+data.achievements || [];
 
 const createdAt =
 data.createdAt || 0;
@@ -226,6 +335,10 @@ document.getElementById(
 ).textContent =
 formatNumber(
 games
+);
+
+renderAchievements(
+achievements
 );
 
 }catch(error){

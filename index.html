@@ -1,5 +1,4 @@
 <!DOCTYPE html>
-
 <html lang="hu">
 <head>
 
@@ -12,6 +11,13 @@
 
 </head>
 <body>
+
+<div id="userPanel" class="user-panel">
+
+<a href="/login/" id="loginLink">
+🔐 Bejelentkezés
+</a>
+
 <div id="userInfo" style="display:none">
 
 <div class="user-data">
@@ -32,29 +38,6 @@
 
 <div id="userWinRate">
 📊 0%
-</div>
-
-</div>
-
-<button id="logoutBtn">
-🚪 Kilépés
-</button>
-
-</div>
-<div id="userPanel" class="user-panel">          
-
-<a href="/login/" id="loginLink">
-🔐 Bejelentkezés
-</a>
-
-<div id="userInfo" style="display:none">
-
-<div class="user-data">
-
-<div id="userEmail"></div>
-
-<div id="userCredits">
-💰 0 kredit
 </div>
 
 </div>
@@ -149,7 +132,8 @@ href="/blackjack/">
 🃏 INGYENES BLACKJACK
 
 </a>
-  <a
+
+<a
 class="poker-btn"
 href="/profil/">
 
@@ -194,9 +178,7 @@ appId: "1:443187158566:web:2e055a515f29b5021110e7"
 };
 
 const app = initializeApp(firebaseConfig);
-
 const auth = getAuth(app);
-
 const db = getFirestore(app);
 
 const loginLink =
@@ -211,6 +193,15 @@ document.getElementById("userEmail");
 const userCredits =
 document.getElementById("userCredits");
 
+const userWins =
+document.getElementById("userWins");
+
+const userLosses =
+document.getElementById("userLosses");
+
+const userWinRate =
+document.getElementById("userWinRate");
+
 const logoutBtn =
 document.getElementById("logoutBtn");
 
@@ -219,7 +210,6 @@ onAuthStateChanged(auth, async (user)=>{
 if(user){
 
 loginLink.style.display = "none";
-
 userInfo.style.display = "flex";
 
 userEmail.innerText =
@@ -238,15 +228,61 @@ user.uid
 
 if(userDoc.exists()){
 
+const data =
+userDoc.data();
+
+const credits =
+data.credits || 0;
+
+const wins =
+data.wins || 0;
+
+const losses =
+data.losses || 0;
+
+const totalGames =
+wins + losses;
+
+const winRate =
+totalGames > 0
+? Math.round(
+(wins / totalGames) * 100
+)
+: 0;
+
 userCredits.innerText =
 "💰 " +
-userDoc.data().credits +
+credits +
 " kredit";
+
+userWins.innerText =
+"🏆 " +
+wins +
+" győzelem";
+
+userLosses.innerText =
+"❌ " +
+losses +
+" vereség";
+
+userWinRate.innerText =
+"📊 " +
+winRate +
+"% winrate";
 
 }else{
 
 userCredits.innerText =
 "💰 0 kredit";
+
+userWins.innerText =
+"🏆 0 győzelem";
+
+userLosses.innerText =
+"❌ 0 vereség";
+
+userWinRate.innerText =
+"📊 0%";
 
 }
 
@@ -262,7 +298,6 @@ userCredits.innerText =
 }else{
 
 loginLink.style.display = "block";
-
 userInfo.style.display = "none";
 
 }

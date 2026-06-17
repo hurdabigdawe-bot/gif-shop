@@ -15,35 +15,79 @@ getDoc
 from "https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
 
 const firebaseConfig = {
-
 apiKey: "AIzaSyBoIILW2sbfyuSSvK108YAxnLPB_GlZZP0",
-
 authDomain: "game-6df94.firebaseapp.com",
-
 projectId: "game-6df94",
-
 storageBucket: "game-6df94.firebasestorage.app",
-
 messagingSenderId: "443187158566",
-
 appId: "1:443187158566:web:2e055a515f29b5021110e7"
-
 };
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-onAuthStateChanged(auth, async(user)=>{
+function getRank(credits){
+
+if(credits >= 1000000){
+return "👑 Legend";
+}
+
+if(credits >= 250000){
+return "💎 Diamond";
+}
+
+if(credits >= 50000){
+return "🥇 Gold";
+}
+
+if(credits >= 10000){
+return "🥈 Silver";
+}
+
+return "🥉 Bronze";
+
+}
+
+function formatNumber(value){
+
+return Number(
+value || 0
+).toLocaleString("hu-HU");
+
+}
+
+function formatDate(timestamp){
+
+if(!timestamp){
+return "-";
+}
+
+const date =
+new Date(timestamp);
+
+return date.toLocaleDateString(
+"hu-HU"
+);
+
+}
+
+onAuthStateChanged(
+auth,
+async(user)=>{
 
 if(!user){
 
-window.location.href="/login/";
+window.location.href =
+"/login/";
+
 return;
 
 }
 
-const userDoc =
+try{
+
+const snap =
 await getDoc(
 doc(
 db,
@@ -52,74 +96,146 @@ user.uid
 )
 );
 
-if(!userDoc.exists()) return;
+if(!snap.exists()){
+
+return;
+
+}
 
 const data =
-userDoc.data();
+snap.data();
 
-document.getElementById("email")
-.textContent =
-data.email;
+const username =
+data.username ||
+user.email.split("@")[0];
 
-document.getElementById("credits")
-.textContent =
+const credits =
 data.credits || 0;
 
-document.getElementById("wins")
-.textContent =
+const wins =
 data.wins || 0;
 
-document.getElementById("losses")
-.textContent =
+const losses =
 data.losses || 0;
 
-const totalGames =
-(data.wins || 0) +
-(data.losses || 0);
-  document.getElementById("games")
-.textContent =
-totalGames;
+const flappyBest =
+data.flappyBest || 0;
 
-let rank = "🥉 Bronz";
+const slotProfit =
+data.slotProfit || 0;
 
-if((data.wins || 0) >= 100){
-rank = "💎 Gyémánt";
-}
-else if((data.wins || 0) >= 50){
-rank = "🥇 Arany";
-}
-else if((data.wins || 0) >= 10){
-rank = "🥈 Ezüst";
-}
+const slotJackpots =
+data.slotJackpots || 0;
 
-document.getElementById("rank")
-.textContent =
-rank;
+const slotSpins =
+data.slotSpins || 0;
 
-let rate = 0;
+const createdAt =
+data.createdAt || 0;
 
-if(totalGames > 0){
+const games =
+wins + losses;
 
-rate =
-Math.round(
-(data.wins / totalGames) * 100
+const winRate =
+games > 0
+? (
+wins / games * 100
+).toFixed(1)
+: "0.0";
+
+document.getElementById(
+"username"
+).textContent =
+username;
+
+document.getElementById(
+"email"
+).textContent =
+user.email;
+
+document.getElementById(
+"credits"
+).textContent =
+formatNumber(
+credits
+);
+
+document.getElementById(
+"wins"
+).textContent =
+formatNumber(
+wins
+);
+
+document.getElementById(
+"losses"
+).textContent =
+formatNumber(
+losses
+);
+
+document.getElementById(
+"winrate"
+).textContent =
+winRate + "%";
+
+document.getElementById(
+"rank"
+).textContent =
+getRank(
+credits
+);
+
+document.getElementById(
+"flappyBest"
+).textContent =
+formatNumber(
+flappyBest
+);
+
+document.getElementById(
+"slotProfit"
+).textContent =
+formatNumber(
+slotProfit
+);
+
+document.getElementById(
+"slotJackpots"
+).textContent =
+formatNumber(
+slotJackpots
+);
+
+document.getElementById(
+"slotSpins"
+).textContent =
+formatNumber(
+slotSpins
+);
+
+document.getElementById(
+"createdAt"
+).textContent =
+formatDate(
+createdAt
+);
+
+document.getElementById(
+"games"
+).textContent =
+formatNumber(
+games
+);
+
+}catch(error){
+
+console.error(
+"Profil hiba:",
+error
 );
 
 }
 
-document.getElementById("winrate")
-.textContent =
-rate + "%";
-
-if(data.createdAt){
-
-const date =
-new Date(data.createdAt);
-
-document.getElementById("createdAt")
-.textContent =
-date.toLocaleDateString("hu-HU");
-
 }
-
-});
+);

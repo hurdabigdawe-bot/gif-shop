@@ -13,7 +13,8 @@ getFirestore,
 doc,
 getDoc,
 setDoc,
-updateDoc
+updateDoc,
+arrayUnion
 }
 from "https://www.gstatic.com/firebasejs/12.15.0/firebase-firestore.js";
 
@@ -45,20 +46,24 @@ const logoutBtn = document.getElementById("logoutBtn");
 const userEmail = document.getElementById("userEmail");
 const userCredits = document.getElementById("userCredits");
 
-const slotSpinsEl =
-document.getElementById("slotSpins");
+const slotSpinsEl = document.getElementById("slotSpins");
+const slotWinsEl = document.getElementById("slotWins");
+const slotLossesEl = document.getElementById("slotLosses");
+const slotProfitEl = document.getElementById("slotProfit");
+const slotJackpotsEl = document.getElementById("slotJackpots");
+const slotWinRateEl = document.getElementById("slotWinRate");
 
-const slotWinsEl =
-document.getElementById("slotWins");
+const biggestWinEl =
+document.getElementById("biggestWin");
 
-const slotLossesEl =
-document.getElementById("slotLosses");
+const achievementCountEl =
+document.getElementById("achievementCount");
 
-const slotProfitEl =
-document.getElementById("slotProfit");
+const jackpotPoolEl =
+document.getElementById("jackpotPool");
 
-const slotJackpotsEl =
-document.getElementById("slotJackpots");
+const toast =
+document.getElementById("toast");
 
 const symbols = [
 "🍒",
@@ -79,29 +84,11 @@ let slotLosses = 0;
 let slotProfit = 0;
 let slotJackpots = 0;
 
-function updateStatsUI(){
+let biggestWin = 0;
 
-slotSpinsEl.textContent =
-slotSpins;
+let jackpotPool = 1000000;
 
-slotWinsEl.textContent =
-slotWins;
-
-slotLossesEl.textContent =
-slotLosses;
-
-slotProfitEl.textContent =
-slotProfit.toLocaleString();
-
-slotJackpotsEl.textContent =
-slotJackpots;
-
-userCredits.textContent =
-"💰 " +
-credits.toLocaleString() +
-" kredit";
-
-}
+let achievements = [];
 
 function randomSymbol(){
 
@@ -111,6 +98,70 @@ Math.random() *
 symbols.length
 )
 ];
+
+}
+
+function showToast(text){
+
+toast.textContent = text;
+
+toast.classList.add("show");
+
+setTimeout(()=>{
+
+toast.classList.remove("show");
+
+},3000);
+
+}
+
+function updateStatsUI(){
+
+slotSpinsEl.textContent =
+slotSpins.toLocaleString();
+
+slotWinsEl.textContent =
+slotWins.toLocaleString();
+
+slotLossesEl.textContent =
+slotLosses.toLocaleString();
+
+slotProfitEl.textContent =
+slotProfit.toLocaleString();
+
+slotJackpotsEl.textContent =
+slotJackpots.toLocaleString();
+
+biggestWinEl.textContent =
+biggestWin.toLocaleString() +
+" kredit";
+
+userCredits.textContent =
+"💰 " +
+credits.toLocaleString() +
+" kredit";
+
+jackpotPoolEl.textContent =
+jackpotPool.toLocaleString();
+
+const totalGames =
+slotWins + slotLosses;
+
+const rate =
+totalGames > 0
+? (
+slotWins /
+totalGames *
+100
+).toFixed(1)
+: "0.0";
+
+slotWinRateEl.textContent =
+rate + "%";
+
+achievementCountEl.textContent =
+achievements.length +
+" feloldva";
 
 }
 
@@ -168,10 +219,38 @@ return 0;
 
 }
 
-async function saveStats(){
+async function unlockAchievement(id){
 
-if(!currentUser)
+if(
+achievements.includes(id)
+){
 return;
+}
+
+achievements.push(id);
+
+await updateDoc(
+doc(
+db,
+"users",
+currentUser.uid
+),
+{
+achievements:
+arrayUnion(id)
+}
+);
+
+showToast(
+"🏅 Achievement: " +
+id
+);
+
+updateStatsUI();
+
+}
+
+async function saveStats(){
 
 await updateDoc(
 doc(
@@ -185,7 +264,9 @@ slotSpins,
 slotWins,
 slotLosses,
 slotProfit,
-slotJackpots
+slotJackpots,
+biggestWin,
+jackpotPool
 }
 );
 
@@ -193,18 +274,21 @@ slotJackpots
 
 async function spin(){
 
-if(!currentUser)
+if(!currentUser){
 return;
+}
 
 const bet =
 Number(
 betAmount.value
 );
 
-if(credits < bet){
+if(
+credits < bet
+){
 
 result.textContent =
-"❌ Nincs elég kredited!";
+"❌ Nincs elég kredited";
 
 return;
 
@@ -215,6 +299,11 @@ spinBtn.disabled = true;
 credits -= bet;
 
 slotSpins++;
+
+jackpotPool +=
+Math.floor(
+bet * 0.05
+);
 
 updateStatsUI();
 
@@ -235,7 +324,9 @@ randomSymbol();
 setTimeout(
 async()=>{
 
-clearInterval(interval);
+clearInterval(
+interval
+);
 
 const a =
 randomSymbol();
@@ -252,18 +343,55 @@ reel3.textContent = c;
 
 const multiplier =
 getMultiplier(
-a,
-b,
-c
+a,b,c
 );
 
 if(multiplier > 0){
 
-const win =
+let win =
 Math.floor(
 bet *
 multiplier
 );
+
+if(
+a==="7️⃣" &&
+b==="7️⃣" &&
+c==="7️⃣"
+){
+
+win += jackpotPool;
+
+jackpotPool =
+1000000;
+
+slotJackpots++;
+
+result.textContent =
+"💎 JACKPOT! +" +
+win.toLocaleString();
+
+await unlockAchievement(
+"first_jackpot"
+);
+
+if(
+slotJackpots >= 10
+){
+
+await unlockAchievement(
+"jackpot_10"
+);
+
+}
+
+}else{
+
+result.textContent =
+"🎉 Nyertél +" +
+win.toLocaleString();
+
+}
 
 credits += win;
 
@@ -273,22 +401,10 @@ slotProfit +=
 (win - bet);
 
 if(
-a==="7️⃣" &&
-b==="7️⃣" &&
-c==="7️⃣"
+win > biggestWin
 ){
 
-slotJackpots++;
-
-result.textContent =
-"💎 JACKPOT! +" +
-win.toLocaleString();
-
-}else{
-
-result.textContent =
-"🎉 Nyertél +" +
-win.toLocaleString();
+biggestWin = win;
 
 }
 
@@ -300,6 +416,26 @@ slotProfit -= bet;
 
 result.textContent =
 "😢 Nem nyertél";
+
+}
+
+if(
+credits >= 10000
+){
+
+await unlockAchievement(
+"credits_10000"
+);
+
+}
+
+if(
+credits >= 100000
+){
+
+await unlockAchievement(
+"credits_100000"
+);
 
 }
 
@@ -352,13 +488,16 @@ userEmail.textContent =
 "👤 " +
 user.email;
 
-const snap =
-await getDoc(
+const userRef =
 doc(
 db,
 "users",
 user.uid
-)
+);
+
+const snap =
+await getDoc(
+userRef
 );
 
 if(snap.exists()){
@@ -384,21 +523,29 @@ data.slotProfit || 0;
 slotJackpots =
 data.slotJackpots || 0;
 
+biggestWin =
+data.biggestWin || 0;
+
+jackpotPool =
+data.jackpotPool || 1000000;
+
+achievements =
+data.achievements || [];
+
 }else{
 
 await setDoc(
-doc(
-db,
-"users",
-user.uid
-),
+userRef,
 {
 credits:5000,
 slotSpins:0,
 slotWins:0,
 slotLosses:0,
 slotProfit:0,
-slotJackpots:0
+slotJackpots:0,
+biggestWin:0,
+jackpotPool:1000000,
+achievements:[]
 },
 {
 merge:true

@@ -3,26 +3,45 @@
 <head>
 
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<title>🎰 Slot Machine</title>
+<meta name="viewport"
+content="width=device-width, initial-scale=1.0">
 
-<link rel="stylesheet" href="style.css">
+<title>🎰 Slot Machine V2</title>
+
+<link rel="stylesheet"
+href="style.css">
 
 </head>
 <body>
 
-<div id="userPanel" class="user-panel">
+<div class="bg-glow"></div>
 
-<a href="/login/" id="loginLink">
+<header class="topbar">
+
+<div class="logo">
+🎰 Mystery Slot
+</div>
+
+<div id="userPanel"
+class="user-panel">
+
+<a href="/login/"
+id="loginLink"
+class="login-btn">
+
 🔐 Bejelentkezés
+
 </a>
 
-<div id="userInfo" style="display:none">
+<div id="userInfo"
+style="display:none">
 
-<div class="user-data">
+<div class="user-card">
 
-<div id="userEmail"></div>
+<div id="userEmail">
+👤 Felhasználó
+</div>
 
 <div id="userCredits">
 💰 0 kredit
@@ -31,37 +50,85 @@
 </div>
 
 <button id="logoutBtn">
-🚪 Kilépés
+
+Kilépés
+
 </button>
 
 </div>
 
 </div>
 
-<div class="casino">
+</header>
 
-<h1>🎰 SLOT MACHINE</h1>
+<main class="container">
+
+<section class="hero">
+
+<div class="jackpot-card">
+
+<div class="jackpot-label">
+💎 AKTUÁLIS JACKPOT
+</div>
+
+<div id="jackpotPool"
+class="jackpot-value">
+
+1 000 000
+
+</div>
+
+</div>
+
+</section>
+
+<section class="machine-card">
+
+<div class="machine-top">
+
+<h1>
+🎰 SLOT MACHINE
+</h1>
+
+<p>
+Vegas stílusú nyerőgép
+</p>
+
+</div>
 
 <div class="machine">
 
-<div class="reel" id="reel1">
+<div class="reel"
+id="reel1">
+
 🍒
+
 </div>
 
-<div class="reel" id="reel2">
+<div class="reel"
+id="reel2">
+
 🍋
+
 </div>
 
-<div class="reel" id="reel3">
+<div class="reel"
+id="reel3">
+
 ⭐
-</div>
 
 </div>
 
-<div class="bet-panel">
+</div>
 
-<label for="betAmount">
-💸 Tét:
+<div class="controls">
+
+<div class="bet-box">
+
+<label>
+
+💸 Tét
+
 </label>
 
 <select id="betAmount">
@@ -82,62 +149,216 @@
 5000 kredit
 </option>
 
+<option value="10000">
+10000 kredit
+</option>
+
 </select>
 
 </div>
 
 <button id="spinBtn">
+
 🎰 PÖRGETÉS
+
 </button>
 
-<div id="result">
+</div>
+
+<div id="result"
+class="result">
+
 Sok szerencsét!
+
 </div>
 
-<div class="stats">
+</section>
 
-<div>
-🎰 Pörgetések:
-<span id="slotSpins">0</span>
-</div>
+<section class="stats-grid">
 
-<div>
-🎉 Nyerések:
-<span id="slotWins">0</span>
-</div>
+<div class="stat-card">
 
-<div>
-❌ Veszteségek:
-<span id="slotLosses">0</span>
+<div class="stat-icon">
+🎰
 </div>
 
 <div>
-💰 Profit:
-<span id="slotProfit">0</span>
+
+<span>
+Pörgetések
+</span>
+
+<h3 id="slotSpins">
+0
+</h3>
+
+</div>
+
+</div>
+
+<div class="stat-card">
+
+<div class="stat-icon">
+🎉
 </div>
 
 <div>
-💎 Jackpotok:
-<span id="slotJackpots">0</span>
+
+<span>
+Nyerések
+</span>
+
+<h3 id="slotWins">
+0
+</h3>
+
+</div>
+
+</div>
+
+<div class="stat-card">
+
+<div class="stat-icon">
+❌
+</div>
+
+<div>
+
+<span>
+Veszteségek
+</span>
+
+<h3 id="slotLosses">
+0
+</h3>
+
 </div>
 
 </div>
 
-<a
-class="leaderboard-btn"
-href="/toplista/">
+<div class="stat-card">
 
-🏆 TOPLISTA
+<div class="stat-icon">
+💰
+</div>
+
+<div>
+
+<span>
+Profit
+</span>
+
+<h3 id="slotProfit">
+0
+</h3>
+
+</div>
+
+</div>
+
+<div class="stat-card">
+
+<div class="stat-icon">
+💎
+</div>
+
+<div>
+
+<span>
+Jackpotok
+</span>
+
+<h3 id="slotJackpots">
+0
+</h3>
+
+</div>
+
+</div>
+
+<div class="stat-card">
+
+<div class="stat-icon">
+🔥
+</div>
+
+<div>
+
+<span>
+Win Rate
+</span>
+
+<h3 id="slotWinRate">
+0%
+</h3>
+
+</div>
+
+</div>
+
+</section>
+
+<section class="bottom-grid">
+
+<div class="info-card">
+
+<h2>
+🏆 Legnagyobb nyeremény
+</h2>
+
+<div id="biggestWin">
+
+0 kredit
+
+</div>
+
+</div>
+
+<div class="info-card">
+
+<h2>
+🏅 Achievementek
+</h2>
+
+<div id="achievementCount">
+
+0 feloldva
+
+</div>
+
+</div>
+
+</section>
+
+<div class="actions">
+
+<a href="/toplista/"
+class="action-btn blue">
+
+🏆 Toplista
+
+</a>
+
+<a href="/"
+class="action-btn green">
+
+🏠 Dashboard
 
 </a>
 
 </div>
 
-<a href="/" class="back-btn">
-🏠 Vissza
-</a>
+</main>
 
-<script type="module" src="script.js"></script>
+<div id="toast"
+class="toast">
+
+🏅 Achievement Feloldva!
+
+</div>
+
+<script type="module"
+src="script.js"></script>
 
 </body>
 </html>

@@ -76,6 +76,16 @@ document.getElementById("achievementPreview");
 const toast =
 document.getElementById("toast");
 
+const playerName =
+document.getElementById("playerName");
+
+if(playerName && user.email){
+
+playerName.textContent =
+user.email.split("@")[0];
+
+}
+
 /* =========================
    GAME
 ========================= */

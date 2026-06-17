@@ -9,8 +9,8 @@ box-sizing:border-box;
 --bg:#0f1117;
 --bg2:#151922;
 
---card:rgba(255,255,255,.04);
---card-hover:rgba(255,255,255,.06);
+--card:#171c26;
+--card-hover:#1e2430;
 
 --border:rgba(255,255,255,.08);
 
@@ -18,14 +18,12 @@ box-sizing:border-box;
 --gold:#ffd54f;
 --red:#ff5252;
 --blue:#00d2ff;
+--purple:#7c3aed;
 
 --text:#ffffff;
 --muted:#9ca3af;
 
 --radius:18px;
-
---shadow:
-0 10px 30px rgba(0,0,0,.25);
 
 }
 
@@ -47,7 +45,7 @@ color:white;
 
 min-height:100vh;
 
-overflow-x:hidden;
+overflow:hidden;
 
 }
 
@@ -56,9 +54,7 @@ overflow-x:hidden;
 .bg-glow{
 
 position:fixed;
-
 inset:0;
-
 z-index:-1;
 
 background:
@@ -66,18 +62,18 @@ background:
 radial-gradient(
 circle at 20% 20%,
 rgba(0,230,118,.12),
-transparent 30%
+transparent 35%
 ),
 
 radial-gradient(
 circle at 80% 20%,
-rgba(255,213,79,.08),
+rgba(0,210,255,.10),
 transparent 35%
 ),
 
 radial-gradient(
 circle at 50% 100%,
-rgba(0,210,255,.08),
+rgba(124,58,237,.10),
 transparent 40%
 );
 
@@ -87,49 +83,40 @@ transparent 40%
 
 .topbar{
 
-display:flex;
+height:72px;
 
-justify-content:space-between;
+display:flex;
 
 align-items:center;
 
-padding:18px 24px;
+justify-content:space-between;
+
+padding:0 24px;
 
 border-bottom:
 1px solid var(--border);
+
+background:
+rgba(0,0,0,.15);
 
 backdrop-filter:
 blur(20px);
 
 }
 
-.top-left{
-
-display:flex;
-
-align-items:center;
-
-gap:20px;
-
-}
-
 .logo{
 
-font-size:24px;
+font-size:34px;
 
-font-weight:800;
+font-weight:900;
 
 color:var(--gold);
 
 }
 
-/* NAVIGATION */
-
 .top-nav{
 
 display:flex;
-
-align-items:center;
 
 gap:10px;
 
@@ -137,9 +124,9 @@ gap:10px;
 
 .nav-link{
 
-height:40px;
+height:42px;
 
-padding:0 14px;
+padding:0 18px;
 
 display:flex;
 
@@ -149,17 +136,15 @@ justify-content:center;
 
 text-decoration:none;
 
+color:white;
+
+font-weight:700;
+
 border-radius:12px;
 
 background:var(--card);
 
 border:1px solid var(--border);
-
-color:white;
-
-font-size:14px;
-
-font-weight:700;
 
 transition:.2s;
 
@@ -167,15 +152,12 @@ transition:.2s;
 
 .nav-link:hover{
 
-background:
-var(--card-hover);
+background:var(--card-hover);
 
 transform:
 translateY(-2px);
 
 }
-
-/* USER PANEL */
 
 #userPanel{
 
@@ -199,15 +181,13 @@ gap:10px;
 
 .login-btn{
 
-height:40px;
+height:42px;
 
-padding:0 14px;
+padding:0 16px;
 
 display:flex;
 
 align-items:center;
-
-justify-content:center;
 
 text-decoration:none;
 
@@ -219,8 +199,6 @@ border:1px solid var(--border);
 
 color:white;
 
-font-size:14px;
-
 font-weight:700;
 
 }
@@ -231,55 +209,41 @@ background:var(--card);
 
 border:1px solid var(--border);
 
-border-radius:14px;
-
 padding:10px 14px;
 
-backdrop-filter:blur(20px);
-
-}
-
-#userEmail{
-
-font-size:13px;
-
-font-weight:700;
+border-radius:14px;
 
 }
 
 #userCredits{
 
-font-size:13px;
+margin-top:4px;
 
 color:var(--gold);
 
-margin-top:4px;
+font-weight:700;
 
 }
 
 #userRank{
 
-font-size:12px;
-
-font-weight:700;
+margin-top:4px;
 
 color:var(--green);
 
-margin-top:4px;
+font-weight:700;
 
 }
 
 #logoutBtn{
 
-height:40px;
+height:42px;
 
-padding:0 14px;
+padding:0 18px;
 
 border:none;
 
 border-radius:12px;
-
-cursor:pointer;
 
 background:var(--red);
 
@@ -287,23 +251,104 @@ color:white;
 
 font-weight:700;
 
+cursor:pointer;
+
 }
 
 /* CONTAINER */
 
 .container{
 
-max-width:1400px;
+max-width:1600px;
 
 margin:auto;
 
-padding:20px;
+padding:15px;
+
+height:
+calc(100vh - 72px);
+
+display:flex;
+
+flex-direction:column;
+
+gap:15px;
 
 }
 
-/* HERO */
+/* STATS */
 
-.hero-card{
+.stats-row{
+
+display:grid;
+
+grid-template-columns:
+repeat(4,1fr);
+
+gap:12px;
+
+}
+
+.mini-stat{
+
+height:70px;
+
+display:flex;
+
+align-items:center;
+
+gap:12px;
+
+padding:0 20px;
+
+background:var(--card);
+
+border:1px solid var(--border);
+
+border-radius:16px;
+
+font-size:22px;
+
+font-weight:800;
+
+}
+
+.mini-stat span{
+
+font-size:26px;
+
+}
+
+/* MAIN */
+
+.casino-layout{
+
+flex:1;
+
+display:grid;
+
+grid-template-columns:
+320px 1fr;
+
+gap:15px;
+
+min-height:0;
+
+}
+
+/* LEFT PANEL */
+
+.bet-panel{
+
+display:flex;
+
+flex-direction:column;
+
+gap:15px;
+
+}
+
+.panel-card{
 
 background:var(--card);
 
@@ -313,363 +358,42 @@ border-radius:18px;
 
 padding:18px;
 
-text-align:center;
+}
 
-margin-bottom:20px;
+.panel-card h3{
 
-backdrop-filter:blur(20px);
-
-box-shadow:var(--shadow);
+margin-bottom:15px;
 
 }
 
-.hero-card h1{
-
-font-size:28px;
-
-font-weight:800;
-
-margin-bottom:6px;
-
-}
-
-.hero-card p{
-
-font-size:13px;
-
-color:var(--muted);
-
-}
-/* =========================
-   GAME LAYOUT
-========================= */
-
-.game-layout{
-
-display:grid;
-
-grid-template-columns:
-1fr 320px;
-
-gap:20px;
-
-align-items:start;
-
-}
-
-.game-table{
-
-width:100%;
-
-}
-
-.game-sidebar{
-
-display:flex;
-
-flex-direction:column;
-
-gap:14px;
-
-}
-
-/* =========================
-   TABLE
-========================= */
-
-.table-card{
-
-background:
-linear-gradient(
-180deg,
-#13301f,
-#0f2418
-);
-
-border-radius:24px;
-
-padding:18px;
-
-border:1px solid
-rgba(255,255,255,.08);
-
-box-shadow:
-0 20px 40px rgba(0,0,0,.30);
-
-}
-
-.dealer-area,
-.player-area{
-
-text-align:center;
-
-}
-
-.dealer-area h2,
-.player-area h2{
-
-font-size:16px;
-
-font-weight:700;
-
-margin-bottom:10px;
-
-}
-
-.table-center{
-
-display:flex;
-
-justify-content:center;
-
-padding:12px 0;
-
-}
-
-#message{
-
-background:
-rgba(255,255,255,.05);
-
-border:1px solid var(--border);
-
-padding:10px 14px;
-
-border-radius:12px;
-
-font-size:13px;
-
-font-weight:600;
-
-}
-
-/* =========================
-   CARDS
-========================= */
-
-.cards{
-
-display:flex;
-
-justify-content:center;
-
-flex-wrap:wrap;
-
-gap:6px;
-
-min-height:95px;
-
-margin-bottom:10px;
-
-}
-
-.card{
-
-width:58px;
-
-height:84px;
-
-background:white;
-
-border-radius:10px;
-
-display:flex;
-
-justify-content:center;
-
-align-items:center;
-
-font-size:16px;
-
-font-weight:800;
-
-color:black;
-
-box-shadow:
-0 8px 20px rgba(0,0,0,.25);
-
-animation:
-cardIn .25s ease;
-
-transition:.2s;
-
-}
-
-.card:hover{
-
-transform:
-translateY(-2px);
-
-}
-
-.card.hidden{
-
-background:
-linear-gradient(
-135deg,
-#2b2f36,
-#4b5563
-);
-
-color:white;
-
-}
-
-@keyframes cardIn{
-
-from{
-
-opacity:0;
-
-transform:
-translateY(10px);
-
-}
-
-to{
-
-opacity:1;
-
-transform:
-translateY(0);
-
-}
-
-}
-
-/* SCORE */
-
-.score{
-
-font-size:15px;
-
-font-weight:800;
-
-color:var(--gold);
-
-}
-
-/* =========================
-   SIDEBAR STATS
-========================= */
-
-.game-sidebar .stats-grid{
-
-display:grid;
-
-grid-template-columns:1fr;
-
-gap:10px;
-
-}
-
-.stat-card{
-
-background:var(--card);
-
-border:1px solid var(--border);
-
-border-radius:16px;
-
-padding:14px;
-
-display:flex;
-
-align-items:center;
-
-gap:12px;
-
-backdrop-filter:blur(20px);
-
-box-shadow:var(--shadow);
-
-}
-
-.stat-icon{
-
-font-size:20px;
-
-}
-
-.stat-card span{
-
-display:block;
-
-font-size:12px;
-
-color:var(--muted);
-
-margin-bottom:3px;
-
-}
-
-.stat-card h3{
-
-font-size:18px;
-
-font-weight:800;
-
-}
-/* =========================
-   BET PANEL
-========================= */
-
-.bet-section{
-
-background:var(--card);
-
-border:1px solid var(--border);
-
-border-radius:16px;
-
-padding:16px;
-
-backdrop-filter:blur(20px);
-
-box-shadow:var(--shadow);
-
-}
-
-.bet-section h2{
-
-font-size:16px;
-
-margin-bottom:12px;
-
-text-align:center;
-
-}
+/* CHIPS */
 
 .chips{
 
 display:grid;
 
 grid-template-columns:
-repeat(3,1fr);
+1fr 1fr;
 
-gap:8px;
+gap:10px;
 
-margin-bottom:12px;
+margin-bottom:15px;
 
 }
 
 .bet-btn{
 
-width:100%;
-
-height:50px;
+height:55px;
 
 border:none;
 
 border-radius:12px;
 
-cursor:pointer;
-
-font-size:12px;
+font-size:14px;
 
 font-weight:800;
 
-color:white;
+cursor:pointer;
 
 transition:.2s;
 
@@ -683,62 +407,49 @@ translateY(-2px);
 }
 
 .bet-btn[data-bet="100"]{
-
 background:#00e676;
-
 color:black;
-
 }
 
 .bet-btn[data-bet="500"]{
-
 background:#00d2ff;
-
 color:black;
-
 }
 
 .bet-btn[data-bet="1000"]{
-
 background:#8e44ad;
-
+color:white;
 }
 
 .bet-btn[data-bet="5000"]{
-
 background:#ffd54f;
-
 color:black;
-
 }
 
 .bet-btn[data-bet="10000"]{
-
 background:#ff5252;
-
+color:white;
 }
 
 .current-bet{
 
-text-align:center;
+font-size:16px;
 
-font-size:14px;
-
-font-weight:700;
+font-weight:800;
 
 color:var(--gold);
 
+text-align:center;
+
 }
 
-/* =========================
-   CONTROLS
-========================= */
+/* CONTROLS */
 
 .controls{
 
-display:grid;
+display:flex;
 
-grid-template-columns:1fr;
+flex-direction:column;
 
 gap:10px;
 
@@ -746,19 +457,17 @@ gap:10px;
 
 .controls button{
 
-width:100%;
-
-height:42px;
+height:52px;
 
 border:none;
 
 border-radius:12px;
 
+font-size:15px;
+
+font-weight:800;
+
 cursor:pointer;
-
-font-size:13px;
-
-font-weight:700;
 
 transition:.2s;
 
@@ -772,80 +481,187 @@ translateY(-2px);
 }
 
 #dealBtn{
-
 background:var(--gold);
-
 color:black;
-
 }
 
 #hitBtn{
-
 background:var(--green);
-
 color:black;
-
 }
 
 #doubleBtn{
-
 background:var(--blue);
-
 color:black;
-
 }
 
 #standBtn{
-
 background:var(--red);
+color:white;
+}
+
+/* TABLE */
+
+.table-panel{
+
+background:
+linear-gradient(
+180deg,
+#0f2c1c,
+#081810
+);
+
+border:1px solid
+rgba(255,255,255,.08);
+
+border-radius:24px;
+
+padding:25px;
+
+display:flex;
+
+flex-direction:column;
+
+justify-content:space-between;
+
+overflow:hidden;
+
+}
+
+.table-title{
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+font-size:22px;
+
+font-weight:800;
+
+}
+
+.table-title span{
+
+color:var(--gold);
+
+font-size:18px;
+
+}
+
+.dealer-section{
+
+display:flex;
+
+flex-direction:column;
+
+gap:15px;
+
+}
+
+.player-section{
+
+display:flex;
+
+flex-direction:column;
+
+gap:15px;
+
+}
+
+.cards{
+
+display:flex;
+
+justify-content:center;
+
+gap:10px;
+
+flex-wrap:wrap;
+
+min-height:110px;
+
+}
+
+.card{
+
+width:72px;
+
+height:102px;
+
+background:white;
+
+border-radius:12px;
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+font-size:24px;
+
+font-weight:900;
+
+color:black;
+
+box-shadow:
+0 10px 20px rgba(0,0,0,.25);
+
+}
+
+.card.hidden{
+
+background:
+linear-gradient(
+135deg,
+#333,
+#555
+);
 
 color:white;
 
 }
 
-/* =========================
-   ACHIEVEMENTS
-========================= */
+.table-message{
 
-.achievement-panel{
+display:flex;
 
-background:var(--card);
+justify-content:center;
+
+align-items:center;
+
+padding:20px 0;
+
+}
+
+#message{
+
+padding:14px 18px;
+
+background:
+rgba(255,255,255,.08);
 
 border:1px solid var(--border);
 
-border-radius:16px;
+border-radius:14px;
 
-padding:16px;
-
-backdrop-filter:blur(20px);
-
-box-shadow:var(--shadow);
+font-weight:700;
 
 }
 
-.achievement-panel h2{
-
-font-size:16px;
-
-margin-bottom:10px;
-
-text-align:center;
-
-}
+/* ACHIEVEMENT */
 
 #achievementPreview{
 
-font-size:13px;
-
-text-align:center;
-
 color:var(--muted);
+
+line-height:1.6;
 
 }
 
-/* =========================
-   TOAST
-========================= */
+/* TOAST */
 
 .toast{
 
@@ -855,24 +671,19 @@ right:20px;
 
 bottom:20px;
 
-padding:14px 18px;
-
-background:#171b24;
+background:#171c26;
 
 border:1px solid var(--border);
+
+padding:16px 20px;
 
 border-radius:14px;
 
 display:none;
 
-z-index:9999;
-
-font-size:13px;
-
 font-weight:700;
 
-box-shadow:
-0 10px 25px rgba(0,0,0,.30);
+z-index:9999;
 
 }
 
@@ -880,55 +691,28 @@ box-shadow:
 
 display:block;
 
-animation:
-toastIn .25s ease;
-
 }
 
-@keyframes toastIn{
-
-from{
-
-opacity:0;
-
-transform:
-translateY(10px);
-
-}
-
-to{
-
-opacity:1;
-
-transform:
-translateY(0);
-
-}
-
-}
-
-/* =========================
-   MOBILE
-========================= */
+/* MOBILE */
 
 @media(max-width:1100px){
 
-.game-layout{
+body{
+
+overflow:auto;
+
+}
+
+.casino-layout{
 
 grid-template-columns:1fr;
 
 }
 
-.game-sidebar{
-
-order:-1;
-
-}
-
-.game-sidebar .stats-grid{
+.stats-row{
 
 grid-template-columns:
-repeat(2,1fr);
+1fr 1fr;
 
 }
 
@@ -938,17 +722,13 @@ repeat(2,1fr);
 
 .topbar{
 
+height:auto;
+
+padding:15px;
+
 flex-direction:column;
 
 gap:12px;
-
-}
-
-.top-left{
-
-flex-direction:column;
-
-align-items:center;
 
 }
 
@@ -960,27 +740,7 @@ justify-content:center;
 
 }
 
-#userInfo{
-
-flex-direction:column;
-
-width:100%;
-
-}
-
-.user-card{
-
-width:100%;
-
-}
-
-#logoutBtn{
-
-width:100%;
-
-}
-
-.game-sidebar .stats-grid{
+.stats-row{
 
 grid-template-columns:1fr;
 
@@ -989,23 +749,17 @@ grid-template-columns:1fr;
 .chips{
 
 grid-template-columns:
-repeat(5,1fr);
+1fr 1fr 1fr;
 
 }
 
 .card{
 
-width:54px;
+width:58px;
 
-height:78px;
+height:82px;
 
-font-size:15px;
-
-}
-
-.container{
-
-padding:12px;
+font-size:18px;
 
 }
 
@@ -1013,44 +767,26 @@ padding:12px;
 
 @media(max-width:500px){
 
-.logo{
+.chips{
 
-font-size:20px;
-
-}
-
-.hero-card h1{
-
-font-size:22px;
+grid-template-columns:
+1fr 1fr;
 
 }
 
 .card{
 
-width:48px;
+width:50px;
 
-height:70px;
+height:72px;
 
-font-size:14px;
-
-}
-
-.score{
-
-font-size:14px;
+font-size:15px;
 
 }
 
-#message{
+.logo{
 
-font-size:12px;
-
-}
-
-.chips{
-
-grid-template-columns:
-repeat(2,1fr);
+font-size:26px;
 
 }
 
